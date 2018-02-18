@@ -1,7 +1,9 @@
 var hue = jsHue(); //Instance of Hue
-var bridgeIP = localStorage.getItem("bridgeIP");
+//var bridgeIP = localStorage.getItem("bridgeIP");
+var bridgeIP = "192.168.0.188";
 var bridge;
-var username = localStorage.getItem("bridgeUser");
+//var username = localStorage.getItem("bridgeUser");
+var username = "YuFlCi5J1qXbu3XBkd9IhyEG4O1tBG5GYAjN25zh";
 var user;
 
 var test = false;
@@ -54,7 +56,7 @@ function modalSelectIP() {
     $('#bridgeModal').modal({backdrop: "static"});
     $('#bridgeModal').modal('show');
     // create user account (requires link button to be pressed)
-    bridge.createUser('HueScriptsApp#Account',
+    /*bridge.createUser('HueScriptsApp#Account',
         function (success) {
             console.log("Success");
             // extract bridge-generated username from returned data
@@ -67,7 +69,8 @@ function modalSelectIP() {
         }, function(error) {
             console.log(error);
             $("#discoverText").text("Something went wrong while connecting to your bridge. Refresh and try again.");
-        });
+        }); */
+    createAccount(fetchIP);
 }
 
 function bridgeConnectSuccess() {
@@ -79,7 +82,25 @@ function bridgeConnectSuccess() {
 function testFnc() {
     if (test == true) {
         user.setLightState(1, { bri: 255});
+        console.log("255");
+        test = false;
     } else {
         user.setLightState(1, { bri: 10});
+        console.log("128");
+        test = true;
     }
+}
+
+function createAccount(fetchIP) {
+    //TODO: make.
+
+    /*var req_url = 'http://' + fetchIP + '/api';
+    var command = $.ajax({
+        url: req_url,
+        type: "POST",
+        data: {
+            "devicetype": "HueScriptsApp#Api Acc"
+        }
+
+    });*/
 }
