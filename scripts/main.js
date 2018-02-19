@@ -148,10 +148,20 @@ function checkCmd() {
             var light = data[index].light;
             var cmd = data[index].cmd;
             var wrd = data[index].wrd;
-            console.log("light " + light + ", cmd "+ cmd + ", wrd " + wrd);
-            var sendData = '{ "' + cmd + '": ' + wrd + "}";
-            console.log(sendData);
-            var body = { "bri": Number(wrd)};
+            var body;
+            switch (cmd) {
+                case "bri":
+                    body = { "bri": Number(wrd)};
+                    break;
+
+                case "sat":
+                    body = { "sat": Number(wrd)};
+                    break;
+
+                case "hue":
+                    body = { "hue": Number(wrd)};
+                    break;
+            }
             console.log(body);
             user.setLightState(light, body);
         }
