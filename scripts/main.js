@@ -129,7 +129,7 @@ function startFnc() {
         time = 0;
         $("#timer").html("Timer: "+ time);
         checkCmd();
-        timeInterval = window.setInterval(checkCmd, 1000);
+        timeInterval = window.setInterval(update, 100);
         started = true;
     }
 }
@@ -141,10 +141,25 @@ function stopFnc() {
     }
 }
 
-function checkCmd() {
+function update() {
+    $("#timer").html("Timer: "+ time);
+    async(checkCmd, function() {
+        console.log("Finished time " + time);
+    });
+    time = time + 1;
+}
+
+function async(fn, callback) {
+    setTimeout(function() {
+        fn(time);
+        callback();
+    }, 0);
+}
+
+function checkCmd(asyncTime) {
     var index;
     for (index = 0; index < data.length; ++index) {
-        if (data[index].time == time) {
+        if (data[index].time == asyncTime) {
             var light = data[index].light;
             var cmd = data[index].cmd;
             var wrd = data[index].wrd;
@@ -166,8 +181,6 @@ function checkCmd() {
             user.setLightState(light, body);
         }
     }
-    time = time + 1;
-    $("#timer").html("Timer: "+ time);
 
 }
 
