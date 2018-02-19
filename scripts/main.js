@@ -5,7 +5,11 @@ var bridge;
 //var username = localStorage.getItem("bridgeUser");
 var username = "YuFlCi5J1qXbu3XBkd9IhyEG4O1tBG5GYAjN25zh";
 var user;
+var data;
+var time = 0;
+var timeInterval;
 
+var started = false;
 var test = false;
 
 
@@ -81,11 +85,11 @@ function bridgeConnectSuccess() {
 
 function testFnc() {
     if (test == true) {
-        user.setLightState(1, { bri: 255});
+        user.setLightState(3, { bri: 255});
         console.log("255");
         test = false;
     } else {
-        user.setLightState(1, { bri: 10});
+        user.setLightState(3, { bri: 10});
         console.log("128");
         test = true;
     }
@@ -103,4 +107,73 @@ function createAccount(fetchIP) {
         }
 
     });*/
+}
+
+function loadFnc() {
+    $('#inputModal').modal({backdrop: "static"});
+    $('#inputModal').modal('show');
+}
+
+function jsonSubmit() {
+    var input = $('#inputArea').val();
+    console.log(input);
+
+    var arr = jQuery.parseJSON(input);
+    data = $.map(arr, function(el) { return el; });
+    console.log(data);
+
+}
+
+function startFnc() {
+    if (started === false) {
+        time = 0;
+        $("#timer").html("Timer: "+ time);
+        checkCmd();
+        timeInterval = window.setInterval(checkCmd, 1000);
+        started = true;
+    }
+}
+
+function stopFnc() {
+    if (started === true) {
+        clearInterval(timeInterval);
+        started = false;
+    }
+}
+
+function checkCmd() {
+    var index;
+    for (index = 0; index < data.length; ++index) {
+        if (data[index].time == time) {
+            var light = data[index].light;
+            var cmd = data[index].cmd;
+            var wrd = data[index].wrd;
+            console.log("light " + light + ", cmd "+ cmd + ", wrd " + wrd);
+            var sendData = '{ "' + cmd + '": ' + wrd + "}";
+            console.log(sendData);
+            var body = { "bri": Number(wrd)};
+            console.log(body);
+            user.setLightState(light, body);
+        }
+    }
+    time = time + 1;
+    $("#timer").html("Timer: "+ time);
+
+}
+
+function convertRGB(red, green, blue) {
+    red = red / 255.000;
+    green = green / 255.000;
+    blue = blue / 255.000;
+
+    red = (red > 0.04045) ? pow((red + 0.055) / (1.0 + 0.055), 2.4) : (red / 12.92);
+    green = (green > 0.04045) ? pow((green + 0.055) / (1.0 + 0.055), 2.4) : (green / 12.92);
+    blue = (blue > 0.04045) ? pow((blue + 0.055) / (1.0 + 0.055), 2.4) : (blue / 12.92);
+
+    var X = red * 0.664511 + green * 0.154324 + blue * 0.162028;
+    var Y = red * 0.283881 + green * 0.668433 + blue * 0.047685;
+    var Z = red * 0.000088 + green * 0.072310 + blue * 0.986039;
+
+    var x = X / (X + Y + Z);
+    var y = Y / (X + Y + Z);
 }

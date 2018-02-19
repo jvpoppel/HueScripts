@@ -24,14 +24,19 @@
         </div>
         <hr>
         <div class="row">
+            <div class="col-sm-12 text-center" id="timer">
+                Timer: 0
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-4 text-center">
-                <button type="button" id="loadBtn" name="loadBtn" class="btn btn-warning btn-sm" onclick="testFnc();">Load</button>
+                <button type="button" id="loadBtn" name="loadBtn" class="btn btn-warning btn-sm" onclick="loadFnc();">Load</button>
             </div>
             <div class="col-sm-4 text-center">
-                <button type="button" id="saveBtn" name="saveBtn" class="btn btn-success btn-sm">Save</button>
+                <button type="button" id="saveBtn" name="startBtn" class="btn btn-success btn-sm" onclick="startFnc();">Start</button>
             </div>
             <div class="col-sm-4 text-center">
-                <button type="button" id="clearBtn" name="clearBtn" class="btn btn-primary btn-sm">Clear</button>
+                <button type="button" id="stopBtn" name="stopBtn" class="btn btn-primary btn-sm" onclick="stopFnc();">Stop</button>
             </div>
         </div>
         <!-- Modal Select IP -->
@@ -95,16 +100,36 @@
 
             </div>
         </div>
+
+        <!-- Modal Input JSON -->
+        <div id="inputModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Input JSON</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Input your JSON here.</p>
+                        <p>Please format correctly. Look for examples on Github.</p>
+                        <textarea id="inputArea"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="jsonSubmit();">Submit</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         <hr>
     </div>
+    <button onClick="testFnc();">test</button>
 
     <!-- JQuery, Bootstrap and jshue libraries incl. dependencies -->
     <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20160511/json2.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.js"></script>
+    <script src="scripts/colors.js"></script>
     <script src="scripts/jshue.js"></script>
 
     <!-- Own scripts -->
