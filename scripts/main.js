@@ -11,6 +11,7 @@ var cmdChecked = 0;
 var timeInterval;
 var tableIndex = 0;
 var curTable;
+var editButton;
 
 var started = false;
 var test = false;
@@ -328,6 +329,7 @@ function checkCmd(asyncTime) {
                 break;
 				
 			case "xy":
+			    wrd = JSON.parse(wrd);
 			    body = { "xy": convertRGB(wrd[0], wrd[1], wrd[2])};
 				break;
         }
@@ -366,7 +368,12 @@ function addRow() {
 
 }
 
+/**
+ * Function to edit the data on a selected row.
+ */
 function editRow() {
+
+    editButton.unbind( "click" );
 	$("#editModal").modal('hide');
 	var row = $("#editRowID").val();
 	data[row].light = $("#editRowLight").val();
@@ -381,12 +388,25 @@ function editRow() {
 	createTable();
 }
 
+/**
+ * Function to delete a selected row.
+ */
 function delRow() {
-	
+
+    editButton.unbind( "click" );
+	$("#editModal").modal('hide');
+	var row = $("#editRowID").val();
+	data.splice(row, 1);
+	createTable();
+
 }
 
+/**
+ * @param row Row to be edited
+ * @param elem Element that called this function (remove event handeler from this element)
+ */
 function modifRow(row, elem) {
-	elem.unbind( "click" );
+	editButton = elem;
 	$("#editRowID").val(row);
 	$("#editRowLight").val(data[row].light);
 	$("#editRowTime").val(data[row].time);
