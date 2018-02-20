@@ -367,7 +367,13 @@ function delRow() {
 }
 
 function modifRow(row) {
-	console.log(row);
+	$("#editRowID").val(row);
+	$("#editRowLight").val(data[row].light);
+	$("#editRowTime").val(data[row].time);
+	$("#editRowValue").val(data[row].wrd);
+	
+	$("#editModal").modal({backdrop: "static"});
+	$("#editModal").modal('show');
 	
 }
 

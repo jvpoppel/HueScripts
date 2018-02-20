@@ -112,6 +112,62 @@
 
             </div>
         </div>
+        
+        <!-- Modal Edit Row -->
+        <div id="editModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit command</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="editRowID" value="0">
+                        <table class="table">
+                            <tr>
+                                <td>Time:</td>
+                                <td>
+                                    <input class="rowInput" type="number" min="1" max="999999" value="1" id="editRowTime">
+                                </td>
+                                <td>(1 second &rArr; value 10)</td>
+                            </tr>
+                            <tr>
+                                <td>Light ID:</td>
+                                <td>
+                                    <input class="rowInput" type="number" min="1" max="99" value="1" id="editRowLight">
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Command:</td>
+                                <td>
+                                    <select class="rowInput" id="editRowCommand">
+                                        <option>bri</option>
+                                        <option>sat</option>
+                                        <option>hue</option>
+                                        <option>xy</option>
+                                    </select>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Value:</td>
+                                <td>
+                                    <input class="rowInput" type="text" value="1" id="editRowValue">
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnRowSubmit" name="btnRowSubmit" class="btn btn-info btn-sm" onclick="addRow();">Add command</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         <!-- Modal Select IP -->
         <div id="ipModal" class="modal fade" role="dialog">
@@ -129,10 +185,6 @@
                         <select id="bridgeSelect"></select>
                         <button type="button" id="btnBridgeSelect" name="btnBridgeSelect" class="btn btn-info btn-sm" onclick="modalSelectIP();">Select bridge</button>
                     </div>
-                    <!-- Close button temp. disabled -->
-                    <!--<div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>-->
                 </div>
 
             </div>
