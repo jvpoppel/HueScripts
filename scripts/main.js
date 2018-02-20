@@ -29,6 +29,16 @@ $(document).ready(function() {
 	});
 });
 
+inputSound.onchange = function(e){
+    var sound = document.getElementById('sound');
+    sound.src = URL.createObjectURL(this.files[0]);
+    // not really needed in this exact case, but since it is really important in other cases,
+    // don't forget to revoke the blobURI when you don't need it
+    sound.onend = function(e) {
+        URL.revokeObjectURL(this.src);
+    }
+}
+
 /**
  * Function that gets all local bridges and stores the IPs in a dropdown menu.
  */
@@ -223,6 +233,8 @@ function createTable() {
  */
 function startFnc() {
     if (started === false) {
+
+        sound.play();
         time = 0;
 		cmdChecked = 0;
         $("#timer").html("Timer: "+ time);
@@ -237,9 +249,11 @@ function startFnc() {
  */
 function stopFnc() {
     if (started === true) {
+        sound.pause();
         clearInterval(timeInterval);
 		$("#row" + Number(cmdChecked - 1)).removeClass("table-info");
         started = false;
+        sound.load();
     }
 }
 
@@ -257,7 +271,6 @@ function update() {
 	
 	if (cmdChecked < data.length) {
 		async(checkCmd, function() {
-			console.log("Finished time " + time);
 		});
 	}
 	
@@ -332,8 +345,18 @@ function checkCmd(asyncTime) {
 			    wrd = JSON.parse(wrd);
 			    body = { "xy": convertRGB(wrd[0], wrd[1], wrd[2])};
 				break;
+
+            case "repeat":
+                clearInterval(timeInterval);
+                $("#row" + Number(cmdChecked - 1)).removeClass("table-info");
+                time = 0;
+                cmdChecked = 0;
+                $("#timer").html("Timer: "+ time);
+                checkCmd();
+                timeInterval = window.setInterval(update, 100);
+                break;
         }
-		
+
         console.log(body);
         user.setLightState(light, body);
 	}
