@@ -176,6 +176,7 @@ function createTable() {
     curTable.append("<th>Light</th>");
     curTable.append("<th>Command</th>");
     curTable.append("<th>Value</th>");
+	curTable.append("<th></th>");
     curTable.append("</thead><tbody>");
 
     /** Let a for loop add the rest of the columns */
@@ -194,6 +195,14 @@ function createTable() {
         row.append("<td>" + light + "</td>");
         row.append("<td>" + cmd + "</td>");
         row.append("<td>" + wrd + "</td>");
+		row.append('<td><button type="button" id="rowEdit_' + tableIndex + '">Edit');
+		var rEdit = $("#rowEdit_"+tableIndex);
+		rEdit.attr("class","btn btn-info btn-sm");
+		rEdit.on('click', function() {
+			var suffix = event.target.id.match(/\d+/);
+            modifRow(suffix[0]);
+        });
+		rEdit.append("</button></td>");
         row.append("</tr>");
     }
 
@@ -347,6 +356,19 @@ function addRow() {
 	
     createTable();
 
+}
+
+function editRow() {
+	
+}
+
+function delRow() {
+	
+}
+
+function modifRow(row) {
+	console.log(row);
+	
 }
 
 /**
