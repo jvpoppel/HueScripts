@@ -18,6 +18,14 @@ var test = false;
 
 $(document).ready(function() {
     checkBridge();
+	
+	$("#btnEditDelete").on('click', function() {
+		delRow();
+	});
+	
+	$("#btnEditSubmit").on('click', function() {
+		editRow();
+	});
 });
 
 /**
@@ -200,7 +208,7 @@ function createTable() {
 		rEdit.attr("class","btn btn-info btn-sm");
 		rEdit.on('click', function() {
 			var suffix = event.target.id.match(/\d+/);
-            modifRow(suffix[0]);
+            modifRow(suffix[0], rEdit);
         });
 		rEdit.append("</button></td>");
         row.append("</tr>");
@@ -359,14 +367,26 @@ function addRow() {
 }
 
 function editRow() {
+	$("#editModal").modal('hide');
+	var row = $("#editRowID").val();
+	data[row].light = $("#editRowLight").val();
+	data[row].time = $("#editRowTime").val();
+	data[row].wrd = $("#editRowValue").val();
+	data[row].cmd = $('#editRowCommand :selected').text();
 	
+	data.sort(function(a, b){
+		return a.time - b.time;
+	});
+	
+	createTable();
 }
 
 function delRow() {
 	
 }
 
-function modifRow(row) {
+function modifRow(row, elem) {
+	elem.unbind( "click" );
 	$("#editRowID").val(row);
 	$("#editRowLight").val(data[row].light);
 	$("#editRowTime").val(data[row].time);
