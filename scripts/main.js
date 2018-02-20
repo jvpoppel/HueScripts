@@ -220,6 +220,7 @@ function startFnc() {
 function stopFnc() {
     if (started === true) {
         clearInterval(timeInterval);
+		$("#row" + Number(cmdChecked - 1)).removeClass("table-info");
         started = false;
     }
 }
@@ -266,12 +267,20 @@ function checkCmd(asyncTime) {
 	if (data[cmdChecked].time == asyncTime) {
 		
 		sendData.push(data[cmdChecked]);
+		if (cmdChecked > 0) {
+			$("#row" + cmdChecked).addClass("table-info");
+			$("#row" + (cmdChecked - 1)).removeClass("table-info");
+		} else {
+			$("#row" + cmdChecked).addClass("table-info");
+		}
 		
 		while (cmdChecked < data.length - 1) {
 			
 			if (data[cmdChecked].time == data[cmdChecked + 1].time) {
 				++cmdChecked;
 				sendData.push(data[cmdChecked]);
+			    $("#row" + cmdChecked).addClass("table-info");
+			    $("#row" + (cmdChecked - 1)).removeClass("table-info");
 				
 			} else {
 				
