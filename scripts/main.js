@@ -300,6 +300,10 @@ function checkCmd(asyncTime) {
             case "hue":
                 body = { "hue": Number(wrd)};
                 break;
+				
+			case "xy":
+			    body = { "xy": convertRGB(wrd[0], wrd[1], wrd[2])};
+				break;
         }
 		
         console.log(body);
@@ -319,6 +323,7 @@ function addFnc() {
  * Function that adds a new row to the command table, and stores this also in the {@code data} array.
  */
 function addRow() {
+	
     $("#rowModal").modal('hide');
     data.push({
         "time": $("#addRowTime").val(),
@@ -326,26 +331,24 @@ function addRow() {
         "cmd": $('#addRowCommand :selected').text(),
         "wrd": $("#addRowValue").val()
     });
+	
 	data.sort(function(a, b){
 		return a.time - b.time;
 	});
+	
     createTable();
 
 }
 
-function convertRGB(red, green, blue) {
-    red = red / 255.000;
-    green = green / 255.000;
-    blue = blue / 255.000;
-
-    red = (red > 0.04045) ? pow((red + 0.055) / (1.0 + 0.055), 2.4) : (red / 12.92);
-    green = (green > 0.04045) ? pow((green + 0.055) / (1.0 + 0.055), 2.4) : (green / 12.92);
-    blue = (blue > 0.04045) ? pow((blue + 0.055) / (1.0 + 0.055), 2.4) : (blue / 12.92);
-
-    var X = red * 0.664511 + green * 0.154324 + blue * 0.162028;
-    var Y = red * 0.283881 + green * 0.668433 + blue * 0.047685;
-    var Z = red * 0.000088 + green * 0.072310 + blue * 0.986039;
-
-    var x = X / (X + Y + Z);
-    var y = Y / (X + Y + Z);
+/**
+ * Function wrapper for RGB to CIE conversion from colors.js
+ * @param red int value for red
+ * @param green int value for green
+ * @param blue int value for green
+ * @pre 0 <= red, green, blue <= 255
+ * @result array containing x and y values
+ */
+var convertRGB = function(red, green, blue) {
+	
+	return colors.rgbToCIE1931(red, green, blue);
 }
