@@ -7,6 +7,7 @@ var username = "YuFlCi5J1qXbu3XBkd9IhyEG4O1tBG5GYAjN25zh";
 var user;
 var data = [];
 var time = 0;
+var cmdChecked = 0;
 var timeInterval;
 var tableIndex = 0;
 var curTable;
@@ -150,6 +151,9 @@ function jsonSubmit() {
 
     var arr = jQuery.parseJSON(input);
     data = $.map(arr, function(el) { return el; });
+	data.sort(function(a, b){
+		return a.time - b.time;
+	});
     console.log(data);
 
     createTable();
@@ -202,6 +206,7 @@ function createTable() {
 function startFnc() {
     if (started === false) {
         time = 0;
+		cmdChecked = 0;
         $("#timer").html("Timer: "+ time);
         checkCmd();
         timeInterval = window.setInterval(update, 100);
@@ -230,9 +235,13 @@ function update() {
         timeString = (time - ( time % 10 )) / 10 + "." + ( time%10 );
     }
     $("#timer").html("Timer: "+ timeString);
-    async(checkCmd, function() {
-        console.log("Finished time " + time);
-    });
+	
+	if (cmdChecked < data.length) {
+		async(checkCmd, function() {
+			console.log("Finished time " + time);
+		});
+	}
+	
     time = time + 1;
 }
 
@@ -252,35 +261,54 @@ function async(fn, callback) {
  * @param asyncTime The time on which the function has been called.
  */
 function checkCmd(asyncTime) {
-    var index;
-    for (index = 0; index < data.length; ++index) {
-        if (data[index].time == asyncTime) {
-            var light = data[index].light;
-            var cmd = data[index].cmd;
-            var wrd = data[index].wrd;
-            var body;
-            switch (cmd) {
-                case "bri":
-                    body = { "bri": Number(wrd)};
-                    break;
+	var sendData = new Array();
+	
+	if (data[cmdChecked].time == asyncTime) {
+		
+		sendData.push(data[cmdChecked]);
+		
+		while (cmdChecked < data.length - 1) {
+			
+			if (data[cmdChecked].time == data[cmdChecked + 1].time) {
+				++cmdChecked;
+				sendData.push(data[cmdChecked]);
+				
+			} else {
+				
+				break;
+			}
+		}
+		++cmdChecked;
+	}
+	
+	for (var index = 0; index < sendData.length; ++index) {
+		
+		var light = sendData[index].light;
+        var cmd = sendData[index].cmd;
+        var wrd = sendData[index].wrd;
+        var body;
+		
+        switch (cmd) {
+            case "bri":
+                body = { "bri": Number(wrd)};
+                break;
+				
+             case "sat":
+                body = { "sat": Number(wrd)};
+                break;
 
-                case "sat":
-                    body = { "sat": Number(wrd)};
-                    break;
-
-                case "hue":
-                    body = { "hue": Number(wrd)};
-                    break;
-            }
-            console.log(body);
-            user.setLightState(light, body);
+            case "hue":
+                body = { "hue": Number(wrd)};
+                break;
         }
-    }
-
+		
+        console.log(body);
+        user.setLightState(light, body);
+	}
 }
 
 /**
- * Functon that shows the modal containing the add row fields.
+ * Function that shows the modal containing the add row fields.
  */
 function addFnc() {
     $("#rowModal").modal({backdrop: "static"});
@@ -298,6 +326,9 @@ function addRow() {
         "cmd": $('#addRowCommand :selected').text(),
         "wrd": $("#addRowValue").val()
     });
+	data.sort(function(a, b){
+		return a.time - b.time;
+	});
     createTable();
 
 }
