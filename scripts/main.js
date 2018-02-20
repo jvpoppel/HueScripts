@@ -5,9 +5,11 @@ var bridge;
 //var username = localStorage.getItem("bridgeUser");
 var username = "YuFlCi5J1qXbu3XBkd9IhyEG4O1tBG5GYAjN25zh";
 var user;
-var data;
+var data = [];
 var time = 0;
 var timeInterval;
+var tableIndex = 0;
+var curTable;
 
 var started = false;
 var test = false;
@@ -17,6 +19,9 @@ $(document).ready(function() {
     checkBridge();
 });
 
+/**
+ * Function that gets all local bridges and stores the IPs in a dropdown menu.
+ */
 function getBridges() {
 
     var bSelect = $("#bridgeSelect");
@@ -37,6 +42,11 @@ function getBridges() {
     }).catch(e => console.log('Error finding bridges', e));
 }
 
+/**
+ * Function that checks if there already is a Philips Hue account.
+ * If so: Do nothing.
+ * Else: Start bridge connecting.
+ */
 function checkBridge() {
     if ((bridgeIP === null) || (username === null)) {
         getBridges();
@@ -48,6 +58,9 @@ function checkBridge() {
     }
 }
 
+/**
+ * Function to store the selected IP, and initiate account creation.
+ */
 function modalSelectIP() {
 
     /** Fetch, and store bridge IP from dropdown menu */
@@ -77,12 +90,19 @@ function modalSelectIP() {
     createAccount(fetchIP);
 }
 
+/**
+ * Function to show the 'Bridge successfully connected' modal.
+ */
 function bridgeConnectSuccess() {
     $('#bridgeModal').modal('hide');
     $('#successModal').modal({backdrop: "static"});
     $('#successModal').modal('show');
 }
 
+/**
+ * Test function that will change a lamps brightness.
+ * TODO: Remove.
+ */
 function testFnc() {
     if (test == true) {
         user.setLightState(3, { bri: 255});
@@ -95,6 +115,10 @@ function testFnc() {
     }
 }
 
+/**
+ * Function to create an account on the Hue Bridge if there is none already.
+ * @param fetchIP Bridge IP
+ */
 function createAccount(fetchIP) {
     //TODO: make.
 
@@ -109,11 +133,17 @@ function createAccount(fetchIP) {
     });*/
 }
 
+/**
+ * Function that calls the modal on which the JSON input is present.
+ */
 function loadFnc() {
     $('#inputModal').modal({backdrop: "static"});
     $('#inputModal').modal('show');
 }
 
+/**
+ * Function that parses inputted JSON data to an usable array.
+ */
 function jsonSubmit() {
     var input = $('#inputArea').val();
     console.log(input);
@@ -122,8 +152,53 @@ function jsonSubmit() {
     data = $.map(arr, function(el) { return el; });
     console.log(data);
 
+    createTable();
 }
 
+/**
+ * Function called after loading a JSON string, maps this data to a table.
+ */
+function createTable() {
+    var divTable = $("#divTable");
+    divTable.html("");
+    tableIndex = 0;
+    divTable.append("<table id='cmdTable'>");
+    curTable = $("#cmdTable");
+    curTable.addClass("table table-hover");
+    curTable.append("<thead>");
+    /** Add first row of table */
+    curTable.append("<tr>");
+    curTable.append("<th>Time</th>");
+    curTable.append("<th>Light</th>");
+    curTable.append("<th>Command</th>");
+    curTable.append("<th>Value</th>");
+    curTable.append("</thead><tbody>");
+
+    /** Let a for loop add the rest of the columns */
+
+    for (tableIndex = 0; tableIndex < data.length; ++tableIndex) {
+
+        var attributes = "id='row" + tableIndex + "'";
+        curTable.append("<tr " + attributes + ">");
+        var row = $("#row" + tableIndex);
+        var time = data[tableIndex].time;
+        var light = data[tableIndex].light;
+        var cmd = data[tableIndex].cmd;
+        var wrd = data[tableIndex].wrd;
+
+        row.append("<td>" + time + "</td>");
+        row.append("<td>" + light + "</td>");
+        row.append("<td>" + cmd + "</td>");
+        row.append("<td>" + wrd + "</td>");
+        row.append("</tr>");
+    }
+
+    curTable.append("</tbody></table>");
+}
+
+/**
+ * Function to create {@code timeInterval} iff {@code started == false}
+ */
 function startFnc() {
     if (started === false) {
         time = 0;
@@ -134,6 +209,9 @@ function startFnc() {
     }
 }
 
+/**
+ * Function to stop {@code timeInterval} iff {@code started == true}
+ */
 function stopFnc() {
     if (started === true) {
         clearInterval(timeInterval);
@@ -141,14 +219,27 @@ function stopFnc() {
     }
 }
 
+/**
+ * Function to asynchronously call {@code checkCmd()} and update {@code time}
+ */
 function update() {
-    $("#timer").html("Timer: "+ time);
+    var timeString = "";
+    if (time < 10) {
+        timeString = "0." + time;
+    } else {
+        timeString = (time - ( time % 10 )) / 10 + "." + ( time%10 );
+    }
+    $("#timer").html("Timer: "+ timeString);
     async(checkCmd, function() {
         console.log("Finished time " + time);
     });
     time = time + 1;
 }
 
+/**
+ * @param fn Function to be executed with {@code time} as parameter.
+ * @param callback Callback after {@code fn} has been executed.
+ */
 function async(fn, callback) {
     setTimeout(function() {
         fn(time);
@@ -156,6 +247,10 @@ function async(fn, callback) {
     }, 0);
 }
 
+/**
+ * Function to check if a command has to be executed at that time. If so, also execute it.
+ * @param asyncTime The time on which the function has been called.
+ */
 function checkCmd(asyncTime) {
     var index;
     for (index = 0; index < data.length; ++index) {
@@ -181,6 +276,29 @@ function checkCmd(asyncTime) {
             user.setLightState(light, body);
         }
     }
+
+}
+
+/**
+ * Functon that shows the modal containing the add row fields.
+ */
+function addFnc() {
+    $("#rowModal").modal({backdrop: "static"});
+    $("#rowModal").modal('show');
+}
+
+/**
+ * Function that adds a new row to the command table, and stores this also in the {@code data} array.
+ */
+function addRow() {
+    $("#rowModal").modal('hide');
+    data.push({
+        "time": $("#addRowTime").val(),
+        "light": $("#addRowLight").val(),
+        "cmd": $('#addRowCommand :selected').text(),
+        "wrd": $("#addRowValue").val()
+    });
+    createTable();
 
 }
 

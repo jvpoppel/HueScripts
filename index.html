@@ -4,10 +4,10 @@
         <meta charset="UTF-8">
         <title>HueScripted</title>
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+        <link href="styles/main.css" rel="stylesheet" type="text/css">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-
     </head>
-    
+
     <body>
     <div class="container-fluid">
         <div class="row">
@@ -45,7 +45,69 @@
         <hr>
         <!-- Table containing the commands -->
         <div class="row">
-            <div class="col-sm-12 text-center" id="cmdTable">
+            <div class="col-sm-12 text-center">
+                <div id="divTable" class="table-responsive">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <button type="button" id="addBtn" name="addBtn" class="btn btn-info btn-sm" onclick="addFnc();">Add new command</button>
+            </div>
+        </div>
+
+        <!-- Modal Add Row -->
+        <div id="rowModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add command</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr>
+                                <td>Time:</td>
+                                <td>
+                                    <input class="rowInput" type="number" min="1" max="999999" value="1" id="addRowTime">
+                                </td>
+                                <td>(1 second &rArr; value 10)</td>
+                            </tr>
+                            <tr>
+                                <td>Light ID:</td>
+                                <td>
+                                    <input class="rowInput" type="number" min="1" max="99" value="1" id="addRowLight">
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Command:</td>
+                                <td>
+                                    <select class="rowInput" id="addRowCommand">
+                                        <option>bri</option>
+                                        <option>sat</option>
+                                        <option>hue</option>
+                                    </select>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Value:</td>
+                                <td>
+                                    <input class="rowInput" type="number" min="0" max="65280" value="1" id="addRowValue">
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnRowSubmit" name="btnRowSubmit" class="btn btn-info btn-sm" onclick="addRow();">Add command</button>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -100,6 +162,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Success!</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <p>Bridge successfully connected! You can continue using the site now.</p>
@@ -120,12 +183,15 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Input JSON</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
+
                     <div class="modal-body">
                         <p>Input your JSON here.</p>
                         <p>Please format correctly. Look for examples on Github.</p>
-                        <textarea id="inputArea"></textarea>
+                        <textarea class="form-control" style="min-width: 100%" id="inputArea"></textarea>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="jsonSubmit();">Submit</button>
                     </div>
