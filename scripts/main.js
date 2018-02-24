@@ -157,8 +157,16 @@ function createAccount(fetchIP) {
  * Function that calls the modal on which the JSON input is present.
  */
 function loadFnc() {
+    
     $('#inputModal').modal({backdrop: "static"});
     $('#inputModal').modal('show');
+}
+
+function saveFnc() {
+
+    var cnvData = JSON.stringify(data);
+    $("#saveArea").val(cnvData);
+    $("#saveModal").modal('show');
 }
 
 /**

@@ -291,9 +291,34 @@
 
             </div>
         </div>
+
+        <!-- Modal Save JSON -->
+        <div id="saveModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Save JSON</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>Copy and save the JSON below.</p>
+                        <textarea class="form-control" style="min-width: 100%" id="saveArea"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <hr>
     </div>
-    <button onClick="$('#soundModal').modal('show');">test</button>
+    <button onClick="saveFnc();">test</button>
 
     <!-- JQuery, Bootstrap and jshue libraries incl. dependencies -->
     <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
