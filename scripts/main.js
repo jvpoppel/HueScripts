@@ -310,7 +310,7 @@ function checkCmd(asyncTime) {
                 body = { "hue": Number(wrd)};
                 break;
 				
-			case "xy":
+			case "rgb":
 			    wrd = JSON.parse(wrd);
 			    body = { "xy": convertRGB(wrd[0], wrd[1], wrd[2])};
 				break;
@@ -324,6 +324,8 @@ function checkCmd(asyncTime) {
                 checkCmd();
                 timeInterval = window.setInterval(update, 100);
                 break;
+            default:
+                throw "Error: light command '" + cmd + "' not recognized.";
         }
 
         console.log(body);
