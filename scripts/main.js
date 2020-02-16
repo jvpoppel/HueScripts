@@ -3,16 +3,15 @@ var bridgeIP = localStorage.getItem("bridgeIP");
 var bridge;
 var username = localStorage.getItem("bridgeUser");
 var user;
-var data = [];
+var sequence = [];
 var time = 0;
-var cmdChecked = 0;
+var lastExecuted = 0;
 var timeInterval;
 var tableIndex = 0;
 var curTable;
 var editButton;
 
 var started = false;
-var test = false;
 
 
 $(document).ready(function() {
@@ -35,7 +34,7 @@ inputSound.onchange = function(e){
     sound.onend = function(e) {
         URL.revokeObjectURL(this.src);
     }
-}
+};
 
 /**
  * Function that gets all local bridges and stores the IPs in a dropdown menu.
@@ -43,22 +42,16 @@ inputSound.onchange = function(e){
 function getBridges() {
 
     var bSelect = $("#bridgeSelect");
-    var index;
-
-    hue.discover().then(bridges => {
-        console.log("a");
-        if(bridges.length === 0) {
-            console.log('No bridges found. :(');
-        } else {
-            for (index = 0; index < bridges.length; ++index) {
-                var b = bridges[index];
+    discoverBridges("https://discovery.meethue.com/").then(bridges => {
+            for (bridge of bridges) {
                 bSelect.append($('<option>', {
-                    value: index,
-                    text: b.internalipaddress
+                    value: bridge,
+                    text: bridge
                 }));
             }
         }
-    }).catch(e => console.log('Error finding bridges', e));
+    )
+
 }
 
 /**
@@ -80,7 +73,7 @@ function checkBridge() {
 /**
  * Function to store the selected IP, and initiate account creation.
  */
-function modalSelectIP() {
+async function modalSelectIP() {
 
     /** Fetch, and store bridge IP from dropdown menu */
     var fetchIP = $('#bridgeSelect :selected').text();
@@ -92,12 +85,24 @@ function modalSelectIP() {
     $('#bridgeModal').modal({backdrop: "static"});
     $('#bridgeModal').modal('show');
     // create user account (requires link button to be pressed)
-    var data = bridge.createUser('HueScriptsApp#Account');
-    var newUsername = data[0].success.username;
-    console.log("username: " + newUsername);
-    localStorage.setItem("bridgeUser", newUsername);
-    user = bridge.user(newUsername);
-    bridgeConnectSuccess();
+    var linked = false;
+    while (!linked) { // Keeps looping until an username has been correctly fetched and set.
+        await bridge.createUser('HueScriptsApp#Account').then(async function(data) {
+            try {
+                var newUsername = data[0].success.username;
+                linked = true;
+                console.log("username: " + newUsername);
+                localStorage.setItem("bridgeUser", newUsername);
+                user = bridge.user(newUsername);
+                bridgeConnectSuccess();
+            } catch (error) {
+                // To avoid DDoS-ing your hue bridge by spamming requests, implement 0.5s timeout here.
+                console.log("Link button press not yet registered, wait 0.5s and try again.");
+                await sleep(500);
+            }
+        });
+    }
+    $('#bridgeModal').modal('hide');
 }
 
 /**
@@ -120,30 +125,30 @@ function loadFnc() {
 
 function saveFnc() {
 
-    var cnvData = JSON.stringify(data);
+    var cnvData = JSON.stringify(sequence);
     $("#saveArea").val(cnvData);
     $("#saveModal").modal('show');
 }
 
 /**
- * Function that parses inputted JSON data to an usable array.
+ * Function that parses inputted JSON sequence to an usable array.
  */
 function jsonSubmit() {
     var input = $('#inputArea').val();
     console.log(input);
 
     var arr = jQuery.parseJSON(input);
-    data = $.map(arr, function(el) { return el; });
-	data.sort(function(a, b){
+    sequence = $.map(arr, function(el) { return el; });
+	sequence.sort(function(a, b){
 		return a.time - b.time;
 	});
-    console.log(data);
+    console.log(sequence);
 
     createTable();
 }
 
 /**
- * Function called after loading a JSON string, maps this data to a table.
+ * Function called after loading a JSON string, maps this sequence to a table.
  */
 function createTable() {
     var divTable = $("#divTable");
@@ -164,15 +169,15 @@ function createTable() {
 
     /** Let a for loop add the rest of the columns */
 
-    for (tableIndex = 0; tableIndex < data.length; ++tableIndex) {
+    for (tableIndex = 0; tableIndex < sequence.length; ++tableIndex) {
 
         var attributes = "id='row" + tableIndex + "'";
         curTable.append("<tr " + attributes + ">");
         var row = $("#row" + tableIndex);
-        var time = data[tableIndex].time;
-        var light = data[tableIndex].light;
-        var cmd = data[tableIndex].cmd;
-        var wrd = data[tableIndex].wrd;
+        var time = sequence[tableIndex].time;
+        var light = sequence[tableIndex].light;
+        var cmd = sequence[tableIndex].cmd;
+        var wrd = sequence[tableIndex].wrd;
 
         row.append("<td>" + time + "</td>");
         row.append("<td>" + light + "</td>");
@@ -200,7 +205,7 @@ function startFnc() {
 
         sound.play();
         time = 0;
-		cmdChecked = 0;
+		lastExecuted = 0;
         $("#timer").html("Timer: "+ time);
         checkCmd();
         timeInterval = window.setInterval(update, 100);
@@ -215,7 +220,7 @@ function stopFnc() {
     if (started === true) {
         sound.pause();
         clearInterval(timeInterval);
-		$("#row" + Number(cmdChecked - 1)).removeClass("table-info");
+		$("#row" + Number(lastExecuted - 1)).removeClass("table-info");
         started = false;
         sound.load();
     }
@@ -233,7 +238,7 @@ function update() {
     }
     $("#timer").html("Timer: "+ timeString);
 	
-	if (cmdChecked < data.length) {
+	if (lastExecuted < sequence.length) {
 		async(checkCmd, function() {
 		});
 	}
@@ -259,30 +264,30 @@ function async(fn, callback) {
 function checkCmd(asyncTime) {
 	var sendData = new Array();
 	
-	if (data[cmdChecked].time == asyncTime) {
+	if (sequence[lastExecuted].time == asyncTime) {
 		
-		sendData.push(data[cmdChecked]);
-		if (cmdChecked > 0) {
-			$("#row" + cmdChecked).addClass("table-info");
-			$("#row" + (cmdChecked - 1)).removeClass("table-info");
+		sendData.push(sequence[lastExecuted]);
+		if (lastExecuted > 0) {
+			$("#row" + lastExecuted).addClass("table-info");
+			$("#row" + (lastExecuted - 1)).removeClass("table-info");
 		} else {
-			$("#row" + cmdChecked).addClass("table-info");
+			$("#row" + lastExecuted).addClass("table-info");
 		}
 		
-		while (cmdChecked < data.length - 1) {
+		while (lastExecuted < sequence.length - 1) {
 			
-			if (data[cmdChecked].time == data[cmdChecked + 1].time) {
-				++cmdChecked;
-				sendData.push(data[cmdChecked]);
-			    $("#row" + cmdChecked).addClass("table-info");
-			    $("#row" + (cmdChecked - 1)).removeClass("table-info");
+			if (sequence[lastExecuted].time == sequence[lastExecuted + 1].time) {
+				++lastExecuted;
+				sendData.push(sequence[lastExecuted]);
+			    $("#row" + lastExecuted).addClass("table-info");
+			    $("#row" + (lastExecuted - 1)).removeClass("table-info");
 				
 			} else {
 				
 				break;
 			}
 		}
-		++cmdChecked;
+		++lastExecuted;
 	}
 	
 	for (var index = 0; index < sendData.length; ++index) {
@@ -312,9 +317,9 @@ function checkCmd(asyncTime) {
 
             case "repeat":
                 clearInterval(timeInterval);
-                $("#row" + Number(cmdChecked - 1)).removeClass("table-info");
+                $("#row" + Number(lastExecuted - 1)).removeClass("table-info");
                 time = 0;
-                cmdChecked = 0;
+                lastExecuted = 0;
                 $("#timer").html("Timer: "+ time);
                 checkCmd();
                 timeInterval = window.setInterval(update, 100);
@@ -335,19 +340,19 @@ function addFnc() {
 }
 
 /**
- * Function that adds a new row to the command table, and stores this also in the {@code data} array.
+ * Function that adds a new row to the command table, and stores this also in the {@code sequence} array.
  */
 function addRow() {
 	
     $("#rowModal").modal('hide');
-    data.push({
+    sequence.push({
         "time": $("#addRowTime").val(),
         "light": $("#addRowLight").val(),
         "cmd": $('#addRowCommand :selected').text(),
         "wrd": $("#addRowValue").val()
     });
 	
-	data.sort(function(a, b){
+	sequence.sort(function(a, b){
 		return a.time - b.time;
 	});
 	
@@ -356,19 +361,19 @@ function addRow() {
 }
 
 /**
- * Function to edit the data on a selected row.
+ * Function to edit the sequence on a selected row.
  */
 function editRow() {
 
     editButton.unbind( "click" );
 	$("#editModal").modal('hide');
 	var row = $("#editRowID").val();
-	data[row].light = $("#editRowLight").val();
-	data[row].time = $("#editRowTime").val();
-	data[row].wrd = $("#editRowValue").val();
-	data[row].cmd = $('#editRowCommand :selected').text();
+	sequence[row].light = $("#editRowLight").val();
+	sequence[row].time = $("#editRowTime").val();
+	sequence[row].wrd = $("#editRowValue").val();
+	sequence[row].cmd = $('#editRowCommand :selected').text();
 	
-	data.sort(function(a, b){
+	sequence.sort(function(a, b){
 		return a.time - b.time;
 	});
 	
@@ -383,7 +388,7 @@ function delRow() {
     editButton.unbind( "click" );
 	$("#editModal").modal('hide');
 	var row = $("#editRowID").val();
-	data.splice(row, 1);
+	sequence.splice(row, 1);
 	createTable();
 
 }
@@ -395,9 +400,9 @@ function delRow() {
 function modifRow(row, elem) {
 	editButton = elem;
 	$("#editRowID").val(row);
-	$("#editRowLight").val(data[row].light);
-	$("#editRowTime").val(data[row].time);
-	$("#editRowValue").val(data[row].wrd);
+	$("#editRowLight").val(sequence[row].light);
+	$("#editRowTime").val(sequence[row].time);
+	$("#editRowValue").val(sequence[row].wrd);
 	
 	$("#editModal").modal({backdrop: "static"});
 	$("#editModal").modal('show');
@@ -412,7 +417,31 @@ function modifRow(row, elem) {
  * @pre 0 <= red, green, blue <= 255
  * @result array containing x and y values
  */
-var convertRGB = function(red, green, blue) {
-	
+let convertRGB = function(red, green, blue) {
+
 	return colors.rgbToCIE1931(red, green, blue);
+};
+
+let discoverBridges = async function(url) {
+    console.log("url: " + url);
+    var response = [];
+    await fetch(url).then(
+        (resp) => resp.json().then(
+            function(data) {
+                for (const value of data) {
+                    console.log("ip: " + value.internalipaddress);
+                    response.push(value.internalipaddress);
+                }
+                return response;
+    }));
+    return response;
+};
+
+/**
+ * Sleep function, as written by StackOverflow user Dan Dascelescu at https://stackoverflow.com/a/39914235.
+ * @param ms Timeout in milliseconds
+ * @return promise that is only fulfilled after @param ms time
+ */
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
