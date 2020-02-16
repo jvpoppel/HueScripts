@@ -1,9 +1,7 @@
 var hue = jsHue(); //Instance of Hue
-//var bridgeIP = localStorage.getItem("bridgeIP");
-var bridgeIP = "192.168.0.188";
+var bridgeIP = localStorage.getItem("bridgeIP");
 var bridge;
-//var username = localStorage.getItem("bridgeUser");
-var username = "YuFlCi5J1qXbu3XBkd9IhyEG4O1tBG5GYAjN25zh";
+var username = localStorage.getItem("bridgeUser");
 var user;
 var data = [];
 var time = 0;
@@ -48,8 +46,9 @@ function getBridges() {
     var index;
 
     hue.discover().then(bridges => {
+        console.log("a");
         if(bridges.length === 0) {
-        console.log('No bridges found. :(');
+            console.log('No bridges found. :(');
         } else {
             for (index = 0; index < bridges.length; ++index) {
                 var b = bridges[index];
@@ -93,21 +92,12 @@ function modalSelectIP() {
     $('#bridgeModal').modal({backdrop: "static"});
     $('#bridgeModal').modal('show');
     // create user account (requires link button to be pressed)
-    /*bridge.createUser('HueScriptsApp#Account',
-        function (success) {
-            console.log("Success");
-            // extract bridge-generated username from returned data
-            username = data[0].success.username;
-            localStorage.setItem("bridgeUser", username);
-            // instantiate user object with username
-            user = bridge.user(username);
-
-            bridgeConnectSuccess();
-        }, function(error) {
-            console.log(error);
-            $("#discoverText").text("Something went wrong while connecting to your bridge. Refresh and try again.");
-        }); */
-    createAccount(fetchIP);
+    var data = bridge.createUser('HueScriptsApp#Account');
+    var newUsername = data[0].success.username;
+    console.log("username: " + newUsername);
+    localStorage.setItem("bridgeUser", newUsername);
+    user = bridge.user(newUsername);
+    bridgeConnectSuccess();
 }
 
 /**
@@ -117,40 +107,6 @@ function bridgeConnectSuccess() {
     $('#bridgeModal').modal('hide');
     $('#successModal').modal({backdrop: "static"});
     $('#successModal').modal('show');
-}
-
-/**
- * Test function that will change a lamps brightness.
- * TODO: Remove.
- */
-function testFnc() {
-    if (test == true) {
-        user.setLightState(3, { bri: 255});
-        console.log("255");
-        test = false;
-    } else {
-        user.setLightState(3, { bri: 10});
-        console.log("128");
-        test = true;
-    }
-}
-
-/**
- * Function to create an account on the Hue Bridge if there is none already.
- * @param fetchIP Bridge IP
- */
-function createAccount(fetchIP) {
-    //TODO: make.
-
-    /*var req_url = 'http://' + fetchIP + '/api';
-    var command = $.ajax({
-        url: req_url,
-        type: "POST",
-        data: {
-            "devicetype": "HueScriptsApp#Api Acc"
-        }
-
-    });*/
 }
 
 /**
