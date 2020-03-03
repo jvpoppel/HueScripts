@@ -1,3 +1,8 @@
+/**
+ * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
+ * 
+ */
+
 var hue = jsHue(); //Instance of Hue
 var bridgeIP = localStorage.getItem("bridgeIP");
 var bridge;
@@ -144,13 +149,52 @@ function jsonSubmit() {
 	});
     console.log(sequence);
 
-    createTable();
+    createCmdTable();
+}
+
+async function modalLightTest() {
+    await createLightTable();
+    $("#lightModal").modal({backdrop: "static"});
+    $("#lightModal").modal('show');
+}
+
+async function createLightTable() {
+    var divTable = $("#lightTable");
+    divTable.html("");
+    apiURL = "http://" + bridgeIP + "/api/" + username + "/lights";
+    var amountOfLights = 0;
+    await amountLights(apiURL).then(response =>
+        amountOfLights = response);
+    console.log("aoL = " + amountOfLights);
+    var content = "<table id=\"lightTable\">";
+    content += "<thead><tr><th>ID</th><th> </th><th> </th><th>Test button</th></tr></thead><tbody>";
+
+    for (var lightIndex = 1; lightIndex <= amountOfLights; lightIndex++) {
+        content += "<tr><td>" + lightIndex + "</td><td> </td><td> </td>";
+        content += "<td><button type=\"button\" id=\"lightTest_" + lightIndex + "\" class=\"btn btn-info btn-sm\" onclick=\"testLight(" + lightIndex + ");\"> Test Light";
+		content += "</button></td></tr>";
+    }
+
+    content += "</tbody></table>";
+    divTable.append(content);
+    console.log(content);
+}
+
+/**
+ * Function that sets the brightness of a light first to 50 then to 255
+ * @param id Light ID
+ */
+async function testLight(id) {
+    console.log("Test light " + id);
+    user.setLightState(id, { "bri": 10});
+    await sleep(250);
+    user.setLightState(id, { "bri": 255});
 }
 
 /**
  * Function called after loading a JSON string, maps this sequence to a table.
  */
-function createTable() {
+function createCmdTable() {
     var divTable = $("#divTable");
     divTable.html("");
     tableIndex = 0;
@@ -358,7 +402,7 @@ function addRow() {
 		return a.time - b.time;
 	});
 	
-    createTable();
+    createCmdTable();
 
 }
 
@@ -379,7 +423,7 @@ function editRow() {
 		return a.time - b.time;
 	});
 	
-	createTable();
+	createCmdTable();
 }
 
 /**
@@ -391,7 +435,7 @@ function delRow() {
 	$("#editModal").modal('hide');
 	var row = $("#editRowID").val();
 	sequence.splice(row, 1);
-	createTable();
+	createCmdTable();
 
 }
 
@@ -424,6 +468,11 @@ let convertRGB = function(red, green, blue) {
 	return colors.rgbToCIE1931(red, green, blue);
 };
 
+/**
+ * Function to search the current network for bridges
+ * @param url API url
+ * @returns {Promise<[]>} Promise that, when fulfilled, contains all bridges.
+ */
 let discoverBridges = async function(url) {
     console.log("url: " + url);
     var response = [];
@@ -434,6 +483,23 @@ let discoverBridges = async function(url) {
                     console.log("ip: " + value.internalipaddress);
                     response.push(value.internalipaddress);
                 }
+                return response;
+    }));
+    return response;
+};
+
+/**
+ * Query the amount of lights connected to this Hue bridge
+ * @param url API url
+ * @returns {Promise<number>} Promise that, when fulfilled, contains the amount of lights on the bridge
+ */
+let amountLights = async function(url) {
+    var response = 0;
+    await fetch(url).then(
+        (resp) => resp.json().then(
+            function(data) {
+                console.log(data);
+                response = Object.keys(data).length;
                 return response;
     }));
     return response;
