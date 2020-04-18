@@ -9,345 +9,354 @@
     </head>
 
     <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <h1>HueScripts</h1>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1>HueScripts</h1>
+                </div>
             </div>
-        </div>
-        <hr>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                Use the buttons at the bottom to load, save or clear a scripted hue sequence, or start adding new commands below!
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-sm-12 text-center" id="timer">
-                Timer: 0
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 text-center">
-                <button type="button" id="startBtn" class="btn btn-success btn-sm" onclick="startFnc();">Start</button>
-            </div>
-            <div class="col-sm-4 text-center">
-                <button type="button" id="audioBtn" class="btn btn-default btn-sm" onClick="$('#soundModal').modal('show');">Audio</button>
-            </div>
-            <div class="col-sm-4 text-center">
-                <button type="button" id="stopBtn" class="btn btn-primary btn-sm" onclick="stopFnc();">Stop</button>
-            </div>
+            <hr>
         </div>
 
-        <hr>
-        <!-- Table containing the commands -->
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <div id="divTable" class="table-responsive">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    Use the buttons at the bottom to load, save or clear a scripted hue sequence, or start adding new commands below!
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12 text-center" id="timer">
+                    Timer: 0
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    <button type="button" id="startBtn" class="btn btn-success btn-sm" onclick="startFnc();">Start</button>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <button type="button" id="audioBtn" class="btn btn-default btn-sm" onClick="$('#soundModal').modal('show');">Audio</button>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <button type="button" id="stopBtn" class="btn btn-primary btn-sm" onclick="stopFnc();">Stop</button>
+                </div>
+            </div>
+
+            <hr>
+            <!-- Table containing the commands -->
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <div id="divTable" class="table-responsive">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 text-center">
+                    <button type="button" id="addBtn" name="addBtn" class="btn btn-info btn-sm" onclick="addFnc();">Add new command</button>
+                </div>
+                <div class="col-sm-6 text-center">
+                    <button type="button" id="infBtn" name="addBtn" class="btn btn-info btn-sm" onclick="modalLightTest();">Find light ID's</button>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    <button type="button" id="loadBtn" name="loadBtn" class="btn btn-warning btn-sm" onclick="loadFnc();">Load</button>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <button type="button" id="clearBtn" name="clearBtn" class="btn btn-default btn-sm" onclick="clearFnc();">Clear all commands</button>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <button type="button" id="saveBtn" name="startBtn" class="btn btn-info btn-sm" onclick="saveFnc();">Save</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 text-center font-small">
+                    <i><a href="http://www.jvpoppel.com" target="_blank">©Johan van Poppel 2017-2020</a></i>
+                </div>
+            </div>
+
+            <!-- Modal Input Sound -->
+            <div id="soundModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Input Audio</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <input type="file" id="inputSound"/>
+                            <audio id="sound" style="display: none" controls></audio>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+                        </div>
+                    </div>
 
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-6 text-center">
-                <button type="button" id="addBtn" name="addBtn" class="btn btn-info btn-sm" onclick="addFnc();">Add new command</button>
-            </div>
-            <div class="col-sm-6 text-center">
-                <button type="button" id="infBtn" name="addBtn" class="btn btn-info btn-sm" onclick="modalLightTest();">Find light ID's</button>
-            </div>
-        </div>
+            <!-- Modal Add Row -->
+            <div id="rowModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
-        <hr>
-
-        <div class="row">
-            <div class="col-sm-6 text-center">
-                <button type="button" id="loadBtn" name="loadBtn" class="btn btn-warning btn-sm" onclick="loadFnc();">Load</button>
-            </div>
-            <div class="col-sm-6 text-center">
-                <button type="button" id="saveBtn" name="startBtn" class="btn btn-info btn-sm" onclick="saveFnc();">Save</button>
-            </div>
-        </div>
-
-        <!-- Modal Input Sound -->
-        <div id="soundModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Input Audio</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add command</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table">
+                                <tr>
+                                    <td>Time:</td>
+                                    <td>
+                                        <input class="rowInput" type="number" min="1" max="999999" value="1" id="addRowTime">
+                                    </td>
+                                    <td>(1 second &rArr; value 10)</td>
+                                </tr>
+                                <tr>
+                                    <td>Light ID:</td>
+                                    <td>
+                                        <input class="rowInput" type="number" min="1" max="99" value="1" id="addRowLight">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Command:</td>
+                                    <td>
+                                        <select class="rowInput" id="addRowCommand">
+                                            <option>bri</option>
+                                            <option>sat</option>
+                                            <option>hue</option>
+                                            <option>rgb</option>
+                                            <option>repeat</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Value:</td>
+                                    <td>
+                                        <input class="rowInput" type="text" value="1" id="addRowValue">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="btnRowSubmit" name="btnRowSubmit" class="btn btn-info btn-sm" onclick="addRow();">Add command</button>
+                        </div>
                     </div>
 
-                    <div class="modal-body">
-                        <input type="file" id="inputSound"/>
-                        <audio id="sound" style="display: none" controls></audio>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
-                    </div>
                 </div>
-
             </div>
-        </div>
 
-        <!-- Modal Add Row -->
-        <div id="rowModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+            <!-- Modal Edit Row -->
+            <div id="editModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add command</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit command</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="editRowID" value="0">
+                            <table class="table">
+                                <tr>
+                                    <td>Time:</td>
+                                    <td>
+                                        <input class="rowInput" type="number" min="1" max="999999" value="1" id="editRowTime">
+                                    </td>
+                                    <td>(1 second &rArr; value 10)</td>
+                                </tr>
+                                <tr>
+                                    <td>Light ID:</td>
+                                    <td>
+                                        <input class="rowInput" type="number" min="1" max="99" value="1" id="editRowLight">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Command:</td>
+                                    <td>
+                                        <select class="rowInput" id="editRowCommand">
+                                            <option>bri</option>
+                                            <option>sat</option>
+                                            <option>hue</option>
+                                            <option>rgb</option>
+                                            <option>repeat</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Value:</td>
+                                    <td>
+                                        <input class="rowInput" type="text" value="1" id="editRowValue">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="btnEditDelete" name="btnEditDelete" class="btn btn-danger btn-sm">Delete</button>
+                            <button type="button" id="btnEditSubmit" name="btnEditSubmit" class="btn btn-success btn-sm">Save</button>
+                            <button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">Discard</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <table class="table">
-                            <tr>
-                                <td>Time:</td>
-                                <td>
-                                    <input class="rowInput" type="number" min="1" max="999999" value="1" id="addRowTime">
-                                </td>
-                                <td>(1 second &rArr; value 10)</td>
-                            </tr>
-                            <tr>
-                                <td>Light ID:</td>
-                                <td>
-                                    <input class="rowInput" type="number" min="1" max="99" value="1" id="addRowLight">
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Command:</td>
-                                <td>
-                                    <select class="rowInput" id="addRowCommand">
-                                        <option>bri</option>
-                                        <option>sat</option>
-                                        <option>hue</option>
-                                        <option>rgb</option>
-                                        <option>repeat</option>
-                                    </select>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Value:</td>
-                                <td>
-                                    <input class="rowInput" type="text" value="1" id="addRowValue">
-                                </td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="btnRowSubmit" name="btnRowSubmit" class="btn btn-info btn-sm" onclick="addRow();">Add command</button>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
-        
-        <!-- Modal Edit Row -->
-        <div id="editModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit command</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <!-- Modal Test Lights -->
+            <div id="lightModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Test your lights and find their ID's</h4>
+                        </div>
+                        <div style="text-align: center;" class="modal-body" id="lightTable">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="close" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <input type="hidden" id="editRowID" value="0">
-                        <table class="table">
-                            <tr>
-                                <td>Time:</td>
-                                <td>
-                                    <input class="rowInput" type="number" min="1" max="999999" value="1" id="editRowTime">
-                                </td>
-                                <td>(1 second &rArr; value 10)</td>
-                            </tr>
-                            <tr>
-                                <td>Light ID:</td>
-                                <td>
-                                    <input class="rowInput" type="number" min="1" max="99" value="1" id="editRowLight">
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Command:</td>
-                                <td>
-                                    <select class="rowInput" id="editRowCommand">
-                                        <option>bri</option>
-                                        <option>sat</option>
-                                        <option>hue</option>
-                                        <option>rgb</option>
-                                        <option>repeat</option>
-                                    </select>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Value:</td>
-                                <td>
-                                    <input class="rowInput" type="text" value="1" id="editRowValue">
-                                </td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="btnEditDelete" name="btnEditDelete" class="btn btn-danger btn-sm">Delete</button>
-                        <button type="button" id="btnEditSubmit" name="btnEditSubmit" class="btn btn-success btn-sm">Save</button>
-                        <button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">Discard</button>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
 
-        <!-- Modal Test Lights -->
-        <div id="lightModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+            <!-- Modal Select IP -->
+            <div id="ipModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Test your lights and find their ID's</h4>
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">No bridge found!</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>No Philips Hue bridge was found! Please select one from the list below,
+                            or check your connection to the bridge if it does not show up.
+                            To refresh the search results, please refresh the page.</p>
+                            <select id="bridgeSelect"></select>
+                            <button type="button" id="btnBridgeSelect" name="btnBridgeSelect" class="btn btn-info btn-sm" onclick="modalSelectIP();">Select bridge</button>
+                        </div>
                     </div>
-                    <div style="text-align: center;" class="modal-body" id="lightTable">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="close" data-dismiss="modal">Close</button>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
 
-        <!-- Modal Select IP -->
-        <div id="ipModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+            <!-- Modal Connect Bridge -->
+            <div id="bridgeModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">No bridge found!</h4>
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Connect your bridge</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="discoverText">Push the link button on your Philips Hue Bridge</p>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p>No Philips Hue bridge was found! Please select one from the list below,
-                        or check your connection to the bridge if it does not show up.
-                        To refresh the search results, please refresh the page.</p>
-                        <select id="bridgeSelect"></select>
-                        <button type="button" id="btnBridgeSelect" name="btnBridgeSelect" class="btn btn-info btn-sm" onclick="modalSelectIP();">Select bridge</button>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
 
-        <!-- Modal Connect Bridge -->
-        <div id="bridgeModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+            <!-- Modal Connection Success -->
+            <div id="successModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Connect your bridge</h4>
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Success!</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Bridge successfully connected! You can continue using the site now.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p id="discoverText">Push the link button on your Philips Hue Bridge</p>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
 
-        <!-- Modal Connection Success -->
-        <div id="successModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+            <!-- Modal Input JSON -->
+            <div id="inputModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Success!</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Input JSON</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>Input your JSON here.</p>
+                            <p>Please format correctly. Look for examples on Github.</p>
+                            <textarea class="form-control" style="min-width: 100%" id="inputArea"></textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="jsonSubmit();">Submit</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p>Bridge successfully connected! You can continue using the site now.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
 
-        <!-- Modal Input JSON -->
-        <div id="inputModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+            <!-- Modal Save JSON -->
+            <div id="saveModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Input JSON</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Save JSON</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>Copy and save the JSON below.</p>
+                            <textarea class="form-control" style="min-width: 100%" id="saveArea"></textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+                        </div>
                     </div>
 
-                    <div class="modal-body">
-                        <p>Input your JSON here.</p>
-                        <p>Please format correctly. Look for examples on Github.</p>
-                        <textarea class="form-control" style="min-width: 100%" id="inputArea"></textarea>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="jsonSubmit();">Submit</button>
-                    </div>
                 </div>
-
             </div>
+
+            <hr>
         </div>
 
-        <!-- Modal Save JSON -->
-        <div id="saveModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+        <!-- JQuery, Bootstrap and jshue libraries incl. dependencies -->
+        <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="scripts/colors.js"></script>
+        <script src="scripts/jshue.js"></script>
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Save JSON</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <div class="modal-body">
-                        <p>Copy and save the JSON below.</p>
-                        <textarea class="form-control" style="min-width: 100%" id="saveArea"></textarea>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <hr>
-    </div>
-
-    <!-- JQuery, Bootstrap and jshue libraries incl. dependencies -->
-    <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="scripts/colors.js"></script>
-    <script src="scripts/jshue.js"></script>
-
-    <!-- Own scripts -->
-    <script src="scripts/main.js" type="text/javascript"></script>
+        <!-- Own scripts -->
+        <script src="scripts/main.js" type="text/javascript"></script>
     </body>
 </html>

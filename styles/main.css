@@ -8,3 +8,7 @@ rowInput {
     box-sizing:content-box;
     -webkit-box-sizing:content-box;
 }
+
+.font-small {
+    font-size: 8px;
+}

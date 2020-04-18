@@ -136,6 +136,15 @@ function saveFnc() {
 }
 
 /**
+ * Function that clears the entire sequence table.
+ * //TODO Add modal or popup window 'Are you sure?'
+ */
+function clearFnc() {
+    sequence = [];
+    createCmdTable();
+}
+
+/**
  * Function that parses inputted JSON sequence to an usable array.
  */
 function jsonSubmit() {
