@@ -1,6 +1,5 @@
 /**
  * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
- * 
  */
 
 var hue = jsHue(); //Instance of Hue
@@ -137,11 +136,16 @@ function saveFnc() {
 
 /**
  * Function that clears the entire sequence table.
- * //TODO Add modal or popup window 'Are you sure?'
  */
 function clearFnc() {
-    sequence = [];
-    createCmdTable();
+    if (confirm('Are you sure you want to delete everything you just created?')) {
+        // Clear!
+        sequence = [];
+        createCmdTable();
+    } else {
+        // Do nothing!
+    }
+
 }
 
 /**
@@ -458,6 +462,7 @@ function modifRow(row, elem) {
 	$("#editRowLight").val(sequence[row].light);
 	$("#editRowTime").val(sequence[row].time);
 	$("#editRowValue").val(sequence[row].wrd);
+	$("#editRowCommand").val(sequence[row].cmd);
 	
 	$("#editModal").modal({backdrop: "static"});
 	$("#editModal").modal('show');
