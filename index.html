@@ -43,6 +43,43 @@
             </div>
 
             <hr>
+
+            <!-- Page selection -->
+            <div class="row">
+                <div id="changePage1" class="col-sm-2 text-center">
+                    <button type="button" id="btnSelectPage1" name="btnSelectPage1" class="btn btn-secondary btn-block"
+                            onclick="changePage(1);">1
+                    </button>
+                </div>
+                <div id="changePage2" class="col-sm-2 text-center">
+                    <button type="button" id="btnSelectPage2" name="btnSelectPage2" class="btn btn-light btn-block"
+                            onclick="changePage(2);">2
+                    </button>
+                </div>
+                <div id="changePage3" class="col-sm-2 text-center">
+                    <button type="button" id="btnSelectPage3" name="btnSelectPage3" class="btn btn-light btn-block"
+                            onclick="changePage(3);">3
+                    </button>
+                </div>
+                <div id="changePage4" class="col-sm-2 text-center">
+                    <button type="button" id="btnSelectPage4" name="btnSelectPage4" class="btn btn-light btn-block"
+                            onclick="changePage(4);">4
+                    </button>
+                </div>
+                <div id="changePage5" class="col-sm-2 text-center">
+                    <button type="button" id="btnSelectPage5" name="btnSelectPage5" class="btn btn-light btn-block"
+                            onclick="changePage(5);">5
+                    </button>
+                </div>
+                <div id="changePage6" class="col-sm-2 text-center">
+                    <button type="button" id="btnSelectPage6" name="btnSelectPage6" class="btn btn-light btn-block"
+                            onclick="changePage(6);">6
+                    </button>
+                </div>
+            </div>
+
+            <hr>
+
             <!-- Table containing the commands -->
             <div class="row">
                 <div class="col-sm-12 text-center">
@@ -127,7 +164,7 @@
                                 <tr>
                                     <td>Light ID:</td>
                                     <td>
-                                        <input class="rowInput" type="number" min="1" max="99" value="1" id="addRowLight">
+                                        <select class="rowInput" id="addRowLight"></select>
                                     </td>
                                     <td></td>
                                 </tr>
@@ -184,7 +221,7 @@
                                 <tr>
                                     <td>Light ID:</td>
                                     <td>
-                                        <input class="rowInput" type="number" min="1" max="99" value="1" id="editRowLight">
+                                        <select class="rowInput" id="editRowLight"></select>
                                     </td>
                                     <td></td>
                                 </tr>
@@ -314,7 +351,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="jsonSubmit();">Submit</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="submitLoadModal();">Submit</button>
                         </div>
                     </div>
 
@@ -355,6 +392,7 @@
         <script src="scripts/jshue.js"></script>
 
         <!-- Own scripts -->
+        <script src="scripts/cmdPage.js" type="text/javascript"></script>
         <script src="scripts/main.js" type="text/javascript"></script>
     </body>
 </html>

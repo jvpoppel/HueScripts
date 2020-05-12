@@ -15,11 +15,19 @@ var tableIndex = 0;
 var curTable;
 var editButton;
 var localLights;
+var currentPage = 1;
 
 var started = false;
 
+var pagesMap = new Map();
 
-$(document).ready(function() {
+
+$(document).ready(async function() {
+    // First, initialize the pages map
+    for (var i = 1; i <= 6; i++) {
+        pagesMap.set(i, new Page(i));
+    }
+
     checkBridge();
 	
 	$("#btnEditDelete").on('click', function() {
@@ -40,6 +48,27 @@ inputSound.onchange = function(e){
         URL.revokeObjectURL(this.src);
     }
 };
+
+/**
+ * Change dropdown menu's based on light IDs on bridge
+ */
+async function changeDropdownLightIDs() {
+
+    const addRowLightSelect = document.getElementById("addRowLight");
+    const editRowLightSelect = document.getElementById("editRowLight");
+    let lightIDs = [];
+    await getLocalLights().then(response =>
+        lightIDs = response);
+    console.log(lightIDs);
+    for (let index = 0; index < lightIDs.length; index++) {
+        let addOption = document.createElement("option");
+        let editOption = document.createElement("option");
+        addOption.text = lightIDs[index];
+        editOption.text = lightIDs[index];
+        addRowLightSelect.add(addOption);
+        editRowLightSelect.add(editOption);
+    }
+}
 
 /**
  * Function that gets all local bridges and stores the IPs in a dropdown menu.
@@ -72,6 +101,8 @@ function checkBridge() {
     } else {
         bridge = hue.bridge(bridgeIP);
         user = bridge.user(username);
+
+        changeDropdownLightIDs().then(r => console.log("Changed dropdown light IDs."));
     }
 }
 
@@ -108,6 +139,8 @@ async function modalSelectIP() {
         });
     }
     $('#bridgeModal').modal('hide');
+    // Change dropdown menu's based on the found bridge.
+    await changeDropdownLightIDs();
 }
 
 /**
@@ -150,11 +183,21 @@ function clearFnc() {
 }
 
 /**
+ * Separate load function to be used by Load modal.
+ * Also checks for empty input
+ */
+function submitLoadModal() {
+    let input = $('#inputArea').val();
+    if (input !== 0) {
+        jsonSubmit(input);
+    }
+}
+
+/**
  * Function that parses inputted JSON sequence to an usable array.
  */
-function jsonSubmit() {
-    var input = $('#inputArea').val();
-    console.log(input);
+function jsonSubmit(input) {
+    console.log("Parsing JSON Sequence: \n" + input);
 
     var arr = jQuery.parseJSON(input);
     sequence = $.map(arr, function(el) { return el; });
@@ -246,7 +289,7 @@ function createCmdTable() {
 		rEdit.attr("class","btn btn-info btn-sm");
 		rEdit.on('click', function() {
 			var suffix = event.target.id.match(/\d+/);
-            modifRow(suffix[0], rEdit);
+            modifyRow(suffix[0], rEdit);
         });
 		rEdit.append("</button></td>");
         row.append("</tr>");
@@ -457,7 +500,7 @@ function delRow() {
  * @param row Row to be edited
  * @param elem Element that called this function (remove event handeler from this element)
  */
-function modifRow(row, elem) {
+function modifyRow(row, elem) {
 	editButton = elem;
 	$("#editRowID").val(row);
 	$("#editRowLight").val(sequence[row].light);
@@ -543,4 +586,31 @@ async function getLocalLights() {
  */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Change the cmdTable to the associated page
+ * @param id Page ID to be loaded
+ */
+function changePage(id) {
+    let oldPageButton = $("#btnSelectPage" + currentPage);
+    let newPageButton = $("#btnSelectPage" + id);
+
+    let currentCmdTable = JSON.stringify(sequence);
+
+    pagesMap.get(currentPage).setCommands(currentCmdTable);
+    sequence = [];
+    try {
+        jsonSubmit(pagesMap.get(id).getCommands())
+    } catch (exception) {
+        console.log("Tried to parse sequence for page ID " + id + ", but failed.");
+    }
+
+    oldPageButton.removeClass("btn-secondary");
+    oldPageButton.addClass("btn-light");
+
+    newPageButton.removeClass("btn-light");
+    newPageButton.addClass("btn-secondary");
+
+    currentPage = id;
 }
