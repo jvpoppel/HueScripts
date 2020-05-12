@@ -14,6 +14,7 @@ var timeInterval;
 var tableIndex = 0;
 var curTable;
 var editButton;
+var localLights;
 
 var started = false;
 
@@ -174,23 +175,21 @@ async function modalLightTest() {
 async function createLightTable() {
     var divTable = $("#lightTable");
     divTable.html("");
-    apiURL = "http://" + bridgeIP + "/api/" + username + "/lights";
-    var amountOfLights = 0;
-    await amountLights(apiURL).then(response =>
-        amountOfLights = response);
-    console.log("aoL = " + amountOfLights);
+    var lightIDs = [];
+    await getLocalLights().then(response =>
+        lightIDs = response);
+    console.log("light IDs = " + lightIDs);
     var content = "<table id=\"lightTable\">";
     content += "<thead><tr><th>ID</th><th> </th><th> </th><th>Test button</th></tr></thead><tbody>";
 
-    for (var lightIndex = 1; lightIndex <= amountOfLights; lightIndex++) {
-        content += "<tr><td>" + lightIndex + "</td><td> </td><td> </td>";
-        content += "<td><button type=\"button\" id=\"lightTest_" + lightIndex + "\" class=\"btn btn-info btn-sm\" onclick=\"testLight(" + lightIndex + ");\"> Test Light";
+    for (var lightIndex = 0; lightIndex < lightIDs.length; lightIndex++) {
+        content += "<tr><td>" + lightIDs[lightIndex] + "</td><td> </td><td> </td>";
+        content += "<td><button type=\"button\" id=\"lightTest_" + lightIDs[lightIndex] + "\" class=\"btn btn-info btn-sm\" onclick=\"testLight(" + lightIDs[lightIndex] + ");\"> Test Light";
 		content += "</button></td></tr>";
     }
 
     content += "</tbody></table>";
     divTable.append(content);
-    console.log(content);
 }
 
 /**
@@ -203,6 +202,8 @@ async function testLight(id) {
     await sleep(250);
     user.setLightState(id, { "bri": 255});
 }
+
+
 
 /**
  * Function called after loading a JSON string, maps this sequence to a table.
@@ -503,21 +504,37 @@ let discoverBridges = async function(url) {
 };
 
 /**
- * Query the amount of lights connected to this Hue bridge
+ * Query the light ID's connected to this Hue bridge
  * @param url API url
- * @returns {Promise<number>} Promise that, when fulfilled, contains the amount of lights on the bridge
+ * @returns {Promise<number>} Promise that, when fulfilled, contains the light ID's in array format on the bridge
  */
-let amountLights = async function(url) {
+let getLightIDs = async function(url) {
+    console.log("API Call: getLightIDs");
     var response = 0;
     await fetch(url).then(
         (resp) => resp.json().then(
             function(data) {
-                console.log(data);
-                response = Object.keys(data).length;
+                response = Object.keys(data);
                 return response;
     }));
     return response;
 };
+
+/**
+ * Query the light ID's if not fetched yet.
+ * @returns {Promise<number>} Promise that, when fulfilled, contains the light ID's in array format on the bridge
+ */
+async function getLocalLights() {
+    if (localLights === undefined) {
+        let lightIDs = [];
+        let apiURL = "http://" + bridgeIP + "/api/" + username + "/lights";
+        await getLightIDs(apiURL).then(response =>
+            lightIDs = response);
+        localLights = lightIDs;
+    }
+
+    return localLights;
+}
 
 /**
  * Sleep function, as written by StackOverflow user Dan Dascelescu at https://stackoverflow.com/a/39914235.
