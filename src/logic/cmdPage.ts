@@ -1,0 +1,35 @@
+/**
+ * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
+ */
+
+/**
+ * HueScripts Page Class
+ * @param id Page ID
+ */
+export class Page {
+    id: number;
+    commands: Array<any>;
+
+    constructor(id: number) {
+        this.id = id;
+        this.commands = [];
+    }
+
+    public getCommands(): Array<any> {
+        return this.commands;
+    }
+
+    public setCommands(commands: Array<any>): Page {
+        this.commands = commands;
+        return this;
+    }
+
+    public getID(): number {
+        return this.id;
+    }
+
+
+    public toString(): string {
+        return String(this.id);
+    }
+}

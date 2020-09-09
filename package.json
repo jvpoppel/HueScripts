@@ -1,0 +1,25 @@
+{
+  "name": "huescripts",
+  "version": "2.0.0",
+  "description": "Web-based Philips Hue scripting application.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvpoppel/HueScripts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jvpoppel/HueScripts/issues"
+  },
+  "homepage": "https://github.com/jvpoppel/HueScripts#readme",
+  "dependencies": {
+    "@types/jquery": "^3.5.1",
+    "typescript": "^4.0.2"
+  }
+}

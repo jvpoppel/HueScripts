@@ -7,7 +7,7 @@
  *
  * https://github.com/bjohnso5/hue-hacking
  * Copyright (c) 2013 Bryan Johnson; Licensed MIT */
-var colors = function () {
+export var colors = function () {
 
     'use strict';
 
