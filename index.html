@@ -32,13 +32,13 @@
             </div>
             <div class="row">
                 <div class="col-sm-4 text-center">
-                    <button type="button" id="startBtn" class="btn btn-success btn-sm" onclick="startFnc();">Start</button>
+                    <button type="button" id="startBtn" class="btn btn-success btn-sm">Start</button>
                 </div>
                 <div class="col-sm-4 text-center">
-                    <button type="button" id="audioBtn" class="btn btn-default btn-sm" onClick="$('#soundModal').modal('show');">Audio</button>
+                    <button type="button" id="audioBtn" class="btn btn-default btn-sm">Audio</button>
                 </div>
                 <div class="col-sm-4 text-center">
-                    <button type="button" id="stopBtn" class="btn btn-primary btn-sm" onclick="stopFnc();">Stop</button>
+                    <button type="button" id="stopBtn" class="btn btn-primary btn-sm">Stop</button>
                 </div>
             </div>
 
@@ -47,34 +47,22 @@
             <!-- Page selection -->
             <div class="row">
                 <div id="changePage1" class="col-sm-2 text-center">
-                    <button type="button" id="btnSelectPage1" name="btnSelectPage1" class="btn btn-secondary btn-block"
-                            onclick="changePage(1);">1
-                    </button>
+                    <button type="button" id="btnSelectPage1" name="btnSelectPage1" class="btn btn-secondary btn-block">1</button>
                 </div>
                 <div id="changePage2" class="col-sm-2 text-center">
-                    <button type="button" id="btnSelectPage2" name="btnSelectPage2" class="btn btn-light btn-block"
-                            onclick="changePage(2);">2
-                    </button>
+                    <button type="button" id="btnSelectPage2" name="btnSelectPage2" class="btn btn-light btn-block">2</button>
                 </div>
                 <div id="changePage3" class="col-sm-2 text-center">
-                    <button type="button" id="btnSelectPage3" name="btnSelectPage3" class="btn btn-light btn-block"
-                            onclick="changePage(3);">3
-                    </button>
+                    <button type="button" id="btnSelectPage3" name="btnSelectPage3" class="btn btn-light btn-block">3</button>
                 </div>
                 <div id="changePage4" class="col-sm-2 text-center">
-                    <button type="button" id="btnSelectPage4" name="btnSelectPage4" class="btn btn-light btn-block"
-                            onclick="changePage(4);">4
-                    </button>
+                    <button type="button" id="btnSelectPage4" name="btnSelectPage4" class="btn btn-light btn-block">4</button>
                 </div>
                 <div id="changePage5" class="col-sm-2 text-center">
-                    <button type="button" id="btnSelectPage5" name="btnSelectPage5" class="btn btn-light btn-block"
-                            onclick="changePage(5);">5
-                    </button>
+                    <button type="button" id="btnSelectPage5" name="btnSelectPage5" class="btn btn-light btn-block">5</button>
                 </div>
                 <div id="changePage6" class="col-sm-2 text-center">
-                    <button type="button" id="btnSelectPage6" name="btnSelectPage6" class="btn btn-light btn-block"
-                            onclick="changePage(6);">6
-                    </button>
+                    <button type="button" id="btnSelectPage6" name="btnSelectPage6" class="btn btn-light btn-block">6</button>
                 </div>
             </div>
 
@@ -91,10 +79,10 @@
 
             <div class="row">
                 <div class="col-sm-6 text-center">
-                    <button type="button" id="addBtn" name="addBtn" class="btn btn-info btn-sm" onclick="addFnc();">Add new command</button>
+                    <button type="button" id="addBtn" name="addBtn" class="btn btn-info btn-sm">Add new command</button>
                 </div>
                 <div class="col-sm-6 text-center">
-                    <button type="button" id="infBtn" name="addBtn" class="btn btn-info btn-sm" onclick="modalLightTest();">Find light ID's</button>
+                    <button type="button" id="infBtn" name="addBtn" class="btn btn-info btn-sm">Find light ID's</button>
                 </div>
             </div>
 
@@ -102,13 +90,13 @@
 
             <div class="row">
                 <div class="col-sm-4 text-center">
-                    <button type="button" id="loadBtn" name="loadBtn" class="btn btn-warning btn-sm" onclick="loadFnc();">Load</button>
+                    <button type="button" id="loadBtn" name="loadBtn" class="btn btn-warning btn-sm">Load</button>
                 </div>
                 <div class="col-sm-4 text-center">
-                    <button type="button" id="clearBtn" name="clearBtn" class="btn btn-default btn-sm" onclick="clearFnc();">Clear all commands</button>
+                    <button type="button" id="clearBtn" name="clearBtn" class="btn btn-default btn-sm">Clear all commands</button>
                 </div>
                 <div class="col-sm-4 text-center">
-                    <button type="button" id="saveBtn" name="startBtn" class="btn btn-info btn-sm" onclick="saveFnc();">Save</button>
+                    <button type="button" id="saveBtn" name="startBtn" class="btn btn-info btn-sm">Save</button>
                 </div>
             </div>
 
@@ -196,7 +184,7 @@
                             </table>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="btnRowSubmit" name="btnRowSubmit" class="btn btn-info btn-sm" onclick="addRow();">Add command</button>
+                            <button type="button" id="btnRowSubmit" name="btnRowSubmit" class="btn btn-info btn-sm">Add command</button>
                         </div>
                     </div>
 
@@ -293,7 +281,7 @@
                             or check your connection to the bridge if it does not show up.
                             To refresh the search results, please refresh the page.</p>
                             <select id="bridgeSelect"></select>
-                            <button type="button" id="btnBridgeSelect" name="btnBridgeSelect" class="btn btn-info btn-sm" onclick="modalSelectIP();">Select bridge</button>
+                            <button type="button" id="btnBridgeSelect" name="btnBridgeSelect" class="btn btn-info btn-sm">Select bridge</button>
                         </div>
                     </div>
 
@@ -356,7 +344,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="submitLoadModal();">Submit</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="btnSubmitLoadModal">Submit</button>
                         </div>
                     </div>
 
