@@ -2,13 +2,14 @@
  * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
  */
 
-import * as jsHue from "../../lib/jshue.js";
+
 import * as colorsAPI from '../../lib/colors.js';
-import { Page } from "./cmdPage";
-import { Light } from "./light";
+import * as jsHue from '../../lib/jshue.js';
+import { Page } from "../data/page";
+import { Light } from "../model/light";
 import { TSMap } from "typescript-map";
 
-var hue = jsHue(); //Instance of Hue
+var hue = jsHue();
 var bridgeIP = localStorage.getItem("bridgeIP");
 var bridge;
 var username = localStorage.getItem("bridgeUser");
@@ -277,7 +278,7 @@ function createCmdTable() {
     curTable.append("<tr>");
     curTable.append("<th>Time</th>");
     curTable.append("<th>Light</th>");
-    curTable.append("<th>Command</th>");
+    curTable.append("<th>LightCommand</th>");
     curTable.append("<th>Value</th>");
 	curTable.append("<th></th>");
     curTable.append("</thead><tbody>");

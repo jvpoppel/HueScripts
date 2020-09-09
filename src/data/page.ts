@@ -4,7 +4,9 @@
 
 /**
  * HueScripts Page Class
+ * A page binds a sequence to a certain ID
  * @param id Page ID
+ *
  */
 export class Page {
 

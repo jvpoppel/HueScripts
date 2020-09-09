@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./scripts",
+    "outDir": "./build-tsc",
     "allowJs": true,
     "target": "es5",
     "lib": [
@@ -16,6 +16,6 @@
   "exclude": [
     "./src/logic/colors.js",
     "./src/logic/jshue.js",
-    "./src/logic/main.ts"
+    "./src/logic/oldmain.ts"
   ]
 }
