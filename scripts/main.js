@@ -416,6 +416,14 @@ function checkCmd(asyncTime) {
 			    body = { "xy": convertRGB(wrd[0], wrd[1], wrd[2])};
 				break;
 
+            case "on":
+                body = { "on": true}
+                break;
+
+            case "off":
+                body = { "on": false}
+                break;
+
             case "repeat":
                 clearInterval(timeInterval);
                 $("#row" + Number(lastExecuted - 1)).removeClass("table-info");
