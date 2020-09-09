@@ -7,19 +7,20 @@
  * @param id Page ID
  */
 export class Page {
+
     id: number;
-    commands: Array<any>;
+    commands: string;
 
     constructor(id: number) {
         this.id = id;
-        this.commands = [];
+        this.commands = "";
     }
 
-    public getCommands(): Array<any> {
+    public getCommands(): string {
         return this.commands;
     }
 
-    public setCommands(commands: Array<any>): Page {
+    public setCommands(commands: string): Page {
         this.commands = commands;
         return this;
     }
