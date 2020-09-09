@@ -1,11 +1,15 @@
 /**
  * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
  */
+import {Light} from "../../model/light";
+
 export enum CommandType {
     BRIGHTNESS,
     SATURATION,
     HUE,
-    RGB
+    RGB,
+    ON,
+    OFF
 }
 /**
  * HueScripts LightCommand interface
@@ -14,7 +18,7 @@ export enum CommandType {
 export interface LightCommand {
 
     type: CommandType;
-    light: number;
+    light: Light;
     values: Array<number>;
     executed: boolean;
 

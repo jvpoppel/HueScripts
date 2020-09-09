@@ -2,7 +2,9 @@
  * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
  */
 
-import {CommandType, LightCommand} from "./lightCommand";
+import { CommandType, LightCommand } from "./lightCommand";
+import { HueLink } from "../../service/hueLink";
+import { Light } from "../../model/light";
 
 /**
  * HueScripts BrightnessCommand Class
@@ -11,10 +13,10 @@ import {CommandType, LightCommand} from "./lightCommand";
 export class BrightnessCommand implements LightCommand {
     values: Array<number>;
     executed: boolean;
-    light: number;
+    light: Light;
     type: CommandType;
 
-    constructor(light: number, values: Array<number>) {
+    constructor(light: Light, values: Array<number>) {
         this.light = light;
         this.values = values;
         this.executed = false;
@@ -29,6 +31,9 @@ export class BrightnessCommand implements LightCommand {
         this.executed = true;
 
         let payload = {"bri": this.values[0]};
+
+        HueLink.getInstance().sendCommand(this.light.getID(), payload);
+        this.light.setBrightness(this.values[0]);
 
     }
 

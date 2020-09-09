@@ -10,10 +10,12 @@ export class Light {
 
     id: number;
     color: Array<number>;
+    brightness: number;
 
     constructor(id: number) {
         this.id = id;
         this.color = [0, 0, 0];
+        this.brightness = 0;
     }
 
     public getID(): number {
@@ -30,6 +32,15 @@ export class Light {
 
     public setColor(color: Array<number>): Light {
         this.color = color;
+        return this;
+    }
+
+    public getBrightness(): number {
+        return this.brightness;
+    }
+
+    public setBrightness(brightness: number): Light {
+        this.brightness = brightness;
         return this;
     }
 }

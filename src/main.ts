@@ -1,15 +1,20 @@
 import { Light } from './model/light';
+import { Page } from "./data/page";
+import { TSMap } from "typescript-map";
+import { HueLink } from "./service/hueLink";
+import { WebElements } from "./static/webElements";
 
 $(() => {
-    alert("Test");
     new Main();
 })
 
 export class Main {
-    constructor() {
-        alert("Test 2");
+    pagesMap: TSMap<number, Page> = new TSMap<number, Page>();
 
-        let light = new Light(2);
-        alert("Light: " + light.getID());
+    constructor() {
+        for (var i = 1; i <= 6; i++) {
+            this.pagesMap.set(i, new Page(i));
+        }
+        WebElements.TIMER.html("TEST!!")
     }
 }

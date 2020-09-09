@@ -2,6 +2,8 @@
  * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
  */
 
+import { Sequence } from "./sequence";
+
 /**
  * HueScripts Page Class
  * A page binds a sequence to a certain ID
@@ -10,20 +12,20 @@
  */
 export class Page {
 
-    id: number;
-    commands: string;
+    private readonly id: number;
+    private sequence: Sequence;
 
     constructor(id: number) {
         this.id = id;
-        this.commands = "";
+        this.sequence = new Sequence();
     }
 
-    public getCommands(): string {
-        return this.commands;
+    public getSequence(): Sequence {
+        return this.sequence;
     }
 
-    public setCommands(commands: string): Page {
-        this.commands = commands;
+    public setSequence(sequence: Sequence): Page {
+        this.sequence = sequence;
         return this;
     }
 

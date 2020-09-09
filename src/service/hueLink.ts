@@ -2,18 +2,18 @@ import * as jsHue from "../../lib/jshue.js";
 
 export class HueLink {
 
+    private static hue = jsHue(); //Instance of Hue
     private static instance: HueLink;
 
     bridgeIP: string;
     username: string;
-    hue = jsHue(); //Instance of Hue
     bridge: any;
     user: any;
 
     private constructor() {
         this.bridgeIP = localStorage.getItem("bridgeIP");
         this.username = localStorage.getItem("bridgeUser");
-        this.bridge = this.hue.bridge(this.bridgeIP);
+        this.bridge = HueLink.hue.bridge(this.bridgeIP);
         this.user = this.bridge.user(this.username);
     }
 
@@ -22,6 +22,10 @@ export class HueLink {
             HueLink.instance = new HueLink();
         }
         return HueLink.instance;
+    }
+
+    public static getHue() {
+        return HueLink.hue;
     }
 
     public sendCommand(light: number, payload: any): HueLink {

@@ -10,8 +10,8 @@ import { LightCommand } from "./events/lightCommand";
  */
 export class Row {
 
-    time: number;
-    command: LightCommand;
+    private readonly time: number;
+    private readonly command: LightCommand;
 
     constructor(time: number, command: LightCommand) {
 
@@ -21,5 +21,9 @@ export class Row {
 
     public getCommand(): LightCommand {
         return this.command;
+    }
+
+    public getTime(): number {
+        return this.time;
     }
 }
