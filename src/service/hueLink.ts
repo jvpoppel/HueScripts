@@ -1,4 +1,5 @@
 import * as jsHue from "../../lib/jshue.js";
+import {LocalStorage} from "../static/localStorage";
 
 export class HueLink {
 
@@ -11,8 +12,8 @@ export class HueLink {
     user: any;
 
     private constructor() {
-        this.bridgeIP = localStorage.getItem("bridgeIP");
-        this.username = localStorage.getItem("bridgeUser");
+        this.bridgeIP = LocalStorage.bridgeIP();
+        this.username = LocalStorage.bridgeUser();
         this.bridge = HueLink.hue.bridge(this.bridgeIP);
         this.user = this.bridge.user(this.username);
     }

@@ -68,34 +68,9 @@ export class Main {
         alert ("Change to page " + page);
     }
 
-    private fetchAllBridges() {
-        let bridgeSelect = WebElements.BRIDGE_SELECT_IP_SELECT;
-        this.discoverBridges("https://discovery.meethue.com/").then(bridges => {
-                for (let bridge of bridges) {
-                    bridgeSelect.append($('<option>', {
-                        value: bridge,
-                        text: bridge
-                    }));
-                }
-            }
-        )
-    }
-
-    private async discoverBridges(url: string) {
-        console.log("url: " + url);
-        let response = [];
-        await fetch(url).then(
-            (resp) => resp.json().then(
-                function (data) {
-                    for (const value of data) {
-                        console.log("ip: " + value.internalipaddress);
-                        response.push(value.internalipaddress);
-                    }
-                    return response;
-                }));
-        return response;
-    }
-
+    /**
+     * This method will bind all event listeners to the DOM model
+     */
     private setupBaseEventListeners() {
         WebElements.ADD_ROW_MODAL_SUBMIT.get()[0].addEventListener("click", (e:Event) => this.addRow());
         WebElements.EDIT_ROW_MODAL_DELETE.get()[0].addEventListener("click", (e:Event) => this.delRow());
