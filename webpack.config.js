@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     devtool: "source-map",
     entry: {
-        main: './build-tsc/src/main.js'
+        main: './build-tsc/main.js'
     },
     output: {
         filename: 'bundle.js',

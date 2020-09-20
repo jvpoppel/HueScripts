@@ -25,7 +25,7 @@ export class WebElements {
             MODALS
      */
     static readonly IP_MODAL: JQuery<HTMLElement>       = $('#ipModal');
-    static readonly BRIDGE_SELECT: JQuery<HTMLElement>  = $('#bridgeModal');
+    static readonly BRIDGE_LINK: JQuery<HTMLElement>  = $('#bridgeModal');
     static readonly BRIDGE_SUCCESS: JQuery<HTMLElement> = $('#successModal');
     static readonly LOAD_SEQUENCE: JQuery<HTMLElement>  = $('#inputModal');
     static readonly SAVE_SEQUENCE: JQuery<HTMLElement>  = $("#saveModal");
@@ -46,10 +46,11 @@ export class WebElements {
     static readonly EDIT_ROW_MODAL_COMMAND: JQuery<HTMLElement>     = $('#editRowCommand :selected');
 
     /*
-            BRIDGE SELECT MODAL
+            IP MODAL
      */
+    static readonly BRIDGE_SELECT_DROPDOWN: JQuery<HTMLElement> = $('#bridgeSelect');
+    static readonly BRIDGE_SELECT_CONFIRM: JQuery<HTMLElement> = $('#btnBridgeSelect');
     static readonly BRIDGE_SELECTED_IP: JQuery<HTMLElement> = $('#bridgeSelect :selected');
-    static readonly BRIDGE_SELECT_IP_SELECT: JQuery<HTMLElement> = $('#btnBridgeSelect');
 
     /*
             SAVE SEQUENCE MODAL

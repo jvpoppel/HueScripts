@@ -2,6 +2,8 @@ import { Page } from "./data/page";
 import { TSMap } from "typescript-map";
 import { WebElements } from "./static/webElements";
 import { BaseModal } from "./static/baseModal";
+import {HueAccount} from "./service/hueAccount";
+import {HueAPIService} from "./service/hueAPIService";
 
 $(() => {
     new Main();
@@ -15,6 +17,10 @@ export class Main {
             let pageNumber = i;
             this.pagesMap.set(pageNumber, new Page(pageNumber));
             WebElements.PAGE_BUTTON(pageNumber).get()[0].addEventListener("click", (e:Event) => this.changePage(pageNumber));
+        }
+
+        if (!HueAccount.exists()) {
+            HueAccount.create();
         }
 
         this.setupBaseEventListeners();
@@ -81,7 +87,7 @@ export class Main {
         WebElements.SHOW_SAVE_SEQUENCE.get()[0].addEventListener("click", (e:Event) => this.openSaveSequenceModal());
         WebElements.CLEAR_SEQUENCE.get()[0].addEventListener("click", (e:Event) => this.clearSequence());
 
-        WebElements.BRIDGE_SELECT_IP_SELECT.get()[0].addEventListener("click", (e:Event) => this.modalSelectIP());
+        WebElements.BRIDGE_SELECT_CONFIRM.get()[0].addEventListener("click", (e:Event) => HueAPIService.createAccountOnIP());
 
         WebElements.LOAD_SEQUENCE_SUBMIT.get()[0].addEventListener("click", (e:Event) => this.submitLoadModal());
 
