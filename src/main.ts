@@ -2,8 +2,9 @@ import { Page } from "./data/page";
 import { TSMap } from "typescript-map";
 import { WebElements } from "./static/webElements";
 import { BaseModal } from "./static/baseModal";
-import {HueAccount} from "./service/hueAccount";
-import {HueAPIService} from "./service/hueAPIService";
+import { HueAccount } from "./service/hueAccount";
+import { HueAPIService } from "./service/hueAPIService";
+import {Logger} from "./util/logger";
 
 $(() => {
     new Main();

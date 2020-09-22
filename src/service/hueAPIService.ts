@@ -2,6 +2,7 @@ import {WebElements} from "../static/webElements";
 import {BaseModal} from "../static/baseModal";
 import {LocalStorage} from "../static/localStorage";
 import {HueAccount} from "./hueAccount";
+import {Logger} from "../util/logger";
 
 export class HueAPIService {
 
@@ -13,7 +14,7 @@ export class HueAPIService {
             (resp) => resp.json().then(
                 function (data) {
                     for (const value of data) {
-                        console.log("Discovered bridge on ip: " + value.internalipaddress);
+                        Logger.getLogger().info("Discovered bridge on ip: " + value.internalipaddress);
                         response.push(value.internalipaddress);
                     }
                     return response;
@@ -51,13 +52,13 @@ export class HueAPIService {
             }).then(
                 (resp) => resp.json().then(
                     async function (data) {
-                        console.log(data);
+                        Logger.getLogger().debug(data);
                         try {
                             result = data[0].success.username; // If empty response this will throw error
-                            linked= true;
+                            linked = true;
                         } catch (Error) {
                             // To avoid DDOS-ing the bridge; use time-out here.
-                            console.log("Link button press not yet registered, wait 1.5s and try again.");
+                            Logger.getLogger().info("Link button press not yet registered, wait 1.5s and try again.");
                             await new Promise(resolve => setTimeout(resolve, 1500));
                         }
                     }));
@@ -70,6 +71,21 @@ export class HueAPIService {
     }
 
     public static async createAccountOnIP() {
-        this.POSTCreateNewAccount().then(() => console.log("Account creation on bridge finished"));
+        this.POSTCreateNewAccount().then(() => Logger.getLogger().info("Account creation on bridge finished"));
+    }
+
+    private static async PUTSetLightState(light: number, body: string) {
+        let url: string = this.API_URL() + '/' + HueAccount.username() + '/lights/' + light + '/state';
+
+        await fetch(url, {
+            method: 'PUT',
+            body: body
+        });
+    }
+
+    public static async setLightState(light: number, body: string) {
+        Logger.getLogger().debug("START setLightState for light " + light);
+        await this.PUTSetLightState(light, body).then(() =>
+            Logger.getLogger().debug("END setLightState for light " + light));
     }
 }

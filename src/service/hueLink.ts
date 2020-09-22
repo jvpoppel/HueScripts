@@ -1,9 +1,6 @@
-import * as jsHue from "../../lib/jshue.js";
 import {LocalStorage} from "../static/localStorage";
 
 export class HueLink {
-
-    private static hue = jsHue(); //Instance of Hue
     private static instance: HueLink;
 
     bridgeIP: string;
@@ -14,8 +11,6 @@ export class HueLink {
     private constructor() {
         this.bridgeIP = LocalStorage.bridgeIP();
         this.username = LocalStorage.bridgeUser();
-        this.bridge = HueLink.hue.bridge(this.bridgeIP);
-        this.user = this.bridge.user(this.username);
     }
 
     public static getInstance(): HueLink {
@@ -23,10 +18,6 @@ export class HueLink {
             HueLink.instance = new HueLink();
         }
         return HueLink.instance;
-    }
-
-    public static getHue() {
-        return HueLink.hue;
     }
 
     public sendCommand(light: number, payload: any): HueLink {
