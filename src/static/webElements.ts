@@ -39,18 +39,18 @@ export class WebElements {
      */
     static readonly EDIT_ROW_MODAL_DELETE: JQuery<HTMLElement>      = $("#btnEditDelete");
     static readonly EDIT_ROW_MODAL_SUBMIT: JQuery<HTMLElement>      = $("#btnEditSubmit");
-    static readonly EDIT_ROW_MODAL_ROW_NUMBER: JQuery<HTMLElement>  = $("#editRowID");
-    static readonly EDIT_ROW_MODAL_LIGHT: JQuery<HTMLElement>       = $("#editRowLight");
-    static readonly EDIT_ROW_MODAL_TIME: JQuery<HTMLElement>        = $("#editRowTime");
-    static readonly EDIT_ROW_MODAL_VALUE: JQuery<HTMLElement>       = $("#editRowValue");
-    static readonly EDIT_ROW_MODAL_COMMAND: JQuery<HTMLElement>     = $('#editRowCommand :selected');
+    static EDIT_ROW_MODAL_ROW_NUMBER(): JQuery<HTMLElement>  { return $("#editRowID"); }
+    static EDIT_ROW_MODAL_LIGHT(): JQuery<HTMLElement>       { return $("#editRowLight"); }
+    static EDIT_ROW_MODAL_TIME(): JQuery<HTMLElement>        { return $("#editRowTime"); }
+    static EDIT_ROW_MODAL_VALUE(): JQuery<HTMLElement>       { return $("#editRowValue"); }
+    static EDIT_ROW_MODAL_COMMAND(): JQuery<HTMLElement>     { return $('#editRowCommand :selected'); }
 
     /*
             IP MODAL
      */
     static readonly BRIDGE_SELECT_DROPDOWN: JQuery<HTMLElement> = $('#bridgeSelect');
     static readonly BRIDGE_SELECT_CONFIRM: JQuery<HTMLElement> = $('#btnBridgeSelect');
-    static readonly BRIDGE_SELECTED_IP: JQuery<HTMLElement> = $('#bridgeSelect :selected');
+    static BRIDGE_SELECTED_IP(): JQuery<HTMLElement> { return $('#bridgeSelect :selected'); }
 
     /*
             SAVE SEQUENCE MODAL
@@ -65,10 +65,10 @@ export class WebElements {
     /*
             ADD ROW MODAL
      */
-    static readonly ADD_ROW_MODAL_TIME: JQuery<HTMLElement>      = $("#addRowTime");
-    static readonly ADD_ROW_MODAL_LIGHT: JQuery<HTMLElement>     = $("#addRowLight");
-    static readonly ADD_ROW_MODAL_COMMAND: JQuery<HTMLElement>   = $('#addRowCommand :selected');
-    static readonly ADD_ROW_MODAL_VALUE: JQuery<HTMLElement>     = $("#addRowValue");
+    static ADD_ROW_MODAL_TIME(): JQuery<HTMLElement>      { return $("#addRowTime"); }
+    static ADD_ROW_MODAL_LIGHT(): JQuery<HTMLElement>     { return $("#addRowLight"); }
+    static ADD_ROW_MODAL_COMMAND(): JQuery<HTMLElement>   { return $('#addRowCommand :selected'); }
+    static ADD_ROW_MODAL_VALUE(): JQuery<HTMLElement>     { return $("#addRowValue"); }
     static readonly ADD_ROW_MODAL_SUBMIT: JQuery<HTMLElement>    = $("#btnRowSubmit");
 
     /*
