@@ -78,6 +78,10 @@ export class WebElements {
         COMMAND MODAL
      */
     static readonly COMMAND_MODAL_INPUTAREA: JQuery<HTMLElement> = $("#commandModalContent");
+    static readonly COMMAND_MODAL_CMDBRIGHTNESS: JQuery<HTMLElement> = $("#radioBtnBrightness");
+    static readonly COMMAND_MODAL_CMDON: JQuery<HTMLElement> = $("#radioBtnOn");
+    static readonly COMMAND_MODAL_CMDOFF: JQuery<HTMLElement> = $("#radioBtnOff");
+    static readonly COMMAND_MODAL_CMDCOLOR: JQuery<HTMLElement> = $("#radioBtnColor");
 
     static MODAL_TIME_INPUT(): JQuery<HTMLElement> { return $("#commandTimeInput"); }
     static MODAL_LIGHT_INPUT(): JQuery<HTMLElement> { return $("#commandLightInput"); }

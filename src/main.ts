@@ -11,6 +11,7 @@ import {Light} from "./model/light";
 import {Logger} from "./util/logger";
 import {Sequence} from "./data/sequence";
 import {FEBrightnessCommand} from "./frontend/component/modal/FEBrightnessCommand";
+import {FEColorCommand} from "./frontend/component/modal/FEColorCommand";
 
 $(() => {
     new Main();
@@ -100,8 +101,20 @@ export class Main {
     }
 
     public testCommandModal() {
-        WebElements.COMMAND_MODAL_INPUTAREA.html(FEBrightnessCommand.get().content());
         BaseModal.show(WebElements.COMMAND_MODAL);
+    }
+
+    public testCommandModalInputChange(cmdId: number) {
+        switch (cmdId) {
+            case 0:
+                WebElements.COMMAND_MODAL_INPUTAREA.html(FEBrightnessCommand.get().content());
+                break;
+            case 1:
+                WebElements.COMMAND_MODAL_INPUTAREA.html(FEColorCommand.get().content());
+                break;
+            default:
+                Logger.getLogger().warn("CommandModal input change called with invalid ID " + cmdId);
+        }
     }
 
     /**
@@ -125,6 +138,10 @@ export class Main {
         WebElements.SEQUENCE_STOP.get()[0].addEventListener("click", (e:Event) => this.stopSequence());
         WebElements.AUDIO_SELECT.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.SOUND_MODAL));
 
+        WebElements.COMMAND_MODAL_CMDBRIGHTNESS.get()[0].addEventListener("click",(e:Event) => this.testCommandModalInputChange(0));
+        WebElements.COMMAND_MODAL_CMDCOLOR.get()[0].addEventListener("click",(e:Event) => this.testCommandModalInputChange(1));
+        WebElements.COMMAND_MODAL_CMDON.get()[0].addEventListener("click",(e:Event) => this.testCommandModalInputChange(2));
+        WebElements.COMMAND_MODAL_CMDOFF.get()[0].addEventListener("click",(e:Event) => this.testCommandModalInputChange(3));
 
         WebElements.TEST_COMMAND_MODAL.get()[0].addEventListener("click", (e:Event) => this.testCommandModal());
     }
