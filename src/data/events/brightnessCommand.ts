@@ -5,18 +5,20 @@
 import { CommandType, LightCommand } from "./lightCommand";
 import { HueLink } from "../../service/hueLink";
 import { Light } from "../../model/light";
+import {HueAPIService} from "../../service/hueAPIService";
+import {Logger} from "../../util/logger";
 
 /**
  * HueScripts BrightnessCommand Class
  * Implementation of the LightCommand interface, specifying a brightness change for a light
  */
 export class BrightnessCommand implements LightCommand {
-    values: Array<number>;
+    values: any;
     executed: boolean;
     light: Light;
     type: CommandType;
 
-    constructor(light: Light, values: Array<number>) {
+    constructor(light: Light, values: any) {
         this.light = light;
         this.values = values;
         this.executed = false;
@@ -30,10 +32,11 @@ export class BrightnessCommand implements LightCommand {
         }
         this.executed = true;
 
-        let payload = {"bri": this.values[0]};
+        let payload = {"bri": +this.values};
 
-        HueLink.getInstance().sendCommand(this.light.getID(), payload);
-        this.light.setBrightness(this.values[0]);
+        Logger.getLogger().debug("Send payload " + JSON.stringify(payload) + " to light " + this.light.getID());
+
+        HueAPIService.setLightState(this.light.getID(), JSON.stringify(payload));
 
     }
 

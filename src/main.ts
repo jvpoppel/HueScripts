@@ -4,7 +4,12 @@ import { WebElements } from "./static/webElements";
 import { BaseModal } from "./static/baseModal";
 import { HueAccount } from "./service/hueAccount";
 import { HueAPIService } from "./service/hueAPIService";
+import {Session} from "./static/session";
+import {Row} from "./data/row";
+import {BrightnessCommand} from "./data/events/brightnessCommand";
+import {Light} from "./model/light";
 import {Logger} from "./util/logger";
+import {Sequence} from "./data/sequence";
 
 $(() => {
     new Main();
@@ -25,10 +30,15 @@ export class Main {
         }
 
         this.setupBaseEventListeners();
+        Session.get().changeToPage(1);
     }
 
     public addRow() {
-        alert("Add Row!");
+        let page: Page = this.pagesMap.get(Session.get().page());
+        let time: number = +WebElements.ADD_ROW_MODAL_TIME().val();
+        page.getSequence().addRow(time, new Row(time, new BrightnessCommand(new Light(5), WebElements.ADD_ROW_MODAL_VALUE().val())));
+
+        Logger.getLogger().info("Added row on time " + time + " and val " + WebElements.ADD_ROW_MODAL_VALUE().val());
     }
 
     public delRow() {
@@ -47,8 +57,20 @@ export class Main {
         alert("Submit load modal");
     }
 
-    public startSequence() {
-        alert("Start Sequence");
+    public async startSequence() {
+        let sequence: Sequence = this.pagesMap.get(Session.get().page()).getSequence();
+
+        let tempTime: number = 0;
+
+        while (tempTime <= 1000) {
+            if (sequence.rows.has(tempTime)) {
+                sequence.rows.get(tempTime).forEach(row =>
+                    row.getCommand().execute()
+                );
+            }
+            await new Promise(resolve => setTimeout(resolve, 100));
+            tempTime ++;
+        }
     }
 
     public stopSequence() {
@@ -73,6 +95,7 @@ export class Main {
 
     public changePage(page: number) {
         alert ("Change to page " + page);
+        Session.get().changeToPage(page);
     }
 
     /**
