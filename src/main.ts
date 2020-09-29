@@ -10,6 +10,7 @@ import {BrightnessCommand} from "./data/events/brightnessCommand";
 import {Light} from "./model/light";
 import {Logger} from "./util/logger";
 import {Sequence} from "./data/sequence";
+import {FEBrightnessCommand} from "./frontend/component/modal/FEBrightnessCommand";
 
 $(() => {
     new Main();
@@ -98,6 +99,11 @@ export class Main {
         Session.get().changeToPage(page);
     }
 
+    public testCommandModal() {
+        WebElements.COMMAND_MODAL_INPUTAREA.html(FEBrightnessCommand.get().content());
+        BaseModal.show(WebElements.COMMAND_MODAL);
+    }
+
     /**
      * This method will bind all event listeners to the DOM model
      */
@@ -118,5 +124,8 @@ export class Main {
         WebElements.SEQUENCE_START.get()[0].addEventListener("click", (e:Event) => this.startSequence());
         WebElements.SEQUENCE_STOP.get()[0].addEventListener("click", (e:Event) => this.stopSequence());
         WebElements.AUDIO_SELECT.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.SOUND_MODAL));
+
+
+        WebElements.TEST_COMMAND_MODAL.get()[0].addEventListener("click", (e:Event) => this.testCommandModal());
     }
 }

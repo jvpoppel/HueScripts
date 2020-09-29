@@ -21,12 +21,15 @@ export class WebElements {
     static SEQUENCE_ROW(rowNumber: number): JQuery<HTMLElement>             { return $("#row" + rowNumber);  }
     static PAGE_BUTTON(pageNumber: number): JQuery<HTMLElement>             { return $("#btnSelectPage" + pageNumber);  }
 
+    static readonly TEST_COMMAND_MODAL: JQuery<HTMLElement>                 = $("#commandBtn");
+
     /*
             MODALS
      */
     static readonly IP_MODAL: JQuery<HTMLElement>       = $('#ipModal');
-    static readonly BRIDGE_LINK: JQuery<HTMLElement>  = $('#bridgeModal');
+    static readonly BRIDGE_LINK: JQuery<HTMLElement>    = $('#bridgeModal');
     static readonly BRIDGE_SUCCESS: JQuery<HTMLElement> = $('#successModal');
+    static readonly COMMAND_MODAL: JQuery<HTMLElement>  = $('#commandModal');
     static readonly LOAD_SEQUENCE: JQuery<HTMLElement>  = $('#inputModal');
     static readonly SAVE_SEQUENCE: JQuery<HTMLElement>  = $("#saveModal");
     static readonly LIGHT_MODAL: JQuery<HTMLElement>    = $("#lightModal");
@@ -70,6 +73,19 @@ export class WebElements {
     static ADD_ROW_MODAL_COMMAND(): JQuery<HTMLElement>   { return $('#addRowCommand :selected'); }
     static ADD_ROW_MODAL_VALUE(): JQuery<HTMLElement>     { return $("#addRowValue"); }
     static readonly ADD_ROW_MODAL_SUBMIT: JQuery<HTMLElement>    = $("#btnRowSubmit");
+
+    /*
+        COMMAND MODAL
+     */
+    static readonly COMMAND_MODAL_INPUTAREA: JQuery<HTMLElement> = $("#commandModalContent");
+
+    static MODAL_TIME_INPUT(): JQuery<HTMLElement> { return $("#commandTimeInput"); }
+    static MODAL_LIGHT_INPUT(): JQuery<HTMLElement> { return $("#commandLightInput"); }
+    static MODAL_TRANSITION_INPUT(): JQuery<HTMLElement> { return $("#commandTransitionInput"); }
+    static MODAL_BRIGHTNESS_INPUT(): JQuery<HTMLElement> { return $("#commandBrightnessInput"); }
+    static MODAL_RED_INPUT(): JQuery<HTMLElement> { return $("#commandRedInput"); }
+    static MODAL_GREEN_INPUT(): JQuery<HTMLElement> { return $("#commandGreenInput"); }
+    static MODAL_BLUE_INPUT(): JQuery<HTMLElement> { return $("#commandBlueInput"); }
 
     /*
             LOAD SEQUENCE MODAL
