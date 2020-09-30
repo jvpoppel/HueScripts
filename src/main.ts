@@ -84,10 +84,6 @@ export class Main {
         alert ("Clear sequence!");
     }
 
-    public testCommandModal() {
-        BaseModal.show(WebElements.COMMAND_MODAL);
-    }
-
     public commandModalChangeInputField(cmdId: number) {
         switch (cmdId) {
             case 0:
@@ -111,7 +107,7 @@ export class Main {
     private setupBaseEventListeners() {
         WebElements.EDIT_ROW_MODAL_DELETE.get()[0].addEventListener("click", (e:Event) => this.delRow());
         WebElements.EDIT_ROW_MODAL_SUBMIT.get()[0].addEventListener("click", (e:Event) => this.editRow());
-        WebElements.ADD_ROW_BUTTON.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.ADD_ROW_MODAL));
+        WebElements.ADD_ROW_BUTTON.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.COMMAND_MODAL));
         WebElements.SHOW_LIGHT_TEST.get()[0].addEventListener("click", (e:Event) => this.modalLightTest());
         WebElements.SHOW_LOAD_SEQUENCE.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.LOAD_SEQUENCE));
         WebElements.SHOW_SAVE_SEQUENCE.get()[0].addEventListener("click", (e:Event) => this.openSaveSequenceModal());
@@ -129,7 +125,5 @@ export class Main {
         WebElements.COMMAND_MODAL_CMDCOLOR.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(1));
         WebElements.COMMAND_MODAL_CMDON.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(2));
         WebElements.COMMAND_MODAL_CMDOFF.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(3));
-
-        WebElements.TEST_COMMAND_MODAL.get()[0].addEventListener("click", (e:Event) => this.testCommandModal());
     }
 }

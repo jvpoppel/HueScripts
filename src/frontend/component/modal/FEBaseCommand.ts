@@ -127,7 +127,8 @@ export class FEBaseCommand {
         if (!success) {
             alert("Not all fields have valid input. Please check and try again.");
             return;
+        } else {
+            BaseModal.hide(WebElements.COMMAND_MODAL);
         }
-        BaseModal.hide(WebElements.COMMAND_MODAL);
     }
 }
