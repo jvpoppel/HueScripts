@@ -29,6 +29,8 @@ export class Main {
 
         if (!HueAccount.exists()) {
             HueAccount.create();
+        } else {
+            HueAPIService.updateSessionLights();
         }
 
         this.setupBaseEventListeners();
@@ -108,9 +110,11 @@ export class Main {
         switch (cmdId) {
             case 0:
                 WebElements.COMMAND_MODAL_INPUTAREA.html(FEBrightnessCommand.get().content());
+                FEBrightnessCommand.get().setFieldContents();
                 break;
             case 1:
                 WebElements.COMMAND_MODAL_INPUTAREA.html(FEColorCommand.get().content());
+                FEColorCommand.get().setFieldContents();
                 break;
             default:
                 Logger.getLogger().warn("CommandModal input change called with invalid ID " + cmdId);

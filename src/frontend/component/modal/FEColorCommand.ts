@@ -1,24 +1,27 @@
 import {InputField} from "../InputField";
 import {WebElements} from "../../../static/webElements";
+import {FEBaseCommand} from "./FEBaseCommand";
+import {CommandType} from "../../../data/events/lightCommand";
+import {Logger} from "../../../util/logger";
 
 export class FEColorCommand {
 
-    private time: InputField;
+    private time: number;
     private redLevel: InputField;
     private greenLevel: InputField;
     private blueLevel: InputField;
     private transitionTime: InputField;
-    private light: InputField;
+    private light: number;
 
     private static instance: FEColorCommand;
 
     private constructor() {
-        this.time = new InputField('Time:', WebElements.MODAL_TIME_INPUT(), 0);
-        this.redLevel = new InputField('Red', WebElements.MODAL_RED_INPUT(), 0);
-        this.greenLevel = new InputField('Green', WebElements.MODAL_GREEN_INPUT(), 0);
-        this.blueLevel = new InputField('Blue', WebElements.MODAL_BLUE_INPUT(), 0);
-        this.transitionTime = new InputField('Transition time:', WebElements.MODAL_TRANSITION_INPUT(), 0);
-        this.light = new InputField('Light ID:', WebElements.MODAL_LIGHT_INPUT(), null);
+        this.time = 10;
+        this.redLevel = new InputField('Red', WebElements.MODAL_RED_INPUT(), 1);
+        this.greenLevel = new InputField('Green', WebElements.MODAL_GREEN_INPUT(), 2);
+        this.blueLevel = new InputField('Blue', WebElements.MODAL_BLUE_INPUT(), 30);
+        this.transitionTime = new InputField('Transition time:', WebElements.MODAL_TRANSITION_INPUT(), 105);
+        this.light = 5;
     }
 
     public static get(): FEColorCommand {
@@ -29,41 +32,42 @@ export class FEColorCommand {
     }
 
     public content(): string {
-        let result: string = "";
+        FEBaseCommand.get().updateTime(this.time).updateLight(this.light).and().setCommandType(CommandType.COLOR);
+        let result: string = FEBaseCommand.get().beginOfForm();
 
-        result += '<table class="table">\n' +
-            '      <tr>\n' +
-            '      <td>' + this.time.label() + '</td>\n' +
-            '      <td>\n' +
-            '          <input class="rowInput" type="number" min="1" max="999999" value="' + this.time.value() + '" id="commandTimeInput">\n' +
-            '      </td>\n' +
-            '      <td>(1 second &rArr; value 10)</td>\n' +
-            '      </tr>\n' +
-            '      <tr>\n' +
-            '      <td>' + this.light.label() + '</td>\n' +
-            '      <td>\n' +
-            '      <select class="rowInput" id="commandLightInput"><option>1</option></select>\n' +
-            '      </td>\n' +
-            '      <td></td>\n' +
-            '      </tr>\n' +
-            '      <tr>\n' +
-            '      <td>' + this.redLevel.label() + ', ' + this.greenLevel.label() +', ' + this.blueLevel.label() +':</td>\n' +
-            '      <td>\n' +
-            '          <input class="rowInput" type="number" min="0" max="255" value="' + this.redLevel.value() + '" id="commandRedInput">' +
-            '          <input class="rowInput" type="number" min="0" max="255" value="' + this.greenLevel.value() + '" id="commandGreenInput">' +
-            '          <input class="rowInput" type="number" min="0" max="255" value="' + this.blueLevel.value() + '" id="commandBlueInput">\n' +
-            '      </td>\n' +
-            '      <td></td>\n' +
-            '      </tr>\n' +
-            '      <tr>\n' +
-            '      <td>' + this.transitionTime.label() + '</td>\n' +
-            '      <td>\n' +
-            '          <input class="rowInput" type="number" min="1" max="999999" value="' + this.transitionTime.value() + '" id="commandTransitionInput">\n' +
-            '      </td>\n' +
-            '      <td></td>\n' +
-            '      </tr>\n' +
-            '      </table>'
+        result +='       <div class="row">\n' +
+            '                <div class="col-md-4 text-right">\n' +
+            '                    <label>' + this.redLevel.label() + ', ' + this.greenLevel.label() +', ' + this.blueLevel.label() +':</label>\n' +
+            '                </div>\n' +
+            '                <div class="col-md-1 text-left">\n' +
+            '                    <input class="rowInput" type="number" min="0" max="255" value="' + this.redLevel.value() + '" id="commandRedInput">' +
+            '                </div><div class="col-md-1 text-left">\n' +
+            '                    <input class="rowInput" type="number" min="0" max="255" value="' + this.greenLevel.value() + '" id="commandGreenInput">' +
+            '                </div><div class="col-md-1 text-left">\n' +
+            '                    <input class="rowInput" type="number" min="0" max="255" value="' + this.blueLevel.value() + '" id="commandBlueInput">\n' +
+            '                </div>\n' +
+            '                <div class="col-md-5"></div>\n' +
+            '            </div>\n' +
+            '            <div class="row">\n' +
+            '                <div class="col-md-4 text-right">\n' +
+            '                    <label>' + this.transitionTime.label() + '</label>\n' +
+            '                </div>\n' +
+            '                <div class="col-md-2 text-left">\n' +
+            '                    <input class="rowInput" type="number" min="0" max="255" value="' + this.transitionTime.value() + '" id="commandTransitionInput">\n' +
+            '                </div>\n' +
+            '                <div class="col-md-6"></div>\n' +
+            '            </div>\n' +
+            '        </div>'
 
         return result;
+    }
+
+    public setFieldContents(): FEColorCommand {
+        FEBaseCommand.get().setFieldContents();
+        WebElements.MODAL_RED_INPUT().val(this.redLevel.value());
+        WebElements.MODAL_GREEN_INPUT().val(this.greenLevel.value());
+        WebElements.MODAL_BLUE_INPUT().val(this.blueLevel.value());
+        WebElements.MODAL_TRANSITION_INPUT().val(this.transitionTime.value());
+        return this;
     }
 }

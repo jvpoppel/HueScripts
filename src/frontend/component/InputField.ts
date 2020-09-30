@@ -1,3 +1,5 @@
+import {Logger} from "../../util/logger";
+
 export class InputField {
     private readonly fieldLabel: string;
     private readonly fieldWebElement: JQuery<HTMLElement>;

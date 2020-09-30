@@ -1,6 +1,8 @@
 import {InputField} from "../InputField";
 import {WebElements} from "../../../static/webElements";
 import {FEBaseCommand} from "./FEBaseCommand";
+import {CommandType} from "../../../data/events/lightCommand";
+import {Logger} from "../../../util/logger";
 
 export class FEBrightnessCommand {
 
@@ -28,17 +30,17 @@ export class FEBrightnessCommand {
     }
 
     public content(): string {
-        FEBaseCommand.get().updateTime(this.time).updateLight(this.light);
+        FEBaseCommand.get().updateTime(this.time).updateLight(this.light).and().setCommandType(CommandType.BRIGHTNESS);
 
         let result: string = FEBaseCommand.get().beginOfForm();
         result +='       <div class="row">\n' +
             '                <div class="col-md-4 text-right">\n' +
             '                    <label>' + this.brightnessLevel.label() + '</label>\n' +
             '                </div>\n' +
-            '                <div class="col-md-2 text-left">\n' +
+            '                <div class="col-md-3 text-left">\n' +
             '                    <input class="rowInput" type="number" min="0" max="255" value="' + this.brightnessLevel.value() + '" id="commandBrightnessInput">\n' +
             '                </div>\n' +
-            '                <div class="col-md-6"></div>\n' +
+            '                <div class="col-md-5"></div>\n' +
             '            </div>\n' +
             '            <div class="row">\n' +
             '                <div class="col-md-4 text-right">\n' +
@@ -61,6 +63,13 @@ export class FEBrightnessCommand {
 
     public updateTime(time: number): FEBrightnessCommand {
         this.time = time;
+        return this;
+    }
+
+    public setFieldContents(): FEBrightnessCommand {
+        FEBaseCommand.get().setFieldContents();
+        WebElements.MODAL_BRIGHTNESS_INPUT().val(this.brightnessLevel.value());
+        WebElements.MODAL_TRANSITION_INPUT().val(this.transitionTime.value());
         return this;
     }
 }

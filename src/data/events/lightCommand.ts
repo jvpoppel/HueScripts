@@ -5,9 +5,7 @@ import {Light} from "../../model/light";
 
 export enum CommandType {
     BRIGHTNESS,
-    SATURATION,
-    HUE,
-    RGB,
+    COLOR,
     ON,
     OFF
 }

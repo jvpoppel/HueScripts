@@ -3,6 +3,7 @@ import {BaseModal} from "../static/baseModal";
 import {LocalStorage} from "../static/localStorage";
 import {HueAccount} from "./hueAccount";
 import {Logger} from "../util/logger";
+import {Session} from "../static/session";
 
 export class HueAPIService {
 
@@ -68,6 +69,8 @@ export class HueAPIService {
 
         BaseModal.hide(WebElements.BRIDGE_LINK);
         BaseModal.show(WebElements.BRIDGE_SUCCESS);
+
+        HueAPIService.updateSessionLights();
     }
 
     public static async createAccountOnIP() {
@@ -87,5 +90,27 @@ export class HueAPIService {
         Logger.getLogger().debug("START setLightState for light " + light);
         await this.PUTSetLightState(light, body).then(() =>
             Logger.getLogger().debug("END setLightState for light " + light));
+    }
+
+    private static async GETSessionLights() {
+        let url: string = this.API_URL() + '/' + HueAccount.username() + '/lights';
+        let response: string[] = [];
+        await fetch(url).then(
+            (resp) => resp.json().then(
+                function (data) {
+                    response = Object.keys(data);
+                }));
+        return response;
+    }
+
+    public static async updateSessionLights() {
+        if (!(Session.get().lights().length == 0)) {
+            return;
+        }
+        await this.GETSessionLights().then(function (keys) {
+            keys.forEach(function (key: string) {
+                Session.get().newLight(+key);
+            });
+        });
     }
 }

@@ -1,12 +1,16 @@
+import {HueAPIService} from "../service/hueAPIService";
+
 export class Session {
 
     private static instance: Session;
 
     private currentPage: number;
+    private foundLights: Array<number>;
 
     private constructor() {
 
         this.currentPage = 1;
+        this.foundLights = new Array<number>();
     }
 
 
@@ -22,8 +26,17 @@ export class Session {
         return this.currentPage;
     }
 
+    public lights(): Array<number> {
+        return this.foundLights;
+    }
+
     public changeToPage(page: number): Session {
         this.currentPage = page;
+        return this;
+    }
+
+    public newLight(newLight: number): Session {
+        this.foundLights.push(newLight);
         return this;
     }
 }
