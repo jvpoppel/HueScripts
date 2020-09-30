@@ -138,64 +138,6 @@
                 </div>
             </div>
 
-            <!-- Modal Add Row -->
-            <div id="rowModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Add command</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table">
-                                <tr>
-                                    <td>Time:</td>
-                                    <td>
-                                        <input class="rowInput" type="number" min="1" max="999999" value="1" id="addRowTime">
-                                    </td>
-                                    <td>(1 second &rArr; value 10)</td>
-                                </tr>
-                                <tr>
-                                    <td>Light ID:</td>
-                                    <td>
-                                        <select class="rowInput" id="addRowLight"></select>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Command:</td>
-                                    <td>
-                                        <select class="rowInput" id="addRowCommand">
-                                            <option>bri</option>
-                                            <option>sat</option>
-                                            <option>hue</option>
-                                            <option>rgb</option>
-                                            <option>on</option>
-                                            <option>off</option>
-                                            <option>repeat</option>
-                                        </select>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Value:</td>
-                                    <td>
-                                        <input class="rowInput" type="text" value="1" id="addRowValue">
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" id="btnRowSubmit" name="btnRowSubmit" class="btn btn-info btn-sm">Add command</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
             <!-- Modal Edit Row -->
             <div id="editModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -381,45 +323,42 @@
 
                 </div>
             </div>
+            <!-- Modal Command -->
+            <div id="commandModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Command</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <h4 class="modal-title">Command type</h4>
+                                <span>Brightness <input type="radio" name="commandType" value="brightness" id="radioBtnBrightness"></span>
+                                <span>On <input type="radio" name="commandType" value="on" id="radioBtnOn"></span>
+                                <span>Off <input type="radio" name="commandType" value="off" id="radioBtnOff"></span>
+                                <span>Color <input type="radio" name="commandType" value="color" id="radioBtnColor"></span>
+                            </div>
+                            <div id="commandModalContent">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="btnCommandSubmit" name="btnCommandSubmit" class="btn btn-info btn-sm">Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             <hr>
-        </div>
-
-        <!-- Modal Command -->
-        <div id="commandModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Command</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                            <h4 class="modal-title">Command type</h4>
-                            <span>Brightness <input type="radio" name="commandType" value="brightness" id="radioBtnBrightness"></span>
-                            <span>On <input type="radio" name="commandType" value="on" id="radioBtnOn"></span>
-                            <span>Off <input type="radio" name="commandType" value="off" id="radioBtnOff"></span>
-                            <span>Color <input type="radio" name="commandType" value="color" id="radioBtnColor"></span>
-                        </div>
-                        <div id="commandModalContent">
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="btnCommandSubmit" name="btnCommandSubmit" class="btn btn-info btn-sm">Submit</button>
-                    </div>
-                </div>
-
-            </div>
         </div>
 
         <!-- JQuery, Bootstrap and jshue libraries incl. dependencies -->
         <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <script src="lib/colors.js"></script>
-        <script src="lib/jshue.js"></script>
 
         <!-- Own scripts -->
         <script src="dist/bundle.js" type="text/javascript"></script>

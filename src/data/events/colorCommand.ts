@@ -9,20 +9,20 @@ import {HueAPIService} from "../../service/hueAPIService";
 import {Logger} from "../../util/logger";
 
 /**
- * HueScripts BrightnessCommand Class
- * Implementation of the LightCommand interface, specifying a brightness change for a light
+ * HueScripts ColorCommand Class
+ * Implementation of the LightCommand interface, specifying a color change for a light
  */
-export class BrightnessCommand implements LightCommand {
-    values: any[];
+export class ColorCommand implements LightCommand {
+    values: any;
     executed: boolean;
     light: number;
     type: CommandType;
 
-    constructor(light: number, values: any[]) {
+    constructor(light: number, values: any) {
         this.light = light;
         this.values = values;
         this.executed = false;
-        this.type = CommandType.BRIGHTNESS;
+        this.type = CommandType.COLOR;
     }
 
     public execute(): void {
@@ -32,12 +32,11 @@ export class BrightnessCommand implements LightCommand {
         }
         this.executed = true;
 
-        let payload = {"bri": +this.values[0], "transitiontime": +this.values[1]};
+        let payload = {"xy": [+this.values[0], +this.values[1]], "transitiontime": +this.values[2]};
 
         Logger.getLogger().debug("Send payload " + JSON.stringify(payload) + " to light " + this.light);
 
         HueAPIService.setLightState(this.light, JSON.stringify(payload));
-
     }
 
 }

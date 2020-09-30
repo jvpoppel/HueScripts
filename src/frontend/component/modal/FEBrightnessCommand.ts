@@ -72,4 +72,11 @@ export class FEBrightnessCommand {
         WebElements.MODAL_TRANSITION_INPUT().val(this.transitionTime.value());
         return this;
     }
+
+    public parse(): number[] {
+        let inputBrightness = <number> WebElements.MODAL_BRIGHTNESS_INPUT().val();
+        let inputTransition = <number> WebElements.MODAL_TRANSITION_INPUT().val();
+
+        return [inputBrightness, inputTransition];
+    }
 }

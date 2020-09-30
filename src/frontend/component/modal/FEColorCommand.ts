@@ -70,4 +70,15 @@ export class FEColorCommand {
         WebElements.MODAL_TRANSITION_INPUT().val(this.transitionTime.value());
         return this;
     }
+
+    public parse(): number[] {
+        let inputRed = <number> WebElements.MODAL_RED_INPUT().val();
+        let inputGreen = <number> WebElements.MODAL_GREEN_INPUT().val();
+        let inputBlue = <number> WebElements.MODAL_BLUE_INPUT().val();
+        let inputTransition = <number> WebElements.MODAL_TRANSITION_INPUT().val();
+
+        return [inputRed, inputGreen, inputBlue, inputTransition];
+
+
+    }
 }

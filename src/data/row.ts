@@ -3,6 +3,7 @@
  */
 
 import { LightCommand } from "./events/lightCommand";
+import {Logger} from "../util/logger";
 
 /**
  * HueScripts Row Class
@@ -17,6 +18,8 @@ export class Row {
 
         this.time = time;
         this.command = command;
+
+        Logger.getLogger().info("Added new row: " + time + ", " + command.light + ", " + command.type.toString() + ", "+ command.values.toString());
     }
 
     public getCommand(): LightCommand {

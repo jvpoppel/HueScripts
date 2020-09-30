@@ -66,15 +66,6 @@ export class WebElements {
     static readonly LIGHT_MODAL_TABLE: JQuery<HTMLElement> = $("#lightTable");
 
     /*
-            ADD ROW MODAL
-     */
-    static ADD_ROW_MODAL_TIME(): JQuery<HTMLElement>      { return $("#addRowTime"); }
-    static ADD_ROW_MODAL_LIGHT(): JQuery<HTMLElement>     { return $("#addRowLight"); }
-    static ADD_ROW_MODAL_COMMAND(): JQuery<HTMLElement>   { return $('#addRowCommand :selected'); }
-    static ADD_ROW_MODAL_VALUE(): JQuery<HTMLElement>     { return $("#addRowValue"); }
-    static readonly ADD_ROW_MODAL_SUBMIT: JQuery<HTMLElement>    = $("#btnRowSubmit");
-
-    /*
         COMMAND MODAL
      */
     static readonly COMMAND_MODAL_INPUTAREA: JQuery<HTMLElement> = $("#commandModalContent");
@@ -82,6 +73,8 @@ export class WebElements {
     static readonly COMMAND_MODAL_CMDON: JQuery<HTMLElement> = $("#radioBtnOn");
     static readonly COMMAND_MODAL_CMDOFF: JQuery<HTMLElement> = $("#radioBtnOff");
     static readonly COMMAND_MODAL_CMDCOLOR: JQuery<HTMLElement> = $("#radioBtnColor");
+
+    static readonly COMMAND_MODAL_SUBMIT: JQuery<HTMLElement> = $("#btnCommandSubmit");
 
     static MODAL_TIME_INPUT(): JQuery<HTMLElement> { return $("#commandTimeInput"); }
     static MODAL_LIGHT_INPUT(): JQuery<HTMLElement> { return $("#commandLightInput"); }

@@ -16,7 +16,7 @@ export enum CommandType {
 export interface LightCommand {
 
     type: CommandType;
-    light: Light;
+    light: number;
     values: Array<number>;
     executed: boolean;
 
