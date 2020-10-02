@@ -8,6 +8,7 @@ import {Sequence} from "./data/sequence";
 import {FEBrightnessCommand} from "./frontend/component/modal/FEBrightnessCommand";
 import {FEColorCommand} from "./frontend/component/modal/FEColorCommand";
 import {CommandType} from "./data/events/lightCommand";
+import {ScriptRunner} from "./static/scriptRunner";
 
 $(() => {
     new Main();
@@ -49,23 +50,11 @@ export class Main {
     }
 
     public async startSequence() {
-        let sequence: Sequence = Session.get().pageMap().get(Session.get().page()).getSequence();
-
-        let tempTime: number = 0;
-
-        while (tempTime <= 1000) {
-            if (sequence.rows.has(tempTime)) {
-                sequence.rows.get(tempTime).forEach(row =>
-                    row.getCommand().execute()
-                );
-            }
-            await new Promise(resolve => setTimeout(resolve, 100));
-            tempTime ++;
-        }
+        ScriptRunner.get().start();
     }
 
     public stopSequence() {
-        alert("Stop Sequence");
+        ScriptRunner.get().stop();
     }
 
     public modalLightTest() {

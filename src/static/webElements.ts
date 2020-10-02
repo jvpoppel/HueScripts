@@ -10,7 +10,7 @@ export class WebElements {
     static readonly SEQUENCE_TABLE: JQuery<HTMLElement>                     = $("#cmdTable");
     static readonly SEQUENCE_START: JQuery<HTMLElement>                     = $("#startBtn");
     static readonly SEQUENCE_STOP: JQuery<HTMLElement>                      = $("#stopBtn");
-    static readonly TIMER: JQuery<HTMLElement>                              = $("#timer");
+    static TIMER(): JQuery<HTMLElement>                            { return $("#timer"); }
     static readonly AUDIO_SELECT:JQuery<HTMLElement>                        = $("#audioBtn");
     static readonly ADD_ROW_BUTTON: JQuery<HTMLElement>                     = $("#addBtn");
     static readonly SHOW_LIGHT_TEST: JQuery<HTMLElement>                    = $("#infBtn");
