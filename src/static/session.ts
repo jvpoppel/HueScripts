@@ -8,14 +8,14 @@ export class Session {
 
     private static instance: Session;
 
-    private currentPage: number;
+    private currentPageID: number;
     private foundLights: Array<number>;
     private pagesMap: TSMap<number, Page>;
     private currentCommandModalType: CommandType;
 
     private constructor() {
 
-        this.currentPage = 1;
+        this.currentPageID = 1;
         this.foundLights = new Array<number>();
         this.pagesMap = new TSMap<number, Page>();
         for (let i = 1; i <= 6; i++) {
@@ -33,7 +33,7 @@ export class Session {
     }
 
     public page(): number {
-        return this.currentPage;
+        return this.currentPageID;
     }
 
     public lights(): Array<number> {
@@ -53,11 +53,15 @@ export class Session {
         return this.pagesMap;
     }
 
+    public currentPage(): Page {
+        return this.pagesMap.get(this.currentPageID);
+    }
+
     public changeToPage(page: number): Session {
         if (page < 1 || page > 6) {
             throw Error("Tried to change to a non-existent page.");
         }
-        this.currentPage = page;
+        this.currentPageID = page;
         return this;
     }
 

@@ -5,27 +5,31 @@ import { TSMap } from "typescript-map";
 import { Row } from "./row";
 /**
  * HueScripts Sequence Class
- * A sequence is a map of rows.
+ * A sequence is a map of pageRows.
  * Each row is mapped to a certain time
  */
 export class Sequence {
 
-    rows: TSMap<number, Set<Row>>;
+    pageRows: TSMap<number, Set<Row>>;
 
     public constructor() {
-        this.rows = new TSMap<number, Set<Row>>();
+        this.pageRows = new TSMap<number, Set<Row>>();
+    }
+
+    public rows(): TSMap<number, Set<Row>> {
+        return this.pageRows;
     }
 
     public addRow(time: number, row: Row): Sequence {
-        if (!this.rows.has(time)) {
-            this.rows.set(time, new Set<Row>());
+        if (!this.pageRows.has(time)) {
+            this.pageRows.set(time, new Set<Row>());
         }
-        this.rows.get(time).add(row);
+        this.pageRows.get(time).add(row);
         return this;
     }
 
     public deleteRow(row: Row): Sequence {
-        this.rows.get(row.getTime()).delete(row);
+        this.pageRows.get(row.getTime()).delete(row);
         return this;
     }
 

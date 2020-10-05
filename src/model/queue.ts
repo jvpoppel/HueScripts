@@ -1,5 +1,8 @@
 import {TSMap} from "typescript-map";
 import {LightCommand} from "../data/events/lightCommand";
+import {Session} from "../static/session";
+import {Page} from "../data/page";
+import {Light} from "./light";
 
 export class Queue {
     private queue: TSMap<number, Set<LightCommand>>;
@@ -10,7 +13,21 @@ export class Queue {
     }
 
     private parse(): void {
+        let currentPage: Page = Session.get().currentPage();
+        let pageTimes: number[] = currentPage.getSequence().rows().keys();
+
+        pageTimes.forEach(function( time: number){
+            let commandSet = new Set<LightCommand>();
+            currentPage.getSequence().rows().get(time).forEach(function (row) {
+                commandSet.add(row.getCommand());
+            });
+            this.addCommandSetToTime(time, commandSet);
+        });
         return;
+    }
+
+    private addCommandSetToTime(time: number, commandSet: Set<LightCommand>) {
+        this.queue.sortedSet(time, commandSet);
     }
 
     public eventTimes(): number[] {
