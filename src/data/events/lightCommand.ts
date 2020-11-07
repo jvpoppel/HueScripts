@@ -21,4 +21,8 @@ export interface LightCommand {
     executed: boolean;
 
     execute();
+
+    reset();
+
+    toString(): string;
 }

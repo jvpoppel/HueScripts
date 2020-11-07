@@ -39,4 +39,11 @@ export class ColorCommand implements LightCommand {
         HueAPIService.setLightState(this.light, JSON.stringify(payload));
     }
 
+    public reset(): void {
+        this.executed = false;
+    }
+
+    public toString(): string {
+        return "ColorCommand for light |" + this.light + "|, values |" + this.values.toString() + "|, executed |" + this.executed + "|";
+    }
 }

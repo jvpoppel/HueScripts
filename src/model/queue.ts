@@ -4,10 +4,10 @@ import {Session} from "../static/session";
 import {Page} from "../data/page";
 
 export class Queue {
-    private queue: TSMap<number, Set<LightCommand>>;
+    private queue: TSMap<string, Set<LightCommand>>;
 
     constructor() {
-        this.queue = new TSMap<number, Set<LightCommand>>();
+        this.queue = new TSMap<string, Set<LightCommand>>();
         this.parse();
     }
 
@@ -18,13 +18,15 @@ export class Queue {
         let currentPage: Page = Session.get().currentPage();
         let pageTimes: number[] = currentPage.getSequence().rows().keys();
 
-        pageTimes.forEach(function( time: number){
+        for (let i = 0; i < pageTimes.length; i ++) {
+            let time = pageTimes[i];
             let commandSet = new Set<LightCommand>();
             currentPage.getSequence().rows().get(time).forEach(function (row) {
                 commandSet.add(row.getCommand());
             });
-            this.addCommandSetToTime(time, commandSet);
-        });
+            this.addCommandSetToTime(time.toString(10), commandSet);
+        }
+
         return;
     }
 
@@ -33,12 +35,14 @@ export class Queue {
      * @param time time to add commands to
      * @param commandSet commands to add to time
      */
-    private addCommandSetToTime(time: number, commandSet: Set<LightCommand>): void {
+    private addCommandSetToTime(time: string, commandSet: Set<LightCommand>): void {
+
         // If there is already a set mapped to { time }, add all commands to that existing set
         if (this.queue.keys().indexOf(time) > 0) {
             commandSet.forEach(lightCommand => this.queue.get(time).add(lightCommand));
         } else {
             this.queue.sortedSet(time, commandSet);
+
         }
     }
 
@@ -46,17 +50,21 @@ export class Queue {
      * Return all keys of the queue, sorted ascending.
      * All keys of the queue correspond with all times on which one, or multiple event(s) happen(s).
      */
-    public eventTimes(): number[] {
-        let keys: number[] = this.queue.keys();
-        return keys.sort(function (a: number, b: number) {
-            return a - b;
-        });
+    public eventTimes(): string[] {
+        return this.queue.keys().sort((a,b) => 0 - (parseInt(a) > parseInt(b) ? -1 : 1));
     }
 
     /**
      * Return the TSMap object in which all queue data is stored.
      */
-    public map(): TSMap<number, Set<LightCommand>> {
+    public map(): TSMap<string, Set<LightCommand>> {
         return this.queue;
+    }
+
+    /**
+     * Return the Light Command set at time, input as string, will be parsed in this function.
+     */
+    public commandsAtTime(time: string): Set<LightCommand> {
+        return this.queue.get(time);
     }
 }

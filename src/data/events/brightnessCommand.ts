@@ -40,4 +40,12 @@ export class BrightnessCommand implements LightCommand {
 
     }
 
+    public reset(): void {
+        this.executed = false;
+    }
+
+    public toString(): string {
+        return "BrightnessCommand for light |" + this.light + "|, values |" + this.values.toString() + "|, executed |" + this.executed + "|";
+    }
+
 }
