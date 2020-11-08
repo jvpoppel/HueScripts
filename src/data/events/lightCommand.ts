@@ -1,7 +1,6 @@
 /**
  * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
  */
-import {Light} from "../../model/light";
 
 export enum CommandType {
     BRIGHTNESS,
@@ -20,7 +19,7 @@ export interface LightCommand {
     values: Array<number>;
     executed: boolean;
 
-    execute();
+    execute(): boolean;
 
     reset();
 

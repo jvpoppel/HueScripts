@@ -1,4 +1,3 @@
-import {HueAPIService} from "../service/hueAPIService";
 import {TSMap} from "typescript-map";
 import {Page} from "../data/page";
 import {WebElements} from "./webElements";
