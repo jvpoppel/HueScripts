@@ -25,8 +25,6 @@ export class ScriptRunner {
         let eventTimes: string[] = queue.eventTimes();
         let lastIndex: number = 0; // Contains the last used index of eventTimes
 
-        console.log(eventTimes);
-
         while (!this.stopped) {
             ScriptRunner.updateFrontendTimer(time);
 
@@ -38,6 +36,9 @@ export class ScriptRunner {
                     lastIndex ++;
                 }
             }
+            // TODO: Calculate the time it took to parse commands at time,
+            // if < 100ms, wait that remaining time
+            // if >= 100ms, log warning that it took longer than 100ms and skip wait
             await this.sleep(100);
             time++;
         }

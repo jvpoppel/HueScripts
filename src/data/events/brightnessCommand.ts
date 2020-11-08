@@ -16,6 +16,7 @@ export class BrightnessCommand implements LightCommand {
     light: number;
     type: CommandType;
     forTest: boolean;
+    transitionTime: string;
 
     constructor(light: number, values: any[], forTest: boolean = false) {
         if (values.length == 0) {
@@ -29,6 +30,13 @@ export class BrightnessCommand implements LightCommand {
         this.executed = false;
         this.type = CommandType.BRIGHTNESS;
         this.forTest = forTest;
+
+        // Length can only be 1 or 2 because of validation in constructor.
+        if (this.values.length == 1) {
+            this.transitionTime = "";
+        } else {
+            this.transitionTime = "" + this.values[1];
+        }
 
         if (forTest) {
             Logger.getLogger().warn("BrightnessCommand created for testing.");
@@ -61,6 +69,14 @@ export class BrightnessCommand implements LightCommand {
 
         return true;
 
+    }
+
+    public formattedValuesWithoutTransition(): string {
+        return "" + this.values[0];
+    }
+
+    public getTransitionTime(): string {
+        return this.transitionTime;
     }
 
     public reset(): void {

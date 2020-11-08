@@ -5,6 +5,7 @@ import {Row} from "../data/row";
 import {BrightnessCommand} from "../data/events/brightnessCommand";
 import {ColorCommand} from "../data/events/colorCommand";
 import {Colors} from "../util/colors";
+import {PageCommand} from "../data/events/pageCommand";
 
 export class CommandInput {
 
@@ -15,6 +16,7 @@ export class CommandInput {
     private _blue: number;
     private _brightness: number;
     private _transition: number;
+    private _page: number;
     private _type: CommandType;
     private logger: Logger = Logger.getLogger();
 
@@ -53,7 +55,12 @@ export class CommandInput {
         return this;
     }
 
-    public setType(type: number): CommandInput {
+    public setPage(page: number): CommandInput {
+        this._page = page;
+        return this;
+    }
+
+    public setType(type: CommandType): CommandInput {
         this._type = type;
         return this;
     }
@@ -86,6 +93,10 @@ export class CommandInput {
         return this._transition;
     }
 
+    public page(): number {
+        return this._page;
+    }
+
     public type(): CommandType {
         return this._type;
     }
@@ -101,7 +112,7 @@ export class CommandInput {
             return false;
         }
 
-        if (this.light() == null) {
+        if (this.light() == null && this.type() != CommandType.PAGE) {
             this.logger.error("CommandInput: Light was not set.");
             return false;
         }
@@ -141,9 +152,22 @@ export class CommandInput {
 
                 let xyPoint: number[] = Colors.convertRGBtoXY(this.red(), this.green(), this.blue());
 
-                Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
+                Session.get().currentPage().getSequence().addRow(this.time(),
                     new Row(this.time(),
-                        new ColorCommand(this.light(), [xyPoint[0], xyPoint[1], this.transition()])));
+                        new ColorCommand(this.light(), [xyPoint[0], xyPoint[1], this.transition()])
+                            .setOriginalValues([this.red(), this.green(), this.blue()])));
+                return true;
+
+            case CommandType.PAGE:
+                if (this.page() == null) {
+                    this.logger.error("CommandInput: Page was not set.");
+                    return false;
+                }
+
+                Session.get().currentPage().getSequence().addRow(this.time(),
+                    new Row(this.time(),
+                        new PageCommand([this.page()])));
+
                 return true;
         }
     }

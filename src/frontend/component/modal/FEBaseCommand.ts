@@ -6,6 +6,7 @@ import {CommandInput} from "../../../model/commandInput";
 import {FEBrightnessCommand} from "./FEBrightnessCommand";
 import {FEColorCommand} from "./FEColorCommand";
 import {BaseModal} from "../../../static/baseModal";
+import {FEPageCommand} from "./FEPageCommand";
 
 export class FEBaseCommand {
 
@@ -39,7 +40,7 @@ export class FEBaseCommand {
         return result;
     }
 
-    public beginOfForm(): string {
+    public beginOfForm(withoutLightID: boolean = false): string {
         let result: string = "";
 
         result += '<div class="container-fluid">\n' +
@@ -51,8 +52,11 @@ export class FEBaseCommand {
             '                    <input class="rowInput" type="number" min="0" max="999999" value="' + this.time.value() + '" id="commandTimeInput">\n' +
             '                </div>\n' +
             '                <div class="col-md-6"></div>\n' +
-            '            </div>\n' +
-            '            <div class="row">\n' +
+            '            </div>\n';
+        if (withoutLightID) {
+            return result;
+        }
+        result += '      <div class="row">\n' +
             '                <div class="col-md-4 text-right">\n' +
             '                    <label>' + this.light.label() + '</label>\n' +
             '                </div>\n' +
@@ -122,6 +126,10 @@ export class FEBaseCommand {
                 newCommand.setRed(specificData_color[0]).setGreen(specificData_color[1]).setBlue(specificData_color[2]).setTransition(specificData_color[3]);
                 success = newCommand.submit();
                 break;
+            case CommandType.PAGE:
+                let specificData_page = FEPageCommand.get().parse();
+                newCommand.setPage(specificData_page[0]);
+                success = newCommand.submit();
         }
 
         if (!success) {

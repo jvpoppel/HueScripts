@@ -12,3 +12,7 @@ rowInput {
 .font-small {
     font-size: 8px;
 }
+
+.hidden {
+    visibility: hidden;
+}

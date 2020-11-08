@@ -71,8 +71,16 @@
             <!-- Table containing the commands -->
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <div id="divTable" class="table-responsive">
-
+                    <div class="table-responsive">
+                        <table id="sequence" class="table table-hover hidden">
+                            <tr id="sequence_head">
+                                <th>Time</th>
+                                <th>Light</th>
+                                <th>Command</th>
+                                <th>Values</th>
+                                <th>Transition time</th>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -84,7 +92,7 @@
                 <div class="col-sm-6 text-center">
                 </div>
                 <div class="col-sm-3 text-center">
-                    <button type="button" id="infBtn" name="addBtn" class="btn btn-info btn-sm">Find light ID's</button>
+                    <button type="button" id="infBtn" name="addBtn" class="btn btn-info btn-sm">Find light IDs</button>
                 </div>
             </div>
 
@@ -335,11 +343,25 @@
                         <div class="modal-body">
                             <div>
                                 <h4 class="modal-title">Command type</h4>
-                                <span>Brightness <input type="radio" name="commandType" value="brightness" id="radioBtnBrightness"></span>
-                                <span>On <input type="radio" name="commandType" value="on" id="radioBtnOn"></span>
-                                <span>Off <input type="radio" name="commandType" value="off" id="radioBtnOff"></span>
-                                <span>Color <input type="radio" name="commandType" value="color" id="radioBtnColor"></span>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-primary" id="radioBtnBrightness">
+                                        <input type="radio" name="commandType" value="brightness">Brightness
+                                    </label>
+                                    <label class="btn btn-primary" id="radioBtnOn">
+                                        <input type="radio" name="commandType" value="on" >On
+                                    </label>
+                                    <label class="btn btn-primary" id="radioBtnOff">
+                                        <input type="radio" name="commandType" value="off">Off
+                                    </label>
+                                    <label class="btn btn-primary" id="radioBtnColor">
+                                        <input type="radio" name="commandType" value="color">Color
+                                    </label>
+                                    <label class="btn btn-primary" id="radioBtnPage">
+                                        <input type="radio" name="commandType" value="page">Page
+                                    </label>
+                                </div>
                             </div>
+
                             <div id="commandModalContent">
 
                             </div>
@@ -355,7 +377,7 @@
             <hr>
         </div>
 
-        <!-- JQuery, Bootstrap and jshue libraries incl. dependencies -->
+        <!-- JQuery and Bootstrap libraries -->
         <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
