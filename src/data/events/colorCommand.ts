@@ -12,7 +12,6 @@ import {Logger} from "../../util/logger";
  */
 export class ColorCommand implements LightCommand {
     values: any;
-    executed: boolean;
     light: number;
     type: CommandType;
     forTest: boolean;
@@ -30,7 +29,6 @@ export class ColorCommand implements LightCommand {
 
         this.light = light;
         this.values = values;
-        this.executed = false;
         this.type = CommandType.COLOR;
         this.forTest = forTest;
 
@@ -47,11 +45,6 @@ export class ColorCommand implements LightCommand {
     }
 
     public execute(): boolean {
-        // If already executed, don't do anything;
-        if (this.executed) {
-            return false;
-        }
-        this.executed = true;
 
         let payload;
 
@@ -80,16 +73,12 @@ export class ColorCommand implements LightCommand {
         return this.transitionTime;
     }
 
-    public reset(): void {
-        this.executed = false;
-    }
-
     public setOriginalValues(values: number[]): ColorCommand {
         this.originalValues = values;
         return this;
     }
 
     public toString(): string {
-        return "ColorCommand for light |" + this.light + "|, values |" + this.values.toString() + "|, executed |" + this.executed + "|";
+        return "ColorCommand for light |" + this.light + "|, values |" + this.values.toString();
     }
 }

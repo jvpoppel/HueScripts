@@ -12,7 +12,6 @@ import {Logger} from "../../util/logger";
  */
 export class BrightnessCommand implements LightCommand {
     values: any[];
-    executed: boolean;
     light: number;
     type: CommandType;
     forTest: boolean;
@@ -27,7 +26,6 @@ export class BrightnessCommand implements LightCommand {
         }
         this.light = light;
         this.values = values;
-        this.executed = false;
         this.type = CommandType.BRIGHTNESS;
         this.forTest = forTest;
 
@@ -44,11 +42,6 @@ export class BrightnessCommand implements LightCommand {
     }
 
     public execute(): boolean {
-        // If already executed, don't do anything;
-        if (this.executed) {
-            return false;
-        }
-        this.executed = true;
 
         let payload;
 
@@ -79,12 +72,8 @@ export class BrightnessCommand implements LightCommand {
         return this.transitionTime;
     }
 
-    public reset(): void {
-        this.executed = false;
-    }
-
     public toString(): string {
-        return "BrightnessCommand for light |" + this.light + "|, values |" + this.values.toString() + "|, executed |" + this.executed + "|";
+        return "BrightnessCommand for light |" + this.light + "|, values |" + this.values.toString();
     }
 
 }

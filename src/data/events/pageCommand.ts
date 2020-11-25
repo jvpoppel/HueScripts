@@ -3,7 +3,6 @@
  */
 
 import { CommandType, LightCommand } from "./lightCommand";
-import {HueAPIService} from "../../service/hueAPIService";
 import {Logger} from "../../util/logger";
 
 /**
@@ -12,7 +11,6 @@ import {Logger} from "../../util/logger";
  */
 export class PageCommand implements LightCommand {
     values: any[];
-    executed: boolean;
     light: number; // Not used in this command and thus will be null.
     type: CommandType;
     forTest: boolean;
@@ -22,7 +20,6 @@ export class PageCommand implements LightCommand {
             throw Error("PageCommand had invalid amount of values");
         }
         this.values = values;
-        this.executed = false;
         this.type = CommandType.PAGE;
         this.forTest = forTest;
 
@@ -36,11 +33,6 @@ export class PageCommand implements LightCommand {
      * This because the command will be "executed" on Queue parsing.
      */
     public execute(): boolean {
-        // If already executed, don't do anything;
-        if (this.executed) {
-            return false;
-        }
-        this.executed = true;
 
         return true;
 
@@ -54,12 +46,8 @@ export class PageCommand implements LightCommand {
         return "";
     }
 
-    public reset(): void {
-        this.executed = false;
-    }
-
     public toString(): string {
-        return "PageCommand for page |" + this.values[0] +  "|, executed |" + this.executed + "|";
+        return "PageCommand for page |" + this.values[0];
     }
 
 }

@@ -18,11 +18,8 @@ export interface LightCommand {
     type: CommandType;
     light: number;
     values: Array<number>;
-    executed: boolean;
 
     execute(): boolean;
-
-    reset();
 
     toString(): string;
 
