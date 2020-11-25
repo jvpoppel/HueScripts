@@ -24,9 +24,9 @@ export class ScriptRunner {
         let time: number = 0;
         let eventTimes: string[] = queue.eventTimes();
         let lastIndex: number = 0; // Contains the last used index of eventTimes
-
         while (!this.stopped) {
             ScriptRunner.updateFrontendTimer(time);
+            let startTimeOfTick = Date.now();
 
             if (eventTimes[lastIndex] === time.toString(10)) {
                 queue.commandsAtTime(time.toString(10)).forEach(function (command: LightCommand) {
@@ -36,10 +36,13 @@ export class ScriptRunner {
                     lastIndex ++;
                 }
             }
-            // TODO: Calculate the time it took to parse commands at time,
-            // if < 100ms, wait that remaining time
-            // if >= 100ms, log warning that it took longer than 100ms and skip wait
-            await this.sleep(100);
+            let deltaTime = Date.now() - startTimeOfTick;
+            if (deltaTime < 100) {
+                await this.sleep(deltaTime);
+            } else {
+                Logger.getLogger().warn("Tick at time " + time + " took " + deltaTime + "ms, skipping wait");
+            }
+
             time++;
         }
 
