@@ -38,7 +38,7 @@ export class ScriptRunner {
             }
             let deltaTime = Date.now() - startTimeOfTick;
             if (deltaTime < 100) {
-                await this.sleep(deltaTime);
+                await this.sleep(100 - deltaTime);
             } else {
                 Logger.getLogger().warn("Tick at time " + time + " took " + deltaTime + "ms, skipping wait");
             }
