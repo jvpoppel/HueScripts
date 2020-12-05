@@ -173,23 +173,15 @@ export class CommandInput {
                 return true;
 
             case CommandType.ON:
-                if (this.transition() == null) {
-                    this.logger.error("CommandInput: Transition was not set.");
-                    return false;
-                }
                 Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
                     new Row(this.time(),
-                        new OnCommand(this.light(), [this.transition()])));
+                        new OnCommand(this.light(), [])));
                 return true;
 
             case CommandType.OFF:
-                if (this.transition() == null) {
-                    this.logger.error("CommandInput: Transition was not set.");
-                    return false;
-                }
                 Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
                     new Row(this.time(),
-                        new OffCommand(this.light(), [this.transition()])));
+                        new OffCommand(this.light(), [])));
                 return true;
         }
     }

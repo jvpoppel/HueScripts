@@ -18,7 +18,7 @@ export class OnCommand implements LightCommand {
     transitionTime: string;
 
     constructor(light: number, values: any[], forTest: boolean = false) {
-        if (values.length > 1) {
+        if (values.length > 0) {
             throw Error("OnCommand had too many values");
         }
         this.light = light;
@@ -26,12 +26,7 @@ export class OnCommand implements LightCommand {
         this.type = CommandType.ON;
         this.forTest = forTest;
 
-        // Length can only be 0 or 1 because of validation in constructor.
-        if (this.values.length == 0) {
-            this.transitionTime = "";
-        } else {
-            this.transitionTime = "" + this.values[0];
-        }
+        this.transitionTime = "";
 
         if (forTest) {
             Logger.getLogger().warn("OnCommand created for testing.");
@@ -40,14 +35,7 @@ export class OnCommand implements LightCommand {
 
     public execute(): boolean {
 
-        let payload;
-
-        // Length can only be 0 or 1 because of validation in constructor.
-        if (this.values.length == 0) {
-            payload = {"on": true};
-        } else {
-            payload = {"on": true, "transitiontime": +this.values[0]};
-        }
+        let payload = {"on": true};
 
 
         Logger.getLogger().debug("Send payload " + JSON.stringify(payload) + " to light " + this.light);
@@ -69,7 +57,7 @@ export class OnCommand implements LightCommand {
     }
 
     public toString(): string {
-        return "OnCommand for light |" + this.light + "|, values |" + this.values.toString();
+        return "OnCommand for light |" + this.light + "|";
     }
 
 }
