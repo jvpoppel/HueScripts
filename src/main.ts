@@ -12,6 +12,8 @@ import {ScriptRunner} from "./static/scriptRunner";
 import {Row} from "./data/row";
 import {FERow} from "./frontend/component/data/FERow";
 import {FEPageCommand} from "./frontend/component/modal/FEPageCommand";
+import {FEOnCommand} from "./frontend/component/modal/FEOnCommand";
+import {FEOffCommand} from "./frontend/component/modal/FEOffCommand";
 
 $(() => {
     new Main();
@@ -115,6 +117,16 @@ export class Main {
                 WebElements.COMMAND_MODAL_INPUTAREA.html(FEColorCommand.get().content());
                 FEColorCommand.get().setFieldContents();
                 Session.get().setCommandModalInputType(CommandType.COLOR);
+                break;
+            case 2:
+                WebElements.COMMAND_MODAL_INPUTAREA.html(FEOnCommand.get().content());
+                FEOnCommand.get().setFieldContents();
+                Session.get().setCommandModalInputType(CommandType.ON);
+                break;
+            case 3:
+                WebElements.COMMAND_MODAL_INPUTAREA.html(FEOffCommand.get().content());
+                FEOffCommand.get().setFieldContents();
+                Session.get().setCommandModalInputType(CommandType.OFF);
                 break;
             case 4:
                 WebElements.COMMAND_MODAL_INPUTAREA.html(FEPageCommand.get().content());

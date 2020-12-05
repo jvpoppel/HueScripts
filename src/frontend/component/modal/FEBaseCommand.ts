@@ -7,6 +7,8 @@ import {FEBrightnessCommand} from "./FEBrightnessCommand";
 import {FEColorCommand} from "./FEColorCommand";
 import {BaseModal} from "../../../static/baseModal";
 import {FEPageCommand} from "./FEPageCommand";
+import {FEOnCommand} from "./FEOnCommand";
+import {FEOffCommand} from "./FEOffCommand";
 
 export class FEBaseCommand {
 
@@ -130,6 +132,17 @@ export class FEBaseCommand {
                 let specificData_page = FEPageCommand.get().parse();
                 newCommand.setPage(specificData_page[0]);
                 success = newCommand.submit();
+                break;
+            case CommandType.ON:
+                let specificData_on = FEOnCommand.get().parse();
+                newCommand.setTransition(specificData_on[0]);
+                success = newCommand.submit();
+                break;
+            case CommandType.OFF:
+                let specificData_off = FEOffCommand.get().parse();
+                newCommand.setTransition(specificData_off[0]);
+                success = newCommand.submit();
+                break;
         }
 
         if (!success) {

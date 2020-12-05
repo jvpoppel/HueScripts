@@ -6,6 +6,8 @@ import {BrightnessCommand} from "../data/events/brightnessCommand";
 import {ColorCommand} from "../data/events/colorCommand";
 import {Colors} from "../util/colors";
 import {PageCommand} from "../data/events/pageCommand";
+import {OnCommand} from "../data/events/onCommand";
+import {OffCommand} from "../data/events/offCommand";
 
 export class CommandInput {
 
@@ -168,6 +170,26 @@ export class CommandInput {
                     new Row(this.time(),
                         new PageCommand([this.page()])));
 
+                return true;
+
+            case CommandType.ON:
+                if (this.transition() == null) {
+                    this.logger.error("CommandInput: Transition was not set.");
+                    return false;
+                }
+                Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
+                    new Row(this.time(),
+                        new OnCommand(this.light(), [this.transition()])));
+                return true;
+
+            case CommandType.OFF:
+                if (this.transition() == null) {
+                    this.logger.error("CommandInput: Transition was not set.");
+                    return false;
+                }
+                Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
+                    new Row(this.time(),
+                        new OffCommand(this.light(), [this.transition()])));
                 return true;
         }
     }
