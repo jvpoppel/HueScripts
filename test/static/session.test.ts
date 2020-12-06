@@ -4,11 +4,11 @@ import {Session} from "../../src/static/session";
 describe('Basic page functionality', () => {
 
     const session = Session.get();
-    it('Set followed by Get', () => {
+    it('Set page followed by Get page', () => {
         session.changeToPage(1);
         expect(session.currentPage().getID()).to.be.equal(1, "Page should be 1 after change to page 1");
         session.changeToPage(6);
-        expect(session.currentPage().getID()).to.be.equal(6, "Page should be 1 after change to page 6");
+        expect(session.currentPage().getID()).to.be.equal(6, "Page should be 6 after change to page 6");
     });
 
     it('Set followed by error on page ID', () => {
