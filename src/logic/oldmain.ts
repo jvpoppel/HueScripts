@@ -2,7 +2,14 @@
  * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
  */
 
-var hue = jsHue(); //Instance of Hue
+
+import * as colorsAPI from '../../lib/colors.js';
+import * as jsHue from '../../lib/jshue.js';
+import { Page } from "../data/page";
+import { Light } from "../model/light";
+import { TSMap } from "typescript-map";
+
+var hue = jsHue();
 var bridgeIP = localStorage.getItem("bridgeIP");
 var bridge;
 var username = localStorage.getItem("bridgeUser");
@@ -19,10 +26,11 @@ var currentPage = 1;
 
 var started = false;
 
-var pagesMap = new Map();
+var pagesMap = new TSMap();
+var lights = new TSMap();
 
 
-$(document).ready(async function() {
+$(document).ready(function() {
     // First, initialize the pages map
     for (var i = 1; i <= 6; i++) {
         pagesMap.set(i, new Page(i));
@@ -39,6 +47,9 @@ $(document).ready(async function() {
 	});
 });
 
+/*
+    TODO: Rework sound
+
 inputSound.onchange = function(e){
     var sound = document.getElementById('sound');
     sound.src = URL.createObjectURL(this.files[0]);
@@ -48,21 +59,22 @@ inputSound.onchange = function(e){
         URL.revokeObjectURL(this.src);
     }
 };
+ */
 
 /**
  * Change dropdown menu's based on light IDs on bridge
  */
 async function changeDropdownLightIDs() {
 
-    const addRowLightSelect = document.getElementById("addRowLight");
-    const editRowLightSelect = document.getElementById("editRowLight");
+    const addRowLightSelect = (<HTMLSelectElement> document.getElementById("addRowLight"));
+    const editRowLightSelect = (<HTMLSelectElement> document.getElementById("editRowLight"));
     let lightIDs = [];
     await getLocalLights().then(response =>
         lightIDs = response);
     console.log(lightIDs);
     for (let index = 0; index < lightIDs.length; index++) {
-        let addOption = document.createElement("option");
-        let editOption = document.createElement("option");
+        let addOption: HTMLOptionElement = document.createElement("option");
+        let editOption: HTMLOptionElement = document.createElement("option");
         addOption.text = lightIDs[index];
         editOption.text = lightIDs[index];
         addRowLightSelect.add(addOption);
@@ -94,10 +106,11 @@ function getBridges() {
  * Else: Start bridge connecting.
  */
 function checkBridge() {
+    let ipModal = $('#ipModal');
     if ((bridgeIP === null) || (username === null)) {
         getBridges();
-        $('#ipModal').modal({backdrop: "static"});
-        $('#ipModal').modal('show');
+        ipModal.modal({backdrop: "static"});
+        ipModal.modal('show');
     } else {
         bridge = hue.bridge(bridgeIP);
         user = bridge.user(username);
@@ -117,9 +130,11 @@ async function modalSelectIP() {
     localStorage.setItem("bridgeIP", fetchIP);
     bridge = hue.bridge(fetchIP);
 
+    let bridgeModal = $('#bridgeModal');
+
     $('#ipModal').modal('hide');
-    $('#bridgeModal').modal({backdrop: "static"});
-    $('#bridgeModal').modal('show');
+    bridgeModal.modal({backdrop: "static"});
+    bridgeModal.modal('show');
     // create user account (requires link button to be pressed)
     var linked = false;
     while (!linked) { // Keeps looping until an username has been correctly fetched and set.
@@ -138,7 +153,7 @@ async function modalSelectIP() {
             }
         });
     }
-    $('#bridgeModal').modal('hide');
+    bridgeModal.modal('hide');
     // Change dropdown menu's based on the found bridge.
     await changeDropdownLightIDs();
 }
@@ -147,18 +162,20 @@ async function modalSelectIP() {
  * Function to show the 'Bridge successfully connected' modal.
  */
 function bridgeConnectSuccess() {
+    let successModal = $('#successModal');
     $('#bridgeModal').modal('hide');
-    $('#successModal').modal({backdrop: "static"});
-    $('#successModal').modal('show');
+    successModal.modal({backdrop: "static"});
+    successModal.modal('show');
 }
 
 /**
  * Function that calls the modal on which the JSON input is present.
  */
 function loadFnc() {
-    
-    $('#inputModal').modal({backdrop: "static"});
-    $('#inputModal').modal('show');
+
+    let inputModal = $('#inputModal');
+    inputModal.modal({backdrop: "static"});
+    inputModal.modal('show');
 }
 
 function saveFnc() {
@@ -199,7 +216,7 @@ function submitLoadModal() {
 function jsonSubmit(input) {
     console.log("Parsing JSON Sequence: \n" + input);
 
-    var arr = jQuery.parseJSON(input);
+    const arr = jQuery.parseJSON(input);
     sequence = $.map(arr, function(el) { return el; });
 	sequence.sort(function(a, b){
 		return a.time - b.time;
@@ -246,8 +263,6 @@ async function testLight(id) {
     user.setLightState(id, { "bri": 255});
 }
 
-
-
 /**
  * Function called after loading a JSON string, maps this sequence to a table.
  */
@@ -263,7 +278,7 @@ function createCmdTable() {
     curTable.append("<tr>");
     curTable.append("<th>Time</th>");
     curTable.append("<th>Light</th>");
-    curTable.append("<th>Command</th>");
+    curTable.append("<th>LightCommand</th>");
     curTable.append("<th>Value</th>");
 	curTable.append("<th></th>");
     curTable.append("</thead><tbody>");
@@ -287,9 +302,10 @@ function createCmdTable() {
 		row.append('<td><button type="button" id="rowEdit_' + tableIndex + '">Edit');
 		var rEdit = $("#rowEdit_"+tableIndex);
 		rEdit.attr("class","btn btn-info btn-sm");
+		// TODO: Rework
 		rEdit.on('click', function() {
-			var suffix = event.target.id.match(/\d+/);
-            modifyRow(suffix[0], rEdit);
+			//let suffix = event.target.id.match(/\d+/);
+            modifyRow(tableIndex, rEdit);
         });
 		rEdit.append("</button></td>");
         row.append("</tr>");
@@ -304,11 +320,13 @@ function createCmdTable() {
 function startFnc() {
     if (started === false) {
 
-        sound.play();
+        // TODO: Rework sound
+        // sound.play();
         time = 0;
 		lastExecuted = 0;
         $("#timer").html("Timer: "+ time);
-        checkCmd();
+        // TODO: Improve
+        checkCmd(0);
         timeInterval = window.setInterval(update, 100);
         started = true;
     }
@@ -319,11 +337,13 @@ function startFnc() {
  */
 function stopFnc() {
     if (started === true) {
-        sound.pause();
+        // TODO: Rework sound
+        // sound.pause();
         clearInterval(timeInterval);
 		$("#row" + Number(lastExecuted - 1)).removeClass("table-info");
         started = false;
-        sound.load();
+        // TODO: Rework sound
+        // sound.load();
     }
 }
 
@@ -441,7 +461,8 @@ function checkCmd(asyncTime) {
                 time = 0;
                 lastExecuted = 0;
                 $("#timer").html("Timer: "+ time);
-                checkCmd();
+                // TODO: Improve
+                checkCmd(0);
                 timeInterval = window.setInterval(update, 100);
                 break;
             default:
@@ -489,7 +510,9 @@ function editRow() {
 
     editButton.unbind( "click" );
 	$("#editModal").modal('hide');
-	var row = $("#editRowID").val();
+	// TODO: Improve
+	//@ts-ignore
+	let row: number = $("#editRowID").val();
 	sequence[row].light = $("#editRowLight").val();
 	sequence[row].time = $("#editRowTime").val();
 	sequence[row].wrd = $("#editRowValue").val();
@@ -509,7 +532,9 @@ function delRow() {
 
     editButton.unbind( "click" );
 	$("#editModal").modal('hide');
-	var row = $("#editRowID").val();
+	// TODO: improve
+	// @ts-ignore
+    let row: number = $("#editRowID").val();
 	sequence.splice(row, 1);
 	createCmdTable();
 
@@ -526,9 +551,11 @@ function modifyRow(row, elem) {
 	$("#editRowTime").val(sequence[row].time);
 	$("#editRowValue").val(sequence[row].wrd);
 	$("#editRowCommand").val(sequence[row].cmd);
-	
-	$("#editModal").modal({backdrop: "static"});
-	$("#editModal").modal('show');
+
+	let editModal = $("#editModal");
+
+    editModal.modal({backdrop: "static"});
+    editModal.modal('show');
 	
 }
 
@@ -542,7 +569,7 @@ function modifyRow(row, elem) {
  */
 let convertRGB = function(red, green, blue) {
 
-	return colors.rgbToCIE1931(red, green, blue);
+	return colorsAPI.colors().rgbToCIE1931(red, green, blue);
 };
 
 /**
@@ -572,12 +599,11 @@ let discoverBridges = async function(url) {
  */
 let getLightIDs = async function(url) {
     console.log("API Call: getLightIDs");
-    var response = 0;
+    let response = 0;
     await fetch(url).then(
         (resp) => resp.json().then(
             function(data) {
-                response = Object.keys(data);
-                return response;
+                return Object.keys(data);
     }));
     return response;
 };
@@ -590,8 +616,9 @@ async function getLocalLights() {
     if (localLights === undefined) {
         let lightIDs = [];
         let apiURL = "http://" + bridgeIP + "/api/" + username + "/lights";
-        await getLightIDs(apiURL).then(response =>
-            lightIDs = response);
+        await getLightIDs(apiURL).then(lightIDsResponse =>
+            // @ts-ignore
+            lightIDs = lightIDsResponse);
         localLights = lightIDs;
     }
 
@@ -617,10 +644,10 @@ function changePage(id) {
 
     let currentCmdTable = JSON.stringify(sequence);
 
-    pagesMap.get(currentPage).setCommands(currentCmdTable);
+    (<Page> pagesMap.get(currentPage)).setCommands(currentCmdTable);
     sequence = [];
     try {
-        jsonSubmit(pagesMap.get(id).getCommands())
+        jsonSubmit((<Page> pagesMap.get(id)).getCommands())
     } catch (exception) {
         console.log("Tried to parse sequence for page ID " + id + ", but failed.");
     }
@@ -632,4 +659,19 @@ function changePage(id) {
     newPageButton.addClass("btn-secondary");
 
     currentPage = id;
+}
+
+/**
+ * Initialize the map containing all Light objects.
+ * This is to be run every time a sequence starts, to make sure all known lights are back at their init state.
+ */
+async function initLights() {
+    lights = new TSMap();
+    let lightIDs = [];
+    await getLocalLights().then(response =>
+        lightIDs = response);
+
+    for (let index = 0; index < lightIDs.length; index++) {
+        lights.set(lightIDs[index], new Light(lightIDs[index]));
+    }
 }
