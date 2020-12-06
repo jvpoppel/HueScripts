@@ -86,6 +86,7 @@ export class WebElements {
 
     static MODAL_TIME_INPUT(): JQuery<HTMLElement> { return $("#commandTimeInput"); }
     static MODAL_LIGHT_INPUT(): JQuery<HTMLElement> { return $("#commandLightInput"); }
+    static MODAL_LIGHT_ALLLIGHTS(): JQuery<HTMLElement> { return $("#commandLightAllLights"); }
     static MODAL_TRANSITION_INPUT(): JQuery<HTMLElement> { return $("#commandTransitionInput"); }
     static MODAL_BRIGHTNESS_INPUT(): JQuery<HTMLElement> { return $("#commandBrightnessInput"); }
     static MODAL_RED_INPUT(): JQuery<HTMLElement> { return $("#commandRedInput"); }

@@ -5,6 +5,7 @@
 import { CommandType, LightCommand } from "./lightCommand";
 import {HueAPIService} from "../../service/hueAPIService";
 import {Logger} from "../../util/logger";
+import {Session} from "../../static/session";
 
 /**
  * HueScripts ColorCommand Class
@@ -59,7 +60,11 @@ export class ColorCommand implements LightCommand {
 
         // In testing, exclude the API service
         if (!this.forTest) {
-            HueAPIService.setLightState(this.light, JSON.stringify(payload));
+            if (this.light == -1) {
+                Session.get().lights().forEach(value => HueAPIService.setLightState(value, JSON.stringify(payload)));
+            } else {
+                HueAPIService.setLightState(this.light, JSON.stringify(payload));
+            }
         }
 
         return true;

@@ -14,6 +14,7 @@ export class FEBaseCommand {
 
     private time: InputField;
     private light: InputField;
+    private allLights: InputField;
     private currentCommandType: CommandType;
     private lightsSelect: string;
 
@@ -22,6 +23,7 @@ export class FEBaseCommand {
     private constructor() {
         this.time = new InputField('Time:', WebElements.MODAL_TIME_INPUT(), 0);
         this.light = new InputField('Light ID:', WebElements.MODAL_LIGHT_INPUT(), null);
+        this.allLights = new InputField('All lights', WebElements.MODAL_LIGHT_ALLLIGHTS(), false);
         this.lightsSelect = this.generateLightsID();
 
         WebElements.COMMAND_MODAL_SUBMIT.get()[0].addEventListener("click", (e:Event) => FEBaseCommand.submit());
@@ -65,7 +67,13 @@ export class FEBaseCommand {
             '                <div class="col-md-2 text-left">\n' +
             '                    <select class="rowInput" id="commandLightInput">' + this.lightsSelect + '</select>\n' +
             '                </div>\n' +
-            '                <div class="col-md-6"></div>\n' +
+            '                <div class="col-md-3 text-right">\n' +
+            '                    <label>' + this.allLights.label() + '</label>\n' +
+            '                </div>\n' +
+            '                <div class="col-md-2 text-left">\n' +
+            '                    <input type="checkbox" id="commandLightAllLights">\n' +
+            '                </div>\n' +
+            '                <div class="col-md-1"></div>\n' +
             '            </div>\n';
 
         return result;
@@ -105,7 +113,13 @@ export class FEBaseCommand {
      */
     public parse(): number[] {
         let inputTime: number = <number> WebElements.MODAL_TIME_INPUT().val();
-        let inputLight: number = <number> WebElements.MODAL_LIGHT_INPUT().val();
+
+        let inputLight: number;
+        if (WebElements.MODAL_LIGHT_ALLLIGHTS().is(":checked")) {
+            inputLight = -1; // For now; light -1 = ALL
+        } else {
+            inputLight = <number>WebElements.MODAL_LIGHT_INPUT().val();
+        }
 
         return [inputTime, inputLight];
     }

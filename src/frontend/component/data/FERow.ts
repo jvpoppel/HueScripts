@@ -6,7 +6,11 @@ export class FERow {
         let command: LightCommand = row.getCommand();
         let light: string = "";
         if (command.light != undefined) {
-            light += command.light;
+            if (command.light == -1) {
+                light = "All";
+            } else {
+                light += command.light;
+            }
         }
 
         return  "<tr onclick=\"alert('Hoi " + row.getTime()+ "')\">" +
