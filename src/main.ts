@@ -14,6 +14,7 @@ import {FERow} from "./frontend/component/data/FERow";
 import {FEPageCommand} from "./frontend/component/modal/FEPageCommand";
 import {FEOnCommand} from "./frontend/component/modal/FEOnCommand";
 import {FEOffCommand} from "./frontend/component/modal/FEOffCommand";
+import {PageMapParser} from "./util/pageMapParser";
 
 $(() => {
     new Main();
@@ -52,7 +53,7 @@ export class Main {
      * Call the method to parse the user input
      */
     public submitLoadModal() {
-        alert("Submit load modal");
+        Session.get().setPageMap(PageMapParser.for(WebElements.LOAD_SEQUENCE_TEXTAREA().get(0).value));
     }
 
     /**
@@ -85,8 +86,9 @@ export class Main {
      * Open the modal to save the current page
      */
     public openSaveSequenceModal() {
-        console.log(JSON.stringify(Session.get().currentPage().getSequence().rows()));
+        console.log(JSON.stringify(Session.get().pageMap().toJSON(), this.Set_toJSON));
         BaseModal.show(WebElements.SAVE_SEQUENCE);
+        WebElements.SAVE_SEQUENCE_TEXTAREA.get(0).textContent = JSON.stringify(Session.get().pageMap().toJSON(), this.Set_toJSON);
     }
 
     /**
@@ -163,5 +165,12 @@ export class Main {
         WebElements.COMMAND_MODAL_CMDON.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(2));
         WebElements.COMMAND_MODAL_CMDOFF.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(3));
         WebElements.COMMAND_MODAL_CMDPAGE.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(4));
+    }
+
+    private Set_toJSON(key, value): any {
+        if (typeof value === 'object' && value instanceof Set) {
+            return Array.from(value);
+        }
+        return value;
     }
 }

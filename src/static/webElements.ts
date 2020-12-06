@@ -63,6 +63,11 @@ export class WebElements {
     static readonly SAVE_SEQUENCE_TEXTAREA: JQuery<HTMLElement> = $("#saveArea");
 
     /*
+        SAVE SEQUENCE MODAL
+    */
+    static LOAD_SEQUENCE_TEXTAREA(): JQuery<HTMLTextAreaElement> { return $("#inputArea"); }
+
+    /*
             LIGHT SELECT MODAL
      */
     static readonly LIGHT_MODAL_TABLE: JQuery<HTMLElement> = $("#lightTable");
