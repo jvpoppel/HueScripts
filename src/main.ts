@@ -86,7 +86,6 @@ export class Main {
      * Open the modal to save the current page
      */
     public openSaveSequenceModal() {
-        console.log(JSON.stringify(Session.get().pageMap().toJSON(), this.Set_toJSON));
         BaseModal.show(WebElements.SAVE_SEQUENCE);
         WebElements.SAVE_SEQUENCE_TEXTAREA.get(0).textContent = JSON.stringify(Session.get().pageMap().toJSON(), this.Set_toJSON);
     }

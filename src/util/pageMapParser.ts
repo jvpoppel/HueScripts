@@ -39,35 +39,27 @@ export class PageMapParser {
         try {
             json = JSON.parse(input);
         } catch (e) {
-            Logger.getLogger().error("PageMapParser: Caught error in JSON.parse: \n" + e);
+            Logger.getLogger().error("PageMapParser: Caught error in JSON parse: \n" + e);
         }
 
         for (let pageId: number = 1; pageId <= 6; pageId ++) {
             result.set(pageId, this.parsePage(json[pageId]));
         }
-        console.log("result");
-        console.log(result);
         return result;
     }
 
     private static parsePage(input: PageInput): Page {
-        console.log("parsepage");
-        console.log(input);
         let result: Page = new Page(input.id);
 
         let rowsMap: Map<number, Array<RowInput>> = input.sequence.pageRows;
-        console.log("pagerows");
-        console.log(rowsMap);
 
-        let pageRows: IterableIterator<number> = rowsMap.keys();
-        let nextTime: IteratorResult<number, any> = pageRows.next();
-        
-        while (nextTime.done == false) {
-            let time = nextTime.value;
-            let timeCommands = input.sequence.pageRows.get(time).values();
+        for (let key in rowsMap) {
+            let time: number = +key;
+            let timeCommands = rowsMap[key].values();
             let nextRow: IteratorResult<RowInput, any> = timeCommands.next();
             while (nextRow.done == false) {
                 result.getSequence().addRow(time, this.parseRow(nextRow.value));
+                nextRow = timeCommands.next();
             }
         }
 
@@ -75,16 +67,12 @@ export class PageMapParser {
     }
 
     private static parseRow(input: RowInput): Row {
-        console.log("parserow");
-        console.log(input);
         let time: string = input.time;
 
         return new Row(+time, this.parseCommand(input.command));
     }
 
     private static parseCommand(input: CommandInput): LightCommand {
-        console.log("parsecommand");
-        console.log(input);
         switch(input.type) {
             case "Brightness":
                 return new BrightnessCommand(
@@ -97,7 +85,7 @@ export class PageMapParser {
                     +input.light,
                     input.values,
                     input.forTest
-                );
+                ).setOriginalValues([+input.originalValues[0], +input.originalValues[1], +input.originalValues[2]]);
             case "On":
                 return new OnCommand(
                     +input.light,

@@ -19,6 +19,9 @@ export class PageCommand implements LightCommand {
         if (values.length != 1) {
             throw Error("PageCommand had invalid amount of values");
         }
+        if (values[0] < 1 || values[0] > 6) {
+            throw Error("PageCommand value was not an integer in set {1 ... 6}");
+        }
         this.values = values;
         this.type = CommandType.PAGE;
         this.forTest = forTest;
