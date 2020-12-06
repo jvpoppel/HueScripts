@@ -12,17 +12,32 @@ import {Logger} from "../../util/logger";
  */
 export class ColorCommand implements LightCommand {
     values: any;
-    executed: boolean;
     light: number;
     type: CommandType;
     forTest: boolean;
+    transitionTime: string;
+    originalValues: number[];
 
     constructor(light: number, values: any, forTest: boolean = false) {
+
+        if (values.length < 2) {
+            throw Error("ColorCommand had too little values");
+        }
+        if (values.length > 3) {
+            throw Error("ColorCommand had too many values");
+        }
+
         this.light = light;
         this.values = values;
-        this.executed = false;
         this.type = CommandType.COLOR;
         this.forTest = forTest;
+
+        // Length can only be 2 or 3 because of validation in constructor.
+        if (this.values.length == 2) {
+            this.transitionTime = "";
+        } else {
+            this.transitionTime = "" + this.values[2];
+        }
 
         if (forTest) {
             Logger.getLogger().warn("ColorCommand created for testing.");
@@ -30,13 +45,15 @@ export class ColorCommand implements LightCommand {
     }
 
     public execute(): boolean {
-        // If already executed, don't do anything;
-        if (this.executed) {
-            return false;
-        }
-        this.executed = true;
 
-        let payload = {"xy": [+this.values[0], +this.values[1]], "transitiontime": +this.values[2]};
+        let payload;
+
+        // Length can only be 2 or 3 because of validation in constructor.
+        if (this.values.length == 2) {
+            payload = {"xy": [+this.values[0], +this.values[1]]}
+        } else {
+            payload = {"xy": [+this.values[0], +this.values[1]], "transitiontime": +this.values[2]};
+        }
 
         Logger.getLogger().debug("Send payload " + JSON.stringify(payload) + " to light " + this.light);
 
@@ -48,11 +65,20 @@ export class ColorCommand implements LightCommand {
         return true;
     }
 
-    public reset(): void {
-        this.executed = false;
+    public formattedValuesWithoutTransition(): string {
+        return "" + this.originalValues[0] + ", " + this.originalValues[1] + ", " + this.originalValues[2];
+    }
+
+    public getTransitionTime(): string {
+        return this.transitionTime;
+    }
+
+    public setOriginalValues(values: number[]): ColorCommand {
+        this.originalValues = values;
+        return this;
     }
 
     public toString(): string {
-        return "ColorCommand for light |" + this.light + "|, values |" + this.values.toString() + "|, executed |" + this.executed + "|";
+        return "ColorCommand for light |" + this.light + "|, values |" + this.values.toString();
     }
 }

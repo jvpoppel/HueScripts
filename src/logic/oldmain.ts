@@ -420,7 +420,13 @@ function checkCmd(asyncTime) {
 		
         switch (cmd) {
             case "bri":
-                body = { "bri": Number(wrd)};
+                wrd = JSON.parse(wrd);
+                if (wrd.length > 1) {
+                    body = { "bri": wrd[0], "transitiontime": wrd[1]};
+                } else {
+                    body = { "bri": Number(wrd)};
+                }
+
                 break;
 				
              case "sat":
@@ -433,7 +439,12 @@ function checkCmd(asyncTime) {
 				
 			case "rgb":
 			    wrd = JSON.parse(wrd);
-			    body = { "xy": convertRGB(wrd[0], wrd[1], wrd[2])};
+                if(wrd.length > 3) {
+                    body = { "xy": convertRGB(wrd[0], wrd[1], wrd[2]), "transitiontime": wrd[3]};
+                } else {
+                    body = { "xy": convertRGB(wrd[0], wrd[1], wrd[2])};
+                }
+
 				break;
 
             case "on":

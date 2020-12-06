@@ -3,10 +3,11 @@
  */
 
 export enum CommandType {
-    BRIGHTNESS,
-    COLOR,
-    ON,
-    OFF
+    BRIGHTNESS = "Brightness",
+    COLOR = "Color",
+    ON = "On",
+    OFF = "Off",
+    PAGE = "Page"
 }
 /**
  * HueScripts LightCommand interface
@@ -17,11 +18,12 @@ export interface LightCommand {
     type: CommandType;
     light: number;
     values: Array<number>;
-    executed: boolean;
 
     execute(): boolean;
 
-    reset();
-
     toString(): string;
+
+    getTransitionTime(): string;
+
+    formattedValuesWithoutTransition(): string;
 }

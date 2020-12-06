@@ -60,12 +60,26 @@ export class Session {
         if (page < 1 || page > 6) {
             throw Error("Tried to change to a non-existent page.");
         }
+        WebElements.PAGE_BUTTON(Session.get().currentPageID).removeClass('btn-secondary');
+        WebElements.PAGE_BUTTON(Session.get().currentPageID).addClass('btn-light');
         this.currentPageID = page;
+        this.pageMap().get(page).getSequence().updateFrontend();
+        WebElements.PAGE_BUTTON(page).addClass('btn-secondary');
+        WebElements.PAGE_BUTTON(page).removeClass('btn-light');
         return this;
     }
 
     public newLight(newLight: number): Session {
         this.foundLights.push(newLight);
         return this;
+    }
+
+    public setPageMap(pageMap: TSMap<number, Page>): void {
+        console.log("oud");
+        console.log((this.pagesMap));
+        this.pagesMap = pageMap;
+        console.log("nieuw");
+        console.log((this.pagesMap));
+        this.changeToPage(1);
     }
 }

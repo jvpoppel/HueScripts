@@ -9,5 +9,10 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
+    resolve: {
+        modules: [
+            "node_modules"
+        ]
+    },
     mode: "development"
 };

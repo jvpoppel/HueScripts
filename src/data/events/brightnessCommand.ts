@@ -12,10 +12,10 @@ import {Logger} from "../../util/logger";
  */
 export class BrightnessCommand implements LightCommand {
     values: any[];
-    executed: boolean;
     light: number;
     type: CommandType;
     forTest: boolean;
+    transitionTime: string;
 
     constructor(light: number, values: any[], forTest: boolean = false) {
         if (values.length == 0) {
@@ -26,9 +26,15 @@ export class BrightnessCommand implements LightCommand {
         }
         this.light = light;
         this.values = values;
-        this.executed = false;
         this.type = CommandType.BRIGHTNESS;
         this.forTest = forTest;
+
+        // Length can only be 1 or 2 because of validation in constructor.
+        if (this.values.length == 1) {
+            this.transitionTime = "";
+        } else {
+            this.transitionTime = "" + this.values[1];
+        }
 
         if (forTest) {
             Logger.getLogger().warn("BrightnessCommand created for testing.");
@@ -36,11 +42,6 @@ export class BrightnessCommand implements LightCommand {
     }
 
     public execute(): boolean {
-        // If already executed, don't do anything;
-        if (this.executed) {
-            return false;
-        }
-        this.executed = true;
 
         let payload;
 
@@ -63,12 +64,16 @@ export class BrightnessCommand implements LightCommand {
 
     }
 
-    public reset(): void {
-        this.executed = false;
+    public formattedValuesWithoutTransition(): string {
+        return "" + this.values[0];
+    }
+
+    public getTransitionTime(): string {
+        return this.transitionTime;
     }
 
     public toString(): string {
-        return "BrightnessCommand for light |" + this.light + "|, values |" + this.values.toString() + "|, executed |" + this.executed + "|";
+        return "BrightnessCommand for light |" + this.light + "|, values |" + this.values.toString();
     }
 
 }

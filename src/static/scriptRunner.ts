@@ -6,9 +6,11 @@ import {Logger} from "../util/logger";
 export class ScriptRunner {
     private static instance: ScriptRunner;
     private stopped: boolean;
+    private running: boolean;
 
     private constructor() {
         this.stopped = false;
+        this.running = false;
     }
 
     public static get() {
@@ -19,16 +21,19 @@ export class ScriptRunner {
     }
 
     public async start() {
+        if (this.running) {
+            Logger.getLogger().warn("ScriptRunner got START command, but is already running");
+            return;
+        }
         Logger.getLogger().info("ScriptRunner STARTED");
         let queue = new Queue();
         let time: number = 0;
         let eventTimes: string[] = queue.eventTimes();
         let lastIndex: number = 0; // Contains the last used index of eventTimes
-
-        console.log(eventTimes);
-
         while (!this.stopped) {
+            this.running = true;
             ScriptRunner.updateFrontendTimer(time);
+            let startTimeOfTick = Date.now();
 
             if (eventTimes[lastIndex] === time.toString(10)) {
                 queue.commandsAtTime(time.toString(10)).forEach(function (command: LightCommand) {
@@ -38,16 +43,23 @@ export class ScriptRunner {
                     lastIndex ++;
                 }
             }
-            await this.sleep(100);
+            let deltaTime = Date.now() - startTimeOfTick;
+            if (deltaTime < 100) {
+                await this.sleep(100 - deltaTime);
+            } else {
+                Logger.getLogger().warn("Tick at time " + time + " took " + deltaTime + "ms, skipping wait");
+            }
+
             time++;
         }
-
-        ScriptRunner.resetCommands(queue);
+        Logger.getLogger().info("ScriptRunner STOPPED");
         this.stopped = false;
+        this.running = false;
+        return;
     }
 
     public stop() {
-        Logger.getLogger().info("ScriptRunner STOPPED");
+        Logger.getLogger().debug("ScriptRunner: set STOP-value to TRUE");
         this.stopped = true;
     }
 
@@ -68,13 +80,5 @@ export class ScriptRunner {
             result = (time - ( time % 10 )) / 10 + "." + ( time%10 );
         }
         WebElements.TIMER().html("Timer: " + result);
-    }
-
-    /**
-     * Reset the 'Executed' value of all commands in queue.
-     * @param queue Queue of commands, which should all be reset.
-     */
-    private static resetCommands(queue: Queue) {
-        queue.map().values().forEach(set => set.forEach(command => command.reset()));
     }
 }
