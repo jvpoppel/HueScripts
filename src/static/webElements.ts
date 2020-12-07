@@ -73,6 +73,13 @@ export class WebElements {
     static readonly LIGHT_MODAL_TABLE: JQuery<HTMLElement> = $("#lightTable");
 
     /*
+            SOUND MODAL
+     */
+    static SOUND_FILE_INPUT(): JQuery<HTMLInputElement> { return $("#inputSound"); }
+    static SOUND_PLAYER(): JQuery<HTMLAudioElement> { return $("#sound"); }
+    static readonly SOUND_SUBMIT: JQuery<HTMLButtonElement> = $("#soundSubmit");
+
+    /*
         COMMAND MODAL
      */
     static readonly COMMAND_MODAL_INPUTAREA: JQuery<HTMLElement> = $("#commandModalContent");

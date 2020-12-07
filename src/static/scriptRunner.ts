@@ -30,6 +30,10 @@ export class ScriptRunner {
         let time: number = 0;
         let eventTimes: string[] = queue.eventTimes();
         let lastIndex: number = 0; // Contains the last used index of eventTimes
+
+        // Start audio
+        WebElements.SOUND_PLAYER().get(0).play();
+
         while (!this.stopped) {
             this.running = true;
             ScriptRunner.updateFrontendTimer(time);
@@ -53,6 +57,10 @@ export class ScriptRunner {
             time++;
         }
         Logger.getLogger().info("ScriptRunner STOPPED");
+        // Stop audio
+        WebElements.SOUND_PLAYER().get(0).pause();
+        WebElements.SOUND_PLAYER().get(0).currentTime = 0;
+
         this.stopped = false;
         this.running = false;
         return;

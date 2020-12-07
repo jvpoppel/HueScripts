@@ -139,6 +139,12 @@ export class Main {
         }
     }
 
+    private static audioChangeEvent() {
+        let files = WebElements.SOUND_FILE_INPUT().get(0).files;
+        WebElements.SOUND_PLAYER().get(0).src = URL.createObjectURL(files[0]);
+        WebElements.SOUND_PLAYER().get(0).load();
+    }
+
     /**
      * This method will bind all event listeners to the DOM model
      */
@@ -158,6 +164,7 @@ export class Main {
         WebElements.SEQUENCE_START.get()[0].addEventListener("click", (e:Event) => this.startSequence());
         WebElements.SEQUENCE_STOP.get()[0].addEventListener("click", (e:Event) => this.stopSequence());
         WebElements.AUDIO_SELECT.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.SOUND_MODAL));
+        WebElements.SOUND_SUBMIT.get()[0].addEventListener("click", (e: Event) => Main.audioChangeEvent());
 
         WebElements.COMMAND_MODAL_CMDBRIGHTNESS.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(0));
         WebElements.COMMAND_MODAL_CMDCOLOR.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(1));
