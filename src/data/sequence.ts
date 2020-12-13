@@ -4,7 +4,6 @@
 import { TSMap } from "typescript-map";
 import { Row } from "./row";
 import {WebElements} from "../static/webElements";
-import {FERow} from "../frontend/component/data/FERow";
 /**
  * HueScripts Sequence Class
  * A sequence is a map of pageRows.
@@ -36,6 +35,8 @@ export class Sequence {
         return this;
     }
 
+
+
     /**
      * Generate a new sequence table on the frontend;
      * To be called after a row addition
@@ -54,7 +55,7 @@ export class Sequence {
         // Rebuild table
         let times: number[] = this.pageRows.keys().sort(function(a, b) { return a - b });
         for (let i = 0; i < times.length; i ++) {
-            this.pageRows.get(times[i]).forEach(row => WebElements.SEQUENCE_TABLE.append(FERow.generate(row)));
+            this.pageRows.get(times[i]).forEach(row => WebElements.SEQUENCE_TABLE.append(row.html()));
         }
 
         // Finally, make the table visible

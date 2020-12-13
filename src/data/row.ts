@@ -4,6 +4,7 @@
 
 import { LightCommand } from "./events/lightCommand";
 import {Logger} from "../util/logger";
+import {ElementId} from "../util/elementId";
 
 /**
  * HueScripts Row Class
@@ -13,11 +14,13 @@ export class Row {
 
     private readonly time: number;
     private readonly command: LightCommand;
+    private readonly elementId: string;
 
     constructor(time: number, command: LightCommand) {
 
         this.time = time;
         this.command = command;
+        this.elementId = ElementId.generate("Row");
 
         Logger.getLogger().info("Added new row: " + time + ", " + command.light + ", " + command.type.toString() + ", "+ command.values.toString());
     }
@@ -28,5 +31,24 @@ export class Row {
 
     public getTime(): number {
         return this.time;
+    }
+
+    public html(): string {
+        let light: string = "";
+        if (this.command.light != undefined) {
+            if (this.command.light == -1) {
+                light = "All";
+            } else {
+                light += this.command.light;
+            }
+        }
+
+        return  "<tr id='" + this.elementId + "'>" +
+            "<td>" + this.getTime() + "</td>" +
+            "<td>" + light + "</td>" +
+            "<td>" + this.command.type + "</td>" +
+            "<td>" + this.command.formattedValuesWithoutTransition() + "</td>" +
+            "<td>" + this.command.getTransitionTime() + "</td>" +
+            "</tr>";
     }
 }

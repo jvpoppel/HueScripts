@@ -16,12 +16,12 @@ export class FEColorCommand {
     private static instance: FEColorCommand;
 
     private constructor() {
-        this.time = 10;
+        this.time = 0;
         this.redLevel = new InputField('Red', WebElements.MODAL_RED_INPUT(), 0);
         this.greenLevel = new InputField('Green', WebElements.MODAL_GREEN_INPUT(), 0);
         this.blueLevel = new InputField('Blue', WebElements.MODAL_BLUE_INPUT(), 0);
         this.transitionTime = new InputField('Transition time:', WebElements.MODAL_TRANSITION_INPUT(), 0);
-        this.light = 5;
+        this.light = 1;
     }
 
     public static get(): FEColorCommand {
