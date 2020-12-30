@@ -60,7 +60,7 @@ export class WebElements {
     /*
             SAVE SEQUENCE MODAL
      */
-    static readonly SAVE_SEQUENCE_TEXTAREA: JQuery<HTMLElement> = $("#saveArea");
+    static readonly SAVE_SEQUENCE_TEXTAREA: JQuery<HTMLTextAreaElement> = $("#saveArea");
 
     /*
         SAVE SEQUENCE MODAL

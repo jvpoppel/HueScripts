@@ -35,9 +35,9 @@ export class ScriptRunner {
         WebElements.SOUND_PLAYER().get(0).play();
 
         while (!this.stopped) {
+            let startTimeOfTick = Date.now();
             this.running = true;
             ScriptRunner.updateFrontendTimer(time);
-            let startTimeOfTick = Date.now();
 
             if (eventTimes[lastIndex] === time.toString(10)) {
                 queue.commandsAtTime(time.toString(10)).forEach(function (command: LightCommand) {

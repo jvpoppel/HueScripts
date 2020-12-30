@@ -84,6 +84,7 @@ export class Main {
      */
     public openSaveSequenceModal() {
         BaseModal.show(WebElements.SAVE_SEQUENCE);
+        WebElements.SAVE_SEQUENCE_TEXTAREA.get(0).textContent = "";
         WebElements.SAVE_SEQUENCE_TEXTAREA.get(0).textContent = JSON.stringify(Session.get().pageMap().toJSON(), this.Set_toJSON);
     }
 
