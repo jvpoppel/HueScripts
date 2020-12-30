@@ -20,7 +20,7 @@ export class WebElements {
     static readonly SHOW_SAVE_SEQUENCE: JQuery<HTMLElement>                 = $("#saveBtn");
     static readonly CLEAR_SEQUENCE: JQuery<HTMLElement>                     = $("#clearBtn");
     static SEQUENCE_ROW_EDIT_BUTTON(rowNumber: number): JQuery<HTMLElement> { return $("#rowEdit_"+rowNumber);  }
-    static SEQUENCE_ROW(rowNumber: number): JQuery<HTMLElement>             { return $("#row" + rowNumber);  }
+    static ELEMENT_BY_ID(id: string): JQuery<HTMLElement>                   { return $("#" + id);  }
     static PAGE_BUTTON(pageNumber: number): JQuery<HTMLElement>             { return $("#btnSelectPage" + pageNumber);  }
 
     static readonly TEST_COMMAND_MODAL: JQuery<HTMLElement>                 = $("#commandBtn");

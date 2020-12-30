@@ -33,6 +33,10 @@ export class Row {
         return this.time;
     }
 
+    public getElementId(): string {
+        return this.elementId;
+    }
+
     public html(): string {
         let light: string = "";
         if (this.command.light != undefined) {

@@ -75,11 +75,7 @@ export class Session {
     }
 
     public setPageMap(pageMap: TSMap<number, Page>): void {
-        console.log("oud");
-        console.log((this.pagesMap));
         this.pagesMap = pageMap;
-        console.log("nieuw");
-        console.log((this.pagesMap));
         this.changeToPage(1);
     }
 }
