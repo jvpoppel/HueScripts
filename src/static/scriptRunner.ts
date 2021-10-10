@@ -27,34 +27,32 @@ export class ScriptRunner {
         }
         Logger.getLogger().info("ScriptRunner STARTED");
         let queue = new Queue();
-        let time: number = 0;
         let eventTimes: string[] = queue.eventTimes();
         let lastIndex: number = 0; // Contains the last used index of eventTimes
+        let startTimeOfRun = Date.now();
+        this.running = true;
 
         // Start audio
         WebElements.SOUND_PLAYER().get(0).play();
 
         while (!this.stopped) {
             let startTimeOfTick = Date.now();
-            this.running = true;
-            ScriptRunner.updateFrontendTimer(time);
+            let deltaTime = startTimeOfTick - startTimeOfRun; // 1 time 'tick' = 100ms, thus floor(deltaTime / 100)
+            let tickNumber = Math.floor(deltaTime / 100);
+            Logger.getLogger().info("Tick time: " + tickNumber);
+            ScriptRunner.updateFrontendTimer(tickNumber);
 
-            if (eventTimes[lastIndex] === time.toString(10)) {
-                queue.commandsAtTime(time.toString(10)).forEach(function (command: LightCommand) {
+            if (eventTimes[lastIndex] === tickNumber.toString(10)) {
+                queue.commandsAtTime(tickNumber.toString(10)).forEach(function (command: LightCommand) {
                     command.execute();
                 });
                 if ((lastIndex + 1) < eventTimes.length) {
                     lastIndex ++;
                 }
             }
-            let deltaTime = Date.now() - startTimeOfTick;
-            if (deltaTime < 100) {
-                await this.sleep(100 - deltaTime);
-            } else {
-                Logger.getLogger().warn("Tick at time " + time + " took " + deltaTime + "ms, skipping wait");
-            }
 
-            time++;
+            // To avoid timing out your browser; implement a wait of 5ms per loop
+            await this.sleep(5);
         }
         Logger.getLogger().info("ScriptRunner STOPPED");
         // Stop audio

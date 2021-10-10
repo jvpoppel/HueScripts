@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.test.ts --require test/setup.ts",
     "clean": "npm run clean-build-steps && rm -rf dist",
-    "tsc": "./node_modules/.bin/tsc",
+    "tsc": "tsc",
     "webpack": "webpack",
     "clean-build-steps": "rm -rf build-tsc",
     "build": "npm run clean && npm run tsc && npm run webpack && npm run clean-build-steps"
