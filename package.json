@@ -36,7 +36,7 @@
     "@types/mocha": "10.0.1",
     "chai": "4.2.0",
     "mocha": "10.1.0",
-    "ts-node": "10.2.1",
+    "ts-node": "10.9.1",
     "webpack-cli": "4.10.0"
   }
 }
