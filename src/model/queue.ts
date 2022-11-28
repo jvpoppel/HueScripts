@@ -49,6 +49,8 @@ export class Queue {
     private addCommandSetToTime(time: string, commandSet: Set<LightCommand>): void {
 
         // If there is already a set mapped to { time }, add all commands to that existing set
+        // TODO: IF command is for all lights, call OR create group of all lights and pass command to that.
+        // TODO: See https://developers.meethue.com/develop/hue-api/groupds-api/
         if (this.queue.has(time)) {
             commandSet.forEach(lightCommand => this.queue.get(time).add(lightCommand));
         } else {

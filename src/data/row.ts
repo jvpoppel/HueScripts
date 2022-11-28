@@ -2,9 +2,10 @@
  * @author Johan van Poppel ( https://github.com/jvpoppel/HueScripts )
  */
 
-import { LightCommand } from "./events/lightCommand";
+import {CommandType, LightCommand} from "./events/lightCommand";
 import {Logger} from "../util/logger";
 import {ElementId} from "../util/elementId";
+import {ColorCommand} from "./events/colorCommand";
 
 /**
  * HueScripts Row Class
@@ -47,7 +48,17 @@ export class Row {
             }
         }
 
-        return  "<tr id='" + this.elementId + "'>" +
+        let style: string = "style=''";
+
+        if (this.command.type == CommandType.COLOR) {
+            let originalValues: number[] = (this.command as ColorCommand).getOriginalValues();
+            style = "style='background-color:rgb({0}, {1}, {2});'";
+            style = style.replace("{0}", String(originalValues[0]));
+            style = style.replace("{1}", String(originalValues[1]));
+            style = style.replace("{2}", String(originalValues[2]));
+        }
+
+        return  "<tr id='" + this.elementId + "' " + style + ">" +
             "<td>" + this.getTime() + "</td>" +
             "<td>" + light + "</td>" +
             "<td>" + this.command.type + "</td>" +

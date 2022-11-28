@@ -83,6 +83,10 @@ export class ColorCommand implements LightCommand {
         return this;
     }
 
+    public getOriginalValues(): number[] {
+        return this.originalValues;
+    }
+
     public toString(): string {
         return "ColorCommand for light |" + this.light + "|, values |" + this.values.toString();
     }
