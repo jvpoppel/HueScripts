@@ -9,6 +9,7 @@ import {BaseModal} from "../../../static/baseModal";
 import {FEPageCommand} from "./FEPageCommand";
 import {FEOnCommand} from "./FEOnCommand";
 import {FEOffCommand} from "./FEOffCommand";
+import {FEStopCommand} from "./FEStopCommand";
 
 export class FEBaseCommand {
 
@@ -155,6 +156,11 @@ export class FEBaseCommand {
             case CommandType.OFF:
                 let specificData_off = FEOffCommand.get().parse();
                 newCommand.setTransition(specificData_off[0]);
+                success = newCommand.submit();
+                break;
+            case CommandType.STOP:
+                let specificData_stop = FEStopCommand.get().parse();
+                newCommand.setTransition(specificData_stop[0]);
                 success = newCommand.submit();
                 break;
         }
