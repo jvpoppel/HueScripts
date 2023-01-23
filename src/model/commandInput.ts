@@ -115,7 +115,7 @@ export class CommandInput {
             return false;
         }
 
-        if (this.light() == null && !((this.type() != CommandType.PAGE) && (this.type() != CommandType.STOP))) {
+        if (this.light() == null && !((this.type() != CommandType.PAGE) || (this.type() != CommandType.STOP))) {
             this.logger.error("CommandInput: Light was not set.");
             return false;
         }
