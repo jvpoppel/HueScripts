@@ -10,7 +10,7 @@ export class FEStopCommand {
 
   private constructor() {
     this.time = 0;
-    this.light = 1;
+    this.light = -1;
   }
 
   public static get(): FEStopCommand {
