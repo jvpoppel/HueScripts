@@ -8,6 +8,7 @@ import {ColorCommand} from "../data/events/colorCommand";
 import {OnCommand} from "../data/events/onCommand";
 import {OffCommand} from "../data/events/offCommand";
 import {PageCommand} from "../data/events/pageCommand";
+import {StopCommand} from "../data/events/stopCommand";
 
 type PageInput = {
     id: number;
@@ -102,6 +103,12 @@ export class PageMapParser {
                 return new PageCommand(
                     input.values,
                     input.forTest
+                );
+            case "Stop":
+                return new StopCommand(
+                  +input.light,
+                  input.values,
+                  input.forTest
                 );
         }
 
