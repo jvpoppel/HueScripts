@@ -21,9 +21,9 @@ export class FEStopCommand {
   }
 
   public content(): string {
-    FEBaseCommand.get().updateTime(this.time).updateLight(this.light).and().setCommandType(CommandType.STOP);
+    FEBaseCommand.get().updateTime(this.time).and().setCommandType(CommandType.STOP);
 
-    return FEBaseCommand.get().beginOfForm();
+    return FEBaseCommand.get().beginOfForm(true);
   }
 
   public updateLight(light: number): FEStopCommand {
