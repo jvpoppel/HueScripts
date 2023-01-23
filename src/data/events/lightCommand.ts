@@ -7,7 +7,8 @@ export enum CommandType {
     COLOR = "Color",
     ON = "On",
     OFF = "Off",
-    PAGE = "Page"
+    PAGE = "Page",
+    STOP = "Stop"
 }
 /**
  * HueScripts LightCommand interface

@@ -88,6 +88,7 @@ export class WebElements {
     static readonly COMMAND_MODAL_CMDOFF: JQuery<HTMLElement> = $("#radioBtnOff");
     static readonly COMMAND_MODAL_CMDCOLOR: JQuery<HTMLElement> = $("#radioBtnColor");
     static readonly COMMAND_MODAL_CMDPAGE: JQuery<HTMLElement> = $("#radioBtnPage");
+    static readonly COMMAND_MODAL_CMDSTOP: JQuery<HTMLElement> = $("#radioBtnStop");
 
     static readonly COMMAND_MODAL_SUBMIT: JQuery<HTMLElement> = $("#btnCommandSubmit");
 

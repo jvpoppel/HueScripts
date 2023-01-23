@@ -12,6 +12,7 @@ import {FEPageCommand} from "./frontend/component/modal/FEPageCommand";
 import {FEOnCommand} from "./frontend/component/modal/FEOnCommand";
 import {FEOffCommand} from "./frontend/component/modal/FEOffCommand";
 import {PageMapParser} from "./util/pageMapParser";
+import {FEStopCommand} from "./frontend/component/modal/FEStopCommand";
 
 $(() => {
     new Main();
@@ -132,6 +133,11 @@ export class Main {
                 FEPageCommand.get().setFieldContents();
                 Session.get().setCommandModalInputType(CommandType.PAGE);
                 break;
+            case 5:
+                WebElements.COMMAND_MODAL_INPUTAREA.html(FEStopCommand.get().content());
+                FEPageCommand.get().setFieldContents();
+                Session.get().setCommandModalInputType(CommandType.STOP);
+                break;
             default:
                 Logger.getLogger().warn("CommandModal input change called with invalid ID " + cmdId);
         }
@@ -169,6 +175,7 @@ export class Main {
         WebElements.COMMAND_MODAL_CMDON.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(2));
         WebElements.COMMAND_MODAL_CMDOFF.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(3));
         WebElements.COMMAND_MODAL_CMDPAGE.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(4));
+        WebElements.COMMAND_MODAL_CMDSTOP.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(5));
     }
 
     private Set_toJSON(key, value): any {

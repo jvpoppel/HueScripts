@@ -8,6 +8,7 @@ import {Colors} from "../util/colors";
 import {PageCommand} from "../data/events/pageCommand";
 import {OnCommand} from "../data/events/onCommand";
 import {OffCommand} from "../data/events/offCommand";
+import {StopCommand} from "../data/events/stopCommand";
 
 export class CommandInput {
 
@@ -182,6 +183,12 @@ export class CommandInput {
                 Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
                     new Row(this.time(),
                         new OffCommand(this.light(), [])));
+                return true;
+
+            case CommandType.STOP:
+                Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
+                  new Row(this.time(),
+                    new StopCommand(this.light(), [])));
                 return true;
         }
     }
