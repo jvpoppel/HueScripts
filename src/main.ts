@@ -25,7 +25,8 @@ export class Main {
 
         if (!HueAccount.exists()) {
             HueAccount.create();
-        } else {
+        }
+        if (Session.get().lights().length == 0) {
             HueAPIService.updateSessionLights();
         }
 
