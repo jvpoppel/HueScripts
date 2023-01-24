@@ -71,6 +71,7 @@ export class WebElements {
             LIGHT SELECT MODAL
      */
     static readonly LIGHT_MODAL_TABLE: JQuery<HTMLElement> = $("#lightTable");
+    static LIGHT_MODAL_LIGHT(id: number): JQuery<HTMLElement> { return $("#lightTest_" + id); }
 
     /*
             SOUND MODAL

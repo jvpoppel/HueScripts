@@ -13,6 +13,7 @@ import {FEOnCommand} from "./frontend/component/modal/FEOnCommand";
 import {FEOffCommand} from "./frontend/component/modal/FEOffCommand";
 import {PageMapParser} from "./util/pageMapParser";
 import {FEStopCommand} from "./frontend/component/modal/FEStopCommand";
+import {FETestLights} from "./frontend/component/modal/FETestLights";
 
 $(() => {
     new Main();
@@ -75,10 +76,9 @@ export class Main {
     /**
      * Open the modal to test the lights
      */
-    public modalLightTest() {
-        alert ("Modal light test");
-        // TODO: Add lights to modal
-        BaseModal.show(WebElements.LIGHT_MODAL);
+    public async modalLightTest() {
+        await FETestLights.createLightTable().then(() => BaseModal.show(WebElements.LIGHT_MODAL));
+
     }
 
     /**
