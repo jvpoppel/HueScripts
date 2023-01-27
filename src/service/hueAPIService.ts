@@ -87,9 +87,9 @@ export class HueAPIService {
     }
 
     public static async setLightState(light: number, body: string) {
-        Logger.getLogger().debug("START setLightState for light " + light);
+        Logger.getLogger().debug("START PUT setLightState for light " + light + " and body " + body);
         await this.PUTSetLightState(light, body).then(() =>
-            Logger.getLogger().debug("END setLightState for light " + light));
+            Logger.getLogger().debug("END PUT setLightState for light " + light));
     }
 
     private static async GETSessionLights() {
