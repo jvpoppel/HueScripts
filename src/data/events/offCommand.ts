@@ -43,7 +43,7 @@ export class OffCommand implements LightCommand {
         // In testing, exclude the API service as this will not work.
         if (!this.forTest) {
             if (this.light == -1) {
-                Session.get().lights().forEach(value => HueAPIService.setLightState(value, JSON.stringify(payload)));
+                Session.get().lights().forEach(value => HueAPIService.setLightState(value.getID(), JSON.stringify(payload)));
             } else {
                 HueAPIService.setLightState(this.light, JSON.stringify(payload));
             }

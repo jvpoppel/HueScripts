@@ -2,20 +2,21 @@ import {TSMap} from "typescript-map";
 import {Page} from "../data/page";
 import {WebElements} from "./webElements";
 import {CommandType} from "../data/events/lightCommand";
+import {Light} from "../model/light";
 
 export class Session {
 
     private static instance: Session;
 
     private currentPageID: number;
-    private foundLights: Array<number>;
+    private foundLights: Set<Light>;
     private pagesMap: TSMap<number, Page>;
     private currentCommandModalType: CommandType;
 
     private constructor() {
 
         this.currentPageID = 1;
-        this.foundLights = new Array<number>();
+        this.foundLights = new Set<Light>();
         this.pagesMap = new TSMap<number, Page>();
         for (let i = 1; i <= 6; i++) {
             let pageNumber = i;
@@ -35,7 +36,7 @@ export class Session {
         return this.currentPageID;
     }
 
-    public lights(): Array<number> {
+    public lights(): Set<Light> {
         return this.foundLights;
     }
 
@@ -69,8 +70,17 @@ export class Session {
         return this;
     }
 
+    public lightFromID(id: number): Light {
+        this.foundLights.forEach(l => {
+            if (l.getID() == id) {
+                return l;
+            }
+        });
+        throw Error("No light found for ID " + id);
+    }
+
     public newLight(newLight: number): Session {
-        this.foundLights.push(newLight);
+        this.foundLights.add(new Light(newLight));
         return this;
     }
 

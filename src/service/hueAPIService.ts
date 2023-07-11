@@ -104,7 +104,7 @@ export class HueAPIService {
     }
 
     public static async updateSessionLights() {
-        if (!(Session.get().lights().length == 0)) {
+        if (!(Session.get().lights().size == 0)) {
             return;
         }
         await this.GETSessionLights().then(function (keys) {

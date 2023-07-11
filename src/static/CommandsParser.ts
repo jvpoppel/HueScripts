@@ -10,6 +10,12 @@ export class CommandsParser {
 
   public static forCommands(commands: Set<LightCommand>): void {
     let possibleCommands: CombinedCommand[] = new CombinedCommand[Session.get().lights().length]
+    // HI BESCHONKEN JOHAN HIERO
+    // OP DIT MOMENT IS LIHGHTS EEN NUMBER ARRAY, DIT DIENT EEN SET VAN COMBINEDCOMMANDS TE WORDEN, OP BASIS VAN WELKE LIGHT ID'S ER ZIJN.
+    // DEZE ZIJN nmlk NIET OP VOLGORDE. ER KAN PRIMA EEN ID MISSEN.
+    // VERVOLGENS DIENT UIT DE SET VAN LIGHT IDS DE NODIGE COMBINEDCOMMAND GEPAKT TE WORDEN
+    // ideetjes hierover: maak voor elk light ID een combinedCommand, vervolgens hierop een boolean 'change' oid die enkel op TRUE wordt gezet als er een waarde gezet is voor deze
+    // lamp dit command. Zoiets. Succes ermee. Ik ga slapen. Joe.
 
     // Parse all commands on time
     commands.forEach(command => {1
