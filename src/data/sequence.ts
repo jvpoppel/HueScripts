@@ -4,6 +4,7 @@
 import { TSMap } from "typescript-map";
 import { Row } from "./row";
 import {WebElements} from "../static/webElements";
+import {Main} from "../main";
 /**
  * HueScripts Sequence Class
  * A sequence is a map of pageRows.
@@ -15,6 +16,22 @@ export class Sequence {
 
     public constructor() {
         this.pageRows = new TSMap<number, Set<Row>>();
+    }
+
+    public getRowById(id: string): Row {
+        let foundRow: Row | undefined = undefined;
+        this.pageRows.values().forEach(set => {
+           set.forEach(row => {
+               if (row.getElementId() == id) {
+                   foundRow = row;
+               }
+           }) ;
+        });
+
+        if (foundRow === undefined) {
+            return null;
+        }
+        return foundRow;
     }
 
     public rows(): TSMap<number, Set<Row>> {
@@ -32,6 +49,7 @@ export class Sequence {
 
     public deleteRow(row: Row): Sequence {
         this.pageRows.get(row.getTime()).delete(row);
+        this.updateFrontend();
         return this;
     }
 
@@ -48,14 +66,17 @@ export class Sequence {
             if (row.id === 'sequence_head') {
                 return;
             }
-            // TODO: Remove 'Edit' button listener
+            Main.get().removeRowEventListeners(row.id);
             row.remove();
         });
 
         // Rebuild table
         let times: number[] = this.pageRows.keys().sort(function(a, b) { return a - b });
         for (let i = 0; i < times.length; i ++) {
-            this.pageRows.get(times[i]).forEach(row => WebElements.SEQUENCE_TABLE.append(row.html()));
+            this.pageRows.get(times[i]).forEach(row => {
+                WebElements.SEQUENCE_TABLE.append(row.html());
+                Main.get().setupRowEventListeners(row.getElementId());
+            })
         }
 
         // Finally, make the table visible

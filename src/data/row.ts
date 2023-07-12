@@ -64,6 +64,8 @@ export class Row {
             "<td>" + this.command.type + "</td>" +
             "<td>" + this.command.formattedValuesWithoutTransition() + "</td>" +
             "<td>" + this.command.getTransitionTime() + "</td>" +
+            "<td><button type=\"button\" class=\"btn btn-success\" id=\"rowEdit_"+this.elementId+"\">Edit</button></td>" +
+            "<td><button type=\"button\" class=\"btn btn-dark\" id=\"rowDel_"+this.elementId+"\">Delete</button></td>" +
             "</tr>";
     }
 }

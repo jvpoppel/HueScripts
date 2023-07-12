@@ -21,6 +21,12 @@ $(() => {
 
 export class Main {
 
+    private static instance: Main;
+
+    public static get(): Main {
+        return Main.instance;
+    }
+
 
     constructor() {
 
@@ -33,20 +39,33 @@ export class Main {
 
         this.setupBaseEventListeners();
         Session.get().changeToPage(1);
+        Main.instance = this;
+    }
+
+    public setupRowEventListeners(id: string) {
+        console.log("Setup " + id);
+        WebElements.SEQUENCE_ROW_EDIT_BUTTON(id).get()[0].addEventListener("click",(e:Event) => this.editRow(id));
+        WebElements.SEQUENCE_ROW_DELETE_BUTTON(id).get()[0].addEventListener("click",(e:Event) => this.delRow(id));
+    }
+
+    public removeRowEventListeners(id: string) {
+        console.log("Remove " + id);
+        WebElements.SEQUENCE_ROW_EDIT_BUTTON(id).get()[0].removeEventListener("click",(e:Event) => this.editRow(id));
+        WebElements.SEQUENCE_ROW_DELETE_BUTTON(id).get()[0].removeEventListener("click",(e:Event) => this.delRow(id));
     }
 
     /**
      * Delete a row
      */
-    public delRow() {
-        alert("Del Row!");
+    public delRow(id: string) {
+        Session.get().currentPage().getSequence().deleteRow(Session.get().currentPage().getSequence().getRowById(id));
     }
 
     /**
      * Edit the current row
      */
-    public editRow() {
-        alert("Edit Row!");
+    public editRow(id: string) {
+        BaseModal.show(WebElements.EDIT_ROW_MODAL);
     }
 
     /**
@@ -154,8 +173,6 @@ export class Main {
      * This method will bind all event listeners to the DOM model
      */
     private setupBaseEventListeners() {
-        WebElements.EDIT_ROW_MODAL_DELETE.get()[0].addEventListener("click", (e:Event) => this.delRow());
-        WebElements.EDIT_ROW_MODAL_SUBMIT.get()[0].addEventListener("click", (e:Event) => this.editRow());
         WebElements.ADD_ROW_BUTTON.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.COMMAND_MODAL));
         WebElements.SHOW_LIGHT_TEST.get()[0].addEventListener("click", (e:Event) => this.modalLightTest());
         WebElements.SHOW_LOAD_SEQUENCE.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.LOAD_SEQUENCE));

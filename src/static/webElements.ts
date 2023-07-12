@@ -19,7 +19,8 @@ export class WebElements {
     static readonly SHOW_LOAD_SEQUENCE: JQuery<HTMLElement>                 = $("#loadBtn");
     static readonly SHOW_SAVE_SEQUENCE: JQuery<HTMLElement>                 = $("#saveBtn");
     static readonly CLEAR_SEQUENCE: JQuery<HTMLElement>                     = $("#clearBtn");
-    static SEQUENCE_ROW_EDIT_BUTTON(rowNumber: number): JQuery<HTMLElement> { return $("#rowEdit_"+rowNumber);  }
+    static SEQUENCE_ROW_EDIT_BUTTON(rowId: string): JQuery<HTMLElement> { return $("#rowEdit_"+rowId);  }
+    static SEQUENCE_ROW_DELETE_BUTTON(rowId: string): JQuery<HTMLElement> { return $("#rowDel_"+rowId);  }
     static ELEMENT_BY_ID(id: string): JQuery<HTMLElement>                   { return $("#" + id);  }
     static PAGE_BUTTON(pageNumber: number): JQuery<HTMLElement>             { return $("#btnSelectPage" + pageNumber);  }
 
@@ -42,7 +43,6 @@ export class WebElements {
     /*
             EDIT ROW MODAL
      */
-    static readonly EDIT_ROW_MODAL_DELETE: JQuery<HTMLElement>      = $("#btnEditDelete");
     static readonly EDIT_ROW_MODAL_SUBMIT: JQuery<HTMLElement>      = $("#btnEditSubmit");
     static EDIT_ROW_MODAL_ROW_NUMBER(): JQuery<HTMLElement>  { return $("#editRowID"); }
     static EDIT_ROW_MODAL_LIGHT(): JQuery<HTMLElement>       { return $("#editRowLight"); }
