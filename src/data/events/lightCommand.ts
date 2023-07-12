@@ -26,5 +26,7 @@ export interface LightCommand {
 
     getTransitionTime(): string;
 
+    getType(): CommandType;
+
     formattedValuesWithoutTransition(): string;
 }

@@ -49,6 +49,10 @@ export class PageCommand implements LightCommand {
         return "";
     }
 
+    public getType(): CommandType {
+        return this.type;
+    }
+
     public toString(): string {
         return "PageCommand for page |" + this.values[0];
     }

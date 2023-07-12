@@ -55,6 +55,10 @@ export class StopCommand implements LightCommand {
     return this.transitionTime;
   }
 
+  public getType(): CommandType {
+    return this.type;
+  }
+
   public toString(): string {
     return "StopCommand";
   }

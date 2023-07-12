@@ -61,6 +61,10 @@ export class OnCommand implements LightCommand {
         return this.transitionTime;
     }
 
+    public getType(): CommandType {
+        return this.type;
+    }
+
     public toString(): string {
         return "OnCommand for light |" + this.light + "|";
     }

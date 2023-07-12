@@ -77,6 +77,10 @@ export class BrightnessCommand implements LightCommand {
         return this.transitionTime;
     }
 
+    public getType(): CommandType {
+        return this.type;
+    }
+
     public toString(): string {
         return "BrightnessCommand for light |" + this.light + "|, values |" + this.values.toString();
     }

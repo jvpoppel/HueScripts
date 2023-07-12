@@ -14,6 +14,8 @@ import {FEOffCommand} from "./frontend/component/modal/FEOffCommand";
 import {PageMapParser} from "./util/pageMapParser";
 import {FEStopCommand} from "./frontend/component/modal/FEStopCommand";
 import {FETestLights} from "./frontend/component/modal/FETestLights";
+import {Row} from "./data/row";
+import {CommandTypeToID} from "./data/events/CommandTypeToID";
 
 $(() => {
     new Main();
@@ -43,13 +45,11 @@ export class Main {
     }
 
     public setupRowEventListeners(id: string) {
-        console.log("Setup " + id);
         WebElements.SEQUENCE_ROW_EDIT_BUTTON(id).get()[0].addEventListener("click",(e:Event) => this.editRow(id));
         WebElements.SEQUENCE_ROW_DELETE_BUTTON(id).get()[0].addEventListener("click",(e:Event) => this.delRow(id));
     }
 
     public removeRowEventListeners(id: string) {
-        console.log("Remove " + id);
         WebElements.SEQUENCE_ROW_EDIT_BUTTON(id).get()[0].removeEventListener("click",(e:Event) => this.editRow(id));
         WebElements.SEQUENCE_ROW_DELETE_BUTTON(id).get()[0].removeEventListener("click",(e:Event) => this.delRow(id));
     }
@@ -65,10 +65,64 @@ export class Main {
      * Show the 'Add Command' modal with 'Discard' button, set 'Row For Edit' in Sequence beforehand
      */
     public editRow(id: string) {
-        Session.get().currentPage().getSequence().setRowForEdit(Session.get().currentPage().getSequence().getRowById(id));
+        let row: Row = Session.get().currentPage().getSequence().getRowById(id);
+        Session.get().currentPage().getSequence().setRowForEdit(row);
         BaseModal.show(WebElements.COMMAND_MODAL);
-
         WebElements.COMMAND_MODAL_DISCARD.get()[0].classList.remove('hidden');
+
+        // Set values on command modal based on edit row
+        this.commandModalChangeInputField(CommandTypeToID.from(row.getCommand().getType()));
+        this.resetCommandRadioButtons();
+        this.selectCommandTypeRadioButtonForType(row.getCommand().getType());
+
+    }
+
+    public selectCommandTypeRadioButtonForType(type: CommandType) {
+        if (type == CommandType.BRIGHTNESS) {
+            if (!WebElements.COMMAND_MODAL_CMDBRIGHTNESS.get()[0].classList.contains("active")) {
+                WebElements.COMMAND_MODAL_CMDBRIGHTNESS.get()[0].classList.add("active");
+            }
+        } else if (type == CommandType.COLOR) {
+            if (!WebElements.COMMAND_MODAL_CMDCOLOR.get()[0].classList.contains("active")) {
+                WebElements.COMMAND_MODAL_CMDCOLOR.get()[0].classList.add("active");
+            }
+        } else if (type == CommandType.ON) {
+            if (!WebElements.COMMAND_MODAL_CMDON.get()[0].classList.contains("active")) {
+                WebElements.COMMAND_MODAL_CMDON.get()[0].classList.add("active");
+            }
+        } else if (type == CommandType.OFF) {
+            if (!WebElements.COMMAND_MODAL_CMDOFF.get()[0].classList.contains("active")) {
+                WebElements.COMMAND_MODAL_CMDOFF.get()[0].classList.add("active");
+            }
+        } else if (type == CommandType.PAGE) {
+            if (!WebElements.COMMAND_MODAL_CMDPAGE.get()[0].classList.contains("active")) {
+                WebElements.COMMAND_MODAL_CMDPAGE.get()[0].classList.add("active");
+            }
+        } else if (type == CommandType.STOP) {
+            if (!WebElements.COMMAND_MODAL_CMDSTOP.get()[0].classList.contains("active")) {
+                WebElements.COMMAND_MODAL_CMDSTOP.get()[0].classList.add("active");
+            }
+        } else if (type == CommandType.BRIGHTNESS) {
+            if (!WebElements.COMMAND_MODAL_CMDBRIGHTNESS.get()[0].classList.contains("active")) {
+                WebElements.COMMAND_MODAL_CMDBRIGHTNESS.get()[0].classList.add("active");
+            }
+        }
+    }
+
+    public resetCommandRadioButtons(): void {
+        if (WebElements.COMMAND_MODAL_CMDBRIGHTNESS.get()[0].classList.contains("active")) {
+            WebElements.COMMAND_MODAL_CMDBRIGHTNESS.get()[0].classList.remove("active");
+        } else if (WebElements.COMMAND_MODAL_CMDON.get()[0].classList.contains("active")) {
+            WebElements.COMMAND_MODAL_CMDON.get()[0].classList.remove("active");
+        }else if (WebElements.COMMAND_MODAL_CMDOFF.get()[0].classList.contains("active")) {
+            WebElements.COMMAND_MODAL_CMDOFF.get()[0].classList.remove("active");
+        }else if (WebElements.COMMAND_MODAL_CMDCOLOR.get()[0].classList.contains("active")) {
+            WebElements.COMMAND_MODAL_CMDCOLOR.get()[0].classList.remove("active");
+        }else if (WebElements.COMMAND_MODAL_CMDPAGE.get()[0].classList.contains("active")) {
+            WebElements.COMMAND_MODAL_CMDPAGE.get()[0].classList.remove("active");
+        }else if (WebElements.COMMAND_MODAL_CMDSTOP.get()[0].classList.contains("active")) {
+            WebElements.COMMAND_MODAL_CMDSTOP.get()[0].classList.remove("active");
+        }
     }
 
     /**
@@ -136,6 +190,7 @@ export class Main {
      *          2 = On
      *          3 = Off
      *          4 = Page
+     *          5 = Stop
      */
     public commandModalChangeInputField(cmdId: number) {
         switch (cmdId) {

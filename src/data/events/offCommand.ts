@@ -60,6 +60,10 @@ export class OffCommand implements LightCommand {
         return this.transitionTime;
     }
 
+    public getType(): CommandType {
+        return this.type;
+    }
+
     public toString(): string {
         return "OffCommand for light |" + this.light + "|";
     }

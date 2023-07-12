@@ -78,6 +78,10 @@ export class ColorCommand implements LightCommand {
         return this.transitionTime;
     }
 
+    public getType(): CommandType {
+        return this.type;
+    }
+
     public setOriginalValues(values: number[]): ColorCommand {
         this.originalValues = values;
         return this;
