@@ -91,6 +91,7 @@ export class WebElements {
     static readonly COMMAND_MODAL_CMDPAGE: JQuery<HTMLElement> = $("#radioBtnPage");
     static readonly COMMAND_MODAL_CMDSTOP: JQuery<HTMLElement> = $("#radioBtnStop");
 
+    static readonly COMMAND_MODAL_DISCARD: JQuery<HTMLElement> = $("#btnCommandDiscard");
     static readonly COMMAND_MODAL_SUBMIT: JQuery<HTMLElement> = $("#btnCommandSubmit");
 
     static MODAL_TIME_INPUT(): JQuery<HTMLElement> { return $("#commandTimeInput"); }

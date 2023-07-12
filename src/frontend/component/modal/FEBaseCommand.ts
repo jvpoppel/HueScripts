@@ -126,6 +126,9 @@ export class FEBaseCommand {
     }
 
     public static submit(): void {
+
+        let forEdit: boolean = Session.get().currentPage().getSequence().getRowForEdit() != undefined;
+
         let commandType = Session.get().commandModalInputType();
         let initialData: number[] = FEBaseCommand.get().parse();
         let newCommand = new CommandInput().setTime(initialData[0]).setLight(initialData[1]).setType(commandType);
@@ -170,6 +173,10 @@ export class FEBaseCommand {
             return;
         } else {
             BaseModal.hide(WebElements.COMMAND_MODAL);
+            if (forEdit) {
+                Session.get().currentPage().getSequence().deleteRow(Session.get().currentPage().getSequence().getRowForEdit());
+                Session.get().currentPage().getSequence().clearRowForEdit();
+            }
         }
     }
 }

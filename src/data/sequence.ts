@@ -13,6 +13,7 @@ import {Main} from "../main";
 export class Sequence {
 
     private pageRows: TSMap<number, Set<Row>>;
+    private rowInEdit: Row;
 
     public constructor() {
         this.pageRows = new TSMap<number, Set<Row>>();
@@ -83,6 +84,18 @@ export class Sequence {
         if (WebElements.SEQUENCE_TABLE.hasClass('hidden')) {
             WebElements.SEQUENCE_TABLE.removeClass('hidden');
         }
+    }
+
+    public clearRowForEdit(): void {
+        this.rowInEdit = undefined;
+    }
+
+    public getRowForEdit(): Row | undefined {
+        return this.rowInEdit;
+    }
+
+    public setRowForEdit(row: Row): void {
+        this.rowInEdit = row;
     }
 
     public clear(): void {

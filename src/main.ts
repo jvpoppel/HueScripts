@@ -62,10 +62,21 @@ export class Main {
     }
 
     /**
-     * Edit the current row
+     * Show the 'Add Command' modal with 'Discard' button, set 'Row For Edit' in Sequence beforehand
      */
     public editRow(id: string) {
-        BaseModal.show(WebElements.EDIT_ROW_MODAL);
+        Session.get().currentPage().getSequence().setRowForEdit(Session.get().currentPage().getSequence().getRowById(id));
+        BaseModal.show(WebElements.COMMAND_MODAL);
+
+        WebElements.COMMAND_MODAL_DISCARD.get()[0].classList.remove('hidden');
+    }
+
+    /**
+     * Removes the 'Row For Edit' in current sequence, and shows the Command Modal
+     */
+    public showCommandModalForAddRow() {
+        Session.get().currentPage().getSequence().clearRowForEdit();
+        BaseModal.show(WebElements.COMMAND_MODAL);
     }
 
     /**
@@ -173,7 +184,7 @@ export class Main {
      * This method will bind all event listeners to the DOM model
      */
     private setupBaseEventListeners() {
-        WebElements.ADD_ROW_BUTTON.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.COMMAND_MODAL));
+        WebElements.ADD_ROW_BUTTON.get()[0].addEventListener("click", (e:Event) => this.showCommandModalForAddRow());
         WebElements.SHOW_LIGHT_TEST.get()[0].addEventListener("click", (e:Event) => this.modalLightTest());
         WebElements.SHOW_LOAD_SEQUENCE.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.LOAD_SEQUENCE));
         WebElements.SHOW_SAVE_SEQUENCE.get()[0].addEventListener("click", (e:Event) => this.openSaveSequenceModal());
@@ -187,6 +198,8 @@ export class Main {
         WebElements.SEQUENCE_STOP.get()[0].addEventListener("click", (e:Event) => this.stopSequence());
         WebElements.AUDIO_SELECT.get()[0].addEventListener("click", (e:Event) => BaseModal.show(WebElements.SOUND_MODAL));
         WebElements.SOUND_SUBMIT.get()[0].addEventListener("click", (e: Event) => Main.audioChangeEvent());
+
+        WebElements.COMMAND_MODAL_DISCARD.get()[0].addEventListener("click", (e:Event) => BaseModal.hide(WebElements.COMMAND_MODAL));
 
         WebElements.COMMAND_MODAL_CMDBRIGHTNESS.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(0));
         WebElements.COMMAND_MODAL_CMDCOLOR.get()[0].addEventListener("click",(e:Event) => this.commandModalChangeInputField(1));

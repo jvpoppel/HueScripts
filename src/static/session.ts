@@ -48,7 +48,11 @@ export class Session {
         return this;
     }
 
+    /*
+     * Returns pageMap with cleared 'Rows For Edit'
+     */
     public pageMap(): TSMap<number, Page> {
+        this.pagesMap.keys().forEach(key => this.pagesMap.get(key).getSequence().clearRowForEdit());
         return this.pagesMap;
     }
 
