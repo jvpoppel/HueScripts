@@ -74,6 +74,7 @@ export class Main {
         this.commandModalChangeInputField(CommandTypeToID.from(row.getCommand().getType()));
         this.resetCommandRadioButtons();
         this.selectCommandTypeRadioButtonForType(row.getCommand().getType());
+        row.fillInCommandModal();
 
     }
 

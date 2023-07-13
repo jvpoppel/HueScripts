@@ -130,7 +130,7 @@ export class CommandInput {
                     this.logger.error("CommandInput: Transition was not set.");
                     return false;
                 }
-                Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
+                Session.get().currentPage().getSequence().addRow(this.time(),
                     new Row(this.time(),
                         new BrightnessCommand(this.light(), [this.brightness(), this.transition()])));
                 return true;
@@ -174,19 +174,19 @@ export class CommandInput {
                 return true;
 
             case CommandType.ON:
-                Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
+                Session.get().currentPage().getSequence().addRow(this.time(),
                     new Row(this.time(),
                         new OnCommand(this.light(), [])));
                 return true;
 
             case CommandType.OFF:
-                Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
+                Session.get().currentPage().getSequence().addRow(this.time(),
                     new Row(this.time(),
                         new OffCommand(this.light(), [])));
                 return true;
 
             case CommandType.STOP:
-                Session.get().pageMap().get(Session.get().page()).getSequence().addRow(this.time(),
+                Session.get().currentPage().getSequence().addRow(this.time(),
                   new Row(this.time(),
                     new StopCommand(this.light(), [])));
                 return true;

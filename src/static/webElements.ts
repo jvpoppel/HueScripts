@@ -94,15 +94,15 @@ export class WebElements {
     static readonly COMMAND_MODAL_DISCARD: JQuery<HTMLElement> = $("#btnCommandDiscard");
     static readonly COMMAND_MODAL_SUBMIT: JQuery<HTMLElement> = $("#btnCommandSubmit");
 
-    static MODAL_TIME_INPUT(): JQuery<HTMLElement> { return $("#commandTimeInput"); }
-    static MODAL_LIGHT_INPUT(): JQuery<HTMLElement> { return $("#commandLightInput"); }
-    static MODAL_LIGHT_ALLLIGHTS(): JQuery<HTMLElement> { return $("#commandLightAllLights"); }
-    static MODAL_TRANSITION_INPUT(): JQuery<HTMLElement> { return $("#commandTransitionInput"); }
-    static MODAL_BRIGHTNESS_INPUT(): JQuery<HTMLElement> { return $("#commandBrightnessInput"); }
-    static MODAL_RED_INPUT(): JQuery<HTMLElement> { return $("#commandRedInput"); }
-    static MODAL_GREEN_INPUT(): JQuery<HTMLElement> { return $("#commandGreenInput"); }
-    static MODAL_BLUE_INPUT(): JQuery<HTMLElement> { return $("#commandBlueInput"); }
-    static MODAL_PAGE_INPUT(): JQuery<HTMLElement> { return $("#commandPageInput"); }
+    static MODAL_TIME_INPUT(): JQuery<HTMLInputElement> { return $("#commandTimeInput"); }
+    static MODAL_LIGHT_INPUT(): JQuery<HTMLSelectElement> { return $("#commandLightInput"); }
+    static MODAL_LIGHT_ALLLIGHTS(): JQuery<HTMLInputElement> { return $("#commandLightAllLights"); }
+    static MODAL_TRANSITION_INPUT(): JQuery<HTMLInputElement> { return $("#commandTransitionInput"); }
+    static MODAL_BRIGHTNESS_INPUT(): JQuery<HTMLInputElement> { return $("#commandBrightnessInput"); }
+    static MODAL_RED_INPUT(): JQuery<HTMLInputElement> { return $("#commandRedInput"); }
+    static MODAL_GREEN_INPUT(): JQuery<HTMLInputElement> { return $("#commandGreenInput"); }
+    static MODAL_BLUE_INPUT(): JQuery<HTMLInputElement> { return $("#commandBlueInput"); }
+    static MODAL_PAGE_INPUT(): JQuery<HTMLInputElement> { return $("#commandPageInput"); }
 
     /*
             LOAD SEQUENCE MODAL

@@ -6,6 +6,8 @@ import {CommandType, LightCommand} from "./events/lightCommand";
 import {Logger} from "../util/logger";
 import {ElementId} from "../util/elementId";
 import {ColorCommand} from "./events/colorCommand";
+import {WebElements} from "../static/webElements";
+import {PageCommand} from "./events/pageCommand";
 
 /**
  * HueScripts Row Class
@@ -67,5 +69,41 @@ export class Row {
             "<td><button type=\"button\" class=\"btn btn-success\" id=\"rowEdit_"+this.elementId+"\">Edit</button></td>" +
             "<td><button type=\"button\" class=\"btn btn-dark\" id=\"rowDel_"+this.elementId+"\">Delete</button></td>" +
             "</tr>";
+    }
+
+    public fillInCommandModal(): void {
+        WebElements.MODAL_TIME_INPUT().get()[0].value = String(this.time);
+
+        // Set light checkbox / select dropdown based on command type
+        if (this.command.type === CommandType.ON || this.command.type === CommandType.OFF || this.command.type === CommandType.BRIGHTNESS || this.command.type === CommandType.COLOR) {
+            if(this.command.light == -1) {
+                WebElements.MODAL_LIGHT_ALLLIGHTS().get()[0].checked = true;
+            } else {
+                WebElements.MODAL_LIGHT_ALLLIGHTS().get()[0].checked = false;
+                WebElements.MODAL_LIGHT_INPUT().get()[0].value = String(this.command.light);
+            }
+        }
+
+        // Set transition time based on command type
+        if (this.command.type === CommandType.BRIGHTNESS || this.command.type === CommandType.COLOR) {
+            WebElements.MODAL_TRANSITION_INPUT().get()[0].value = String(this.command.getTransitionTime());
+        }
+
+        // Set 'Page' value based on command type
+        if (this.command.type === CommandType.PAGE) {
+            WebElements.MODAL_PAGE_INPUT().get()[0].value = String(this.command.values[0]);
+        }
+
+        // Set 'Brightness' value based on command type
+        if (this.command.type === CommandType.BRIGHTNESS) {
+            WebElements.MODAL_BRIGHTNESS_INPUT().get()[0].value = String(this.command.values[0]);
+        }
+
+        // Set RGB values based on command type
+        if (this.command.type === CommandType.COLOR) {
+            WebElements.MODAL_RED_INPUT().get()[0].value = String((this.command as ColorCommand).getOriginalValues()[0]);
+            WebElements.MODAL_GREEN_INPUT().get()[0].value = String((this.command as ColorCommand).getOriginalValues()[1]);
+            WebElements.MODAL_BLUE_INPUT().get()[0].value = String((this.command as ColorCommand).getOriginalValues()[2]);
+        }
     }
 }
