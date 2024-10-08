@@ -33,9 +33,9 @@
   "devDependencies": {
     "@types/bootstrap": "4.6.2",
     "@types/chai": "4.3.5",
-    "@types/mocha": "10.0.1",
+    "@types/mocha": "10.0.9",
     "chai": "4.3.7",
-    "mocha": "10.2.0",
+    "mocha": "10.7.3",
     "ts-node": "10.9.1",
     "webpack-cli": "5.1.4"
   }
